@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% block category %}
+Home
+{% endblock category %}
+{% block body %}
+
+<div class="main">
+
+    <div class="container my-4">
+        {% if current_user.role == 'master' %}
+        <form action="/" method="POST">
+            <div class="row g-3 d-flex justify-content-left align-items-center">
+
+                <!-- Date -->
+                <div class="col-md-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="text" class="form-control" name="date" id="date">
+                </div>
+
+                <!-- Home -->
+                <div class="col-md-3">
+                    <label for="home" class="form-label">Home</label>
+                    <select class="form-control" name="home" id="home" required>
+                        <option value="" disabled selected>Select a Home</option>
+                        {% for home in [
+                        "YTM-1", "YTM-2", "YTM-3", "YTM-7"
+                        ] %}
+                        <option value="{{ home }}">{{ home }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-control" name="status" id="status" required>
+                        <option value="" disabled selected>Select a status</option>
+                        {% for status in [
+                        "Active", "Maintenance", "Ready", "Dead", "Packed"
+                        ] %}
+                        <option value="{{ status }}">{{ status }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-control" name="category" id="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        {% for category in [
+                        "Normal", "Special", "Automatic Plants", "Cutting", "Tracks", "Packing",
+                        "Tables", "Washing", "Compressor", "Steam Generator", "Label Printer",
+                        "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"
+                        ] %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Brand -->
+                <div class="col-md-3">
+                    <label for="brand" class="form-label">Brand</label>
+                    <select class="form-control" name="brand" id="brand" required>
+                        <option value="" disabled selected>Select a Brand</option>
+                        {% for brand in [
+                        "Juki","Siruba","Brother","Master","Master Apparel","Japsew","Golden
+                        Wheel","Nil","Pegasus","Suprena","Kansai Special","Nextsew","KingTex","ZHWJIANG ZHUJI
+                        LEYE","S7C-45A-II","Seize","ZD","Youxing","C.E","Techno
+                        Gen","Munaf","Aolite","WHM","K.M","INTERLINK","INA","EAST MAN","LOBSTER","LOCAL
+                        MADE","Nantong","Strapex","HOT TECH","NNW","Richpiece","Meta","Seung
+                        Min","Delta","Vinny","Precious","Jack","Bisma Engr","Aerostar","Stork","Jameel Borther","Erum
+                        Engr","Luis Sew","Danis","MRT","TIAN YUAN","Royal Pack","Miniroller","Jam
+                        International","Treasure","Zhen Hai","Sewkey","Tajima","Hengye","TGI","Texpa","Supreme","Roll
+                        Quilt","Savor","Hauser","Spreader","Barudan","Alpha","Inderle","Vari-o-matic","Hashima","Magetron","Changzhou"
+                        ] %}
+                        <option value="{{ brand }}">{{ brand }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Model -->
+                <div class="col-md-3">
+                    <label for="model" class="form-label">Model</label>
+                    <select class="form-control" name="model" id="model" required>
+                        <option value="" disabled selected>Select a Model</option>
+                        {% for model in [
+                        "DDL-7000A-7","757K-516M2-35/CT/DKKU1-0","S-6280A-813","SH-2000","SH2000","NILL","S-7100A-403","LZ-2290A-SR-7","J-8700-B-7","D-8752-D-S07",
+                        "T-8752D-SO7","DA-928A-5","T-8722C-407","RH-982A-02-12","KE-430HX-05","S-7000DD-403","MB-1373","M932-38","LH-3588A-7","LBH-781","CS-1886-DBT",
+                        "DDL-900B","LH-895N","LZ-2290C","LK-1900S","LBH-1790SS","LK-1960/MLH","SPB828D","B-2000C","W-364A-A","757L-516M3-35/DKLU1-0","757L-514M-3-24/VT/DKLU1-0",
+                        "747L-514M-3-24/VT/DKLU1-0","COO7KP-W122-356/CH/UTR/DCKH1-2","747K-514M2-24/VT/DKKU1-0","747K-516M2-55/CT/DKKU1-0","SP828D","SP8228D","NS-3020GT-01A",
+                        "UH9004F","CS-8186D-BT","FBX1106P","DFB-1412PL","CTD9013","M932-896","M952-52H","W522A-01F","CSN-8172","CSN-8162","SP-5200-D4","J-8752","J-8730-7-AK",
+                        "J-430-D2","HD-680-A","TD-80X152","DL7200-BM1-15","SZ2009220027","SVC-45A
+                        11-8-5","ST-205A","KMr","YXS 128-3F-10","YXS 128-3E-10","YXS-128-3D-10","YXS-128-30-D","YXS
+                        128-3D-10","S-200","BE-438FX","M-732","M932-39","ZYZ-600C III","KS-AUV","ELEFENT
+                        II","INA","DB-1","PFS-400","NTK-098","LOCAL MADE","China brand","Local","SWS 15","CJ-320BD","T
+                        707","XT4505-1-3","MH-FJ-1D","NIL","MH-FG-2000 BC","EC.6.N","MT-HAF-2M","M-932","TPB
+                        30G","HY-2","JK-904E","AS-781D","STORKE","CSA-2516D-04","PC-T818","757-Qe","W664-01GB","D-2223","D-2222","DMI440-B3","D-2221","M-752","HOTOTEK",
+                        "JBJ-JT-540","J-2290S-SR","CT9018","W1562P-01G","PC
+                        2182-T","MH-FJ-1A","S-6200A-405","E-32-L","M832-38","RX-980300","HFJ-28F-2","EX5214-M53","T-8750C-005","HE-800C-2","LH-3528A-7","T-8722A-405",
+                        "BE-438HX","JT262HRM-2","JT662HM-2525","HS-55003","HE-800B-2","W664-35BC","ZXJ-380A","LH-3588A-A","HFJ-26F-2","MB-1370","2017-6","CS-8184D-BT","757-Qc",
+                        "DDL-8700B-7","DDL-5550N-7","L32-38","SP-XT422B","SK
+                        817","MOL-254","LZ-2290A-SS-7","LK-1903A-SS","LBH-783","DLN-9010A-SS","ZYZ-3000C
+                        III","TPM-20","LS-4400-75","HY128-3B","DTS380","P-364/A-A","JK-905E","M732-86","HY-128-3-A-10","C007KD-W812A-356"
+                        ] %}
+                        <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Description -->
+                <div class="col-md-3">
+                    <label for="desc" class="form-label">Description</label>
+                    <select class="form-control" name="desc" id="desc" required>
+                        <option value="" disabled selected>Select a description</option>
+                        {% for item in [
+                        "4 THREAD", "5 Thread Safety", "Air Compressor", "Auto Spreader", "Bartack", "Blind
+                        Stitch", "Bone Machine", "Bone Pocket Machine", "Bottom Hemming", "BTN Machine", "BTN Machine
+                        (Cross)", "Carton Sealer", "Carton Strip", "Chain Stitch", "Chain Stitch Smock", "Compress
+                        Packing",
+                        "Cotton Batting", "Cropping Machine", "Cutting Machine", "DNLS", "DNLS (1 8/8)", "DNLS (1/38)",
+                        "DNLS (1/8)", "DNLS (3/16)", "DNLS (3/4)", "DNLS-FB", "DNLS-FB (1 1/2)", "DNLS-FB (1 1/4)",
+                        "DNLS-FB
+                        (1 1/8)", "DNLS-FB (1 3/4)", "DNLS-FB (1 3/8)", "DNLS-FB (1/2)", "DNLS-FB (1/38)", "DNLS-FB
+                        (1/4)",
+                        "DNLS-FB (65mm)", "DNLS-FB (65mm)(PULLER)", "DNLS-FB (7/8)", "DNLS-FB (75mm)", "DNLS-FB
+                        (75mm)(PULLER)", "DNLS-FB (PULLER)", "DNLS-SB (1 1/4)", "DNLS-SB (1/2)", "DNLS-SB (1/4)",
+                        "DNLS-SB
+                        (1/8)", "DNLS-SB (3/16)", "DNLS-SB (3/4)", "DNLS-SB (3/5)", "Divisor", "Edge Cutter",
+                        "Embroidery",
+                        "Eyelet Hole & Punch", "Eyelet Kaj", "Fabric Roll Cutter", "Fabric Rolling Machine",
+                        "Fegotting",
+                        "Fiber Filling Plant", "Flat Lock", "FOA", "Hauser", "Heat Sealing", "Heat Transfer Machine",
+                        "Hydro
+                        Extractor", "INA Hanger", "Ironing Table", "Jump Stitch", "Kaj", "Kaj Manual", "Kansai", "Label
+                        Attach Machine", "Label Printing Machine", "Long Hemming", "Loop Attacher", "Loop Cutter",
+                        "Magetron", "MDM", "MH-380", "MRT-1", "MRT-10", "MRT-11", "MRT-12", "MRT-2", "MRT-3", "MRT-4",
+                        "MRT-5", "MRT-6", "MRT-7", "MRT-8", "MRT-9", "MRT-A", "MRT-B", "MRT-C", "MRT-D", "MRT-E", "Multi
+                        Needle Quilting", "Nill", "Packing Device", "Pillow Doubal head Safety", "Pillow Sealing",
+                        "Pillow
+                        Turning", "Piping Cutter", "Pocket Cutter", "Pocket Design", "Pocket Facing", "Polyfill Cutting
+                        Machine", "Polyfill Plant", "Quilting", "Rimac", "Roll Opening Machine", "Roll Quilt Machine",
+                        "Roll
+                        Rewinding", "Rolling Machine", "Safety", "Sample Steam Dryer", "Sample Washing Machine",
+                        "Sealing
+                        Machine", "Shell Stitch Overlock", "Snap Button", "Snap Button Auto", "SNLS", "SNLS(PULLER)",
+                        "SNLS
+                        Quilting", "Steam Dryer", "Steam Generator", "Straight Knife Cutter", "Texpa Duvet", "Texpa
+                        Fitted",
+                        "Texpa Flat", "Texpa Pillow", "Ultrasonic Quilting Machine", "Vari-O-Matic", "Velcro Cutting
+                        Machine", "Washing", "Wrapping Machine", "Zig Zag"
+                        ] %}
+                        <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tag -->
+                <div class="col-md-3">
+                    <label for="tag" class="form-label">Tag No.</label>
+                    <input type="text" class="form-control" name="tag" id="tag">
+                </div>
+
+                <!-- Serial -->
+                <div class="col-md-3">
+                    <label for="serial" class="form-label">Serial No.</label>
+                    <input type="text" class="form-control" name="serial" id="serial">
+                </div>
+
+                <!-- Unit -->
+                <div class="col-md-3">
+                    <label for="unit" class="form-label">Unit</label>
+                    <select class="form-control" name="unit" id="unit" required>
+                        <option value="" disabled selected>Select a Unit</option>
+                        {% for unit in [
+                        "YTM-1", "YTM-2", "YTM-3", "YTM-7"
+                        ] %}
+                        <option value="{{ unit }}">{{ unit }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Building -->
+                <div class="col-md-3">
+                    <label for="building" class="form-label">Building</label>
+                    <select class="form-control" name="building" id="building" required>
+                        <option value="" disabled selected>Select a Building</option>
+                        {% for building in [
+                        "A", "B", "C", "D", "E", "F", "Water-Jet", "2A", "2B", "3A"
+                        ] %}
+                        <option value="{{ building }}">{{ building }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Floor -->
+                <div class="col-md-3">
+                    <label for="floor" class="form-label">Floor</label>
+                    <select class="form-control" name="floor" id="floor" required>
+                        <option value="" disabled selected>Select a Floor</option>
+                        {% for floor in [
+                        "GF", "FF", "SF", "TF", "FF-Workshop", "GF-EXWH", "GF-Sample",
+                        "GF-Training", "GF-Wokrshop", "SF-Sample", "SF-Workshop"
+                        ] %}
+                        <option value="{{ floor }}">{{ floor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Add more fields here as needed -->
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-actions btn-dark">Submit</button>
+            </div>
+        </form>
+        {% else %}
+        <!-- <div class="alert alert-info">
+            <strong>Note:</strong> You do not have permission to add new machines.
+        </div> -->
+        {% endif %}
+    </div>
+    <!-- ------------------------------------------------------------------------------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------------------------------------------------------------------------------- -->
+    <div class="container my-3">
+        <h3>Master Machine List</h3>
+        {% if alltodo|length == 0 %}
+        <div class="alert alert-dark" role="alert">
+            No records found, Add your records now!
+        </div>
+        {% else %}
+        <div class="table-responsive-custom">
+
+            <table class="table table-professional table-striped table-bordered machine-table">
+                <thead>
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Home</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">Tag No.</th>
+                        <th scope="col">Serial No.</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Building</th>
+                        <th scope="col">Floor</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for todo in alltodo %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ todo.date }}</td>
+                        <td>{{ todo.home }}</td>
+                        <td>{{ todo.status }}</td>
+                        <td>{{ todo.category }}</td>
+                        <td>{{ todo.brand }}</td>
+                        <td>{{ todo.model }}</td>
+                        <td>{{ todo.tag }}</td>
+                        <td>{{ todo.serial }}</td>
+                        <td>{{ todo.desc }}</td>
+                        <td>{{ todo.unit }}</td>
+                        <td>{{ todo.building }}</td>
+                        <td>{{ todo.floor }}</td>
+                        <td>
+                            <a href="/update/{{ todo.sno }}" class="btn btn-actions btn-dark btn-sm">Update</a>
+                            {% if current_user.role == 'master' %}
+                            <a href="/delete/{{ todo.sno }}" class="btn btn-actions btn-dark btn-sm mx-1">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+    crossorigin="anonymous"></script>
+
+{% endblock body %}

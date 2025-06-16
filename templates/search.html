@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block category %}
+Search Results
+{% endblock category %}
+
+{% block body %}
+
+<div class="container my-4">
+    <h2>Search Results for "{{ query }}"</h2>
+    {% if results %}
+    <div class="table-responsive-custom">
+
+        <table class="table table-professional table-striped table-bordered machine-table">
+            <thead>
+                <tr>
+                    <th scope="col">S No.</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Home</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Tag No.</th>
+                    <th scope="col">Serial No.</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Buidling</th>
+                    <th scope="col">Floor</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in results %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ todo.date }}</td>
+                    <td>{{ todo.home }}</td>
+                    <td>{{ todo.status }}</td>
+                    <td>{{ todo.category }}</td>
+                    <td>{{ todo.brand }}</td>
+                    <td>{{ todo.model }}</td>
+                    <td>{{ todo.tag }}</td>
+                    <td>{{ todo.serial }}</td>
+                    <td>{{ todo.desc }}</td>
+                    <td>{{ todo.unit }}</td>
+                    <td>{{ todo.building }}</td>
+                    <td>{{ todo.floor }}</td>
+                    <td>
+                        <a href="/update/{{ todo.sno }}" class="btn btn-actions btn-outline-dark btn-sm">Update</a>
+                        <a href="/delete/{{ todo.sno }}" class="btn btn-actions btn-outline-dark btn-sm mx-1">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>No matching results found.</p>
+    {% endif %}
+</div>
+{% endblock body %}
