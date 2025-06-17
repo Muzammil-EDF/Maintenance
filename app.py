@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import or_
-
+import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
 # app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///master_db.db"
