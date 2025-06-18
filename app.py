@@ -225,7 +225,5 @@ def search():
         results = Todo.query.filter(filters, Todo.unit == current_user.unit).all()
     return render_template("search.html", results=results, query=query)
 
-@app._got_first_request
-def create_tables():
-    with app.app_context():
-        db.create_all()
+with app.app_context():
+    db.create_all()
