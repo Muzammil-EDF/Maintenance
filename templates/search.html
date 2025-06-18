@@ -48,7 +48,10 @@ Search Results
                     <td>{{ todo.floor }}</td>
                     <td>
                         <a href="/update/{{ todo.sno }}" class="btn btn-actions btn-outline-dark btn-sm">Update</a>
+                        {% if current_user.role == 'master' %}
                         <a href="/delete/{{ todo.sno }}" class="btn btn-actions btn-outline-dark btn-sm mx-1">Delete</a>
+                        {% endif %}
+
                     </td>
                 </tr>
                 {% endfor %}
