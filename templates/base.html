@@ -177,7 +177,7 @@
           </li>
           <li class="nav-item">
             {% if current_user.role == 'master' %}
-            <a href="{{ url_for('download_excel') }}" class="btn btn-success my-2">
+            <a href="{{ url_for('download_excel') }}" class="btn rounded-5 nav-link text-dark fw-semibold">
               Download Excel
             </a>
             {% endif %}
