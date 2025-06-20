@@ -4,6 +4,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import or_
+from io import BytesIO
+import pandas as pd
+
 import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
@@ -225,5 +228,47 @@ def search():
         results = Todo.query.filter(filters, Todo.unit == current_user.unit).all()
     return render_template("search.html", results=results, query=query)
 
-with app.app_context():
-    db.create_all()
+
+@app.route("/download_excel")
+@login_required  # Optional: only allow logged-in users
+def download_excel():
+    # Get records from DB
+    if current_user.role == 'master':
+        data = Todo.query.all()
+    else:
+        data = Todo.query.filter_by(unit=current_user.unit).all()
+
+    # Convert to DataFrame
+    rows = [{
+        "Category": d.category,
+        "Description": d.desc,
+        "Tag": d.tag,
+        "Unit": d.unit,
+        "Building": d.building,
+        "Floor": d.floor,
+        "Serial": d.serial,
+        "Date": d.date,
+        "Home": d.home,
+        "Status": d.status,
+        "Brand": d.brand,
+        "Model": d.model
+    } for d in data]
+
+    df = pd.DataFrame(rows)
+
+    # Write to Excel in memory
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name="TodoData")
+    output.seek(0)
+
+    # Send as file to user
+    return send_file(
+        output,
+        download_name="todo_data.xlsx",
+        as_attachment=True,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+
+

@@ -36,7 +36,7 @@
     }
 
     .login-header {
-      background-color:rgb(158, 176, 38);
+      background-color: rgb(158, 176, 38);
       color: #fff;
       border-top-left-radius: 1rem;
       border-top-right-radius: 1rem;
@@ -71,7 +71,7 @@
       color: #fff;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    
+
     .table-professional {
       /* width: 10px; */
       border-collapse: separate;
@@ -110,6 +110,7 @@
       font-size: 14px;
       vertical-align: left;
     }
+
     .table-professional thead td {
       font-weight: 500;
       font-size: small;
@@ -173,6 +174,13 @@
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark fw-semibold" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            {% if current_user.role == 'master' %}
+            <a href="{{ url_for('download_excel') }}" class="btn btn-success my-2">
+              Download Excel
+            </a>
+            {% endif %}
           </li>
         </ul>
 
