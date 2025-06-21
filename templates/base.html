@@ -182,6 +182,17 @@
             </a>
             {% endif %}
           </li>
+          {% if current_user.is_authenticated and current_user.unit == 'ytm1' %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Preventive Schedule
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('preventive_schedule', building='2A') }}">2A</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('preventive_schedule', building='2B') }}">2B</a></li>
+            </ul>
+          </li>
+          {% endif %}
         </ul>
 
         <form class="d-flex rounded-pill overflow-hidden shadow-sm me-3" role="search" method="GET" action="/search">

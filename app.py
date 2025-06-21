@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import or_
 from io import BytesIO
 import pandas as pd
+from datetime import datetime, timedelta
 
 import os
 app = Flask(__name__)
@@ -62,25 +63,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # ------------------ Routes ------------------
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         user = User.query.filter_by(username=username).first()
-#         if user and user.check_password(password):
-#             login_user(user)
-#             return redirect('/')
-#         flash("Invalid credentials", "danger")
-#     if current_user.is_authenticated:
-#         return redirect('/')
-
-#     # Show database data even on login page (for view only)
-#     alltodo = Todo.query.all() if current_user.is_authenticated and current_user.role == 'master' else []
-#     return render_template('login.html', alltodo=alltodo)
-
-
-# ------------------ Routes ------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -133,28 +115,6 @@ def get_input():
     else:
         alltodo = Todo.query.filter_by(unit=current_user.unit).all()
     return render_template('index.html', alltodo=alltodo)
-
-# @app.route("/update/<int:sno>", methods=['GET', 'POST'])
-# @login_required
-# def update(sno):
-#     todo = Todo.query.get_or_404(sno)
-#     if current_user.role != 'master' and todo.unit != current_user.unit:
-#         flash("Unauthorized to edit this entry", "danger")
-#         return redirect('/')
-
-#     if request.method == 'POST':
-#         todo.category = request.form['category']
-#         todo.desc = request.form['desc']
-#         todo.tag = request.form['tag']
-#         todo.unit = request.form['unit']
-#         todo.building = request.form['building']
-#         todo.floor = request.form['floor']
-#         todo.serial = request.form['serial']
-#         db.session.commit()
-#         return redirect('/')
-
-#     return render_template('update.html', todo=todo)
-
 
 @app.route("/update/<int:sno>", methods=['GET', 'POST'])
 @login_required
@@ -270,5 +230,43 @@ def download_excel():
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
 
+
+@app.route("/preventive_schedule/<building>")
+@login_required
+def preventive_schedule(building):
+    if current_user.unit != "ytm1":
+        flash("You are not authorized to view this schedule.", "danger")
+        return redirect("/")
+
+    # Filter Todo records for YTM-1 and the selected building (e.g., 2A)
+    records = Todo.query.filter_by(unit="YTM-1", building=building).all()
+
+    # Further group by category if needed (Normal, Special, Cutting)
+    schedule = []
+
+    categories = set([r.category for r in records])
+    today = datetime.today()
+
+    for category in categories:
+        filtered = [r for r in records if r.category == category]
+        total = len(filtered)
+        per_day = max(1, total // 90)  # avoid 0
+
+        day_counter = 0
+        for i in range(0, total, per_day):
+            date_for_schedule = (today + timedelta(days=day_counter)).strftime("%Y-%m-%d")
+            scheduled_batch = filtered[i:i+per_day]
+
+            for item in scheduled_batch:
+                schedule.append({
+                    "desc": item.desc,
+                    "serial": item.serial,
+                    "category": category,
+                    "date": date_for_schedule
+                })
+
+            day_counter += 1
+
+    return render_template("preventive_schedule.html", schedule=schedule, building=building)
 
 

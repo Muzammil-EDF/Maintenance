@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Preventive Schedule for {{ building }}</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Machine</th>
+        <th>Serial</th>
+        <th>Category</th>
+        <th>Scheduled Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in schedule %}
+      <tr>
+        <td>{{ item.desc }}</td>
+        <td>{{ item.serial }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
