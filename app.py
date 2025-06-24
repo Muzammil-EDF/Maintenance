@@ -7,8 +7,11 @@ from sqlalchemy import or_
 from io import BytesIO
 import pandas as pd
 from datetime import datetime, timedelta
-
+from sqlalchemy import or_, and_
 import os
+from datetime import datetime, timedelta
+from math import ceil
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
 # app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///master_db.db"
