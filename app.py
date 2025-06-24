@@ -231,42 +231,60 @@ def download_excel():
     )
 
 
-@app.route("/preventive_schedule/<building>")
+@app.route("/ytm1_schedule/<building>")
 @login_required
-def preventive_schedule(building):
-    if current_user.unit != "ytm1":
-        flash("You are not authorized to view this schedule.", "danger")
+def ytm1_schedule(building):
+    if current_user.unit != "YTM-1":
+        flash("Unauthorized", "danger")
         return redirect("/")
 
-    # Filter Todo records for YTM-1 and the selected building (e.g., 2A)
-    records = Todo.query.filter_by(unit="YTM-1", building=building).all()
+    included_categories = ["Normal", "Special"]
 
-    # Further group by category if needed (Normal, Special, Cutting)
+    records = Todo.query.filter(
+        and_(
+            Todo.unit == "YTM-1",
+            Todo.building == building,
+            Todo.category.in_(included_categories)
+        )
+    ).all()
+
+    if not records:
+        flash("No machines found for selected building and categories.", "warning")
+        return render_template("preventive_schedule.html", schedule=[], building=building)
+
+    total_machines = len(records)
+    days = 90
+
+    # Calculate how many machines per day, using ceil to ensure within 90 days
+    per_day = ceil(total_machines / days)
+
     schedule = []
+    current_date = datetime.today()
+    machine_index = 0
 
-    categories = set([r.category for r in records])
-    today = datetime.today()
+    for day in range(days):
+        # On the last day, take all remaining machines
+        daily_batch = records[machine_index:machine_index + per_day]
+        if not daily_batch:
+            break  # No more machines left
 
-    for category in categories:
-        filtered = [r for r in records if r.category == category]
-        total = len(filtered)
-        per_day = max(1, total // 90)  # avoid 0
+        date_str = current_date.strftime("%Y-%m-%d")
+        for machine in daily_batch:
+            schedule.append({
+                # "category": machine.category,
+                "brand": machine.brand,
+                "model": machine.model,
+                "tag": machine.tag,
+                "serial": machine.serial,
+                "desc": machine.desc,
+                "building": machine.building,
+                "floor": machine.floor,
+                "preventive_date": date_str
+            })
 
-        day_counter = 0
-        for i in range(0, total, per_day):
-            date_for_schedule = (today + timedelta(days=day_counter)).strftime("%Y-%m-%d")
-            scheduled_batch = filtered[i:i+per_day]
+        machine_index += len(daily_batch)
+        current_date += timedelta(days=1)
 
-            for item in scheduled_batch:
-                schedule.append({
-                    "desc": item.desc,
-                    "serial": item.serial,
-                    "category": category,
-                    "date": date_for_schedule
-                })
-
-            day_counter += 1
-
-    return render_template("preventive_schedule.html", schedule=schedule, building=building)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 

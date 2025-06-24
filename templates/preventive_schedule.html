@@ -1,26 +1,43 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends "base.html" %}
+{% block body %}
 <div class="container mt-4">
-  <h3>Preventive Schedule for {{ building }}</h3>
+  <h3>Preventive Maintenance Schedule - {{ building }}</h3>
+  <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
+  <p><strong>Per Day:</strong> {{ per_day }} machines</p>
+
+  {% if schedule %}
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Machine</th>
-        <th>Serial</th>
-        <th>Category</th>
-        <th>Scheduled Date</th>
+        <!-- <th>Category</th> -->
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Tag No</th>
+        <th>Serial/Mfg</th>
+        <th>Description</th>
+        <th>Building</th>
+        <th>Floor</th>
+        <th>Preventive Date</th>
       </tr>
     </thead>
     <tbody>
-      {% for item in schedule %}
+      {% for row in schedule %}
       <tr>
-        <td>{{ item.desc }}</td>
-        <td>{{ item.serial }}</td>
-        <td>{{ item.category }}</td>
-        <td>{{ item.date }}</td>
+        <!-- <td>{{ row.category }}</td> -->
+        <td>{{ row.brand }}</td>
+        <td>{{ row.model }}</td>
+        <td>{{ row.tag }}</td>
+        <td>{{ row.serial }}</td>
+        <td>{{ row.desc }}</td>
+        <td>{{ row.building }}</td>
+        <td>{{ row.floor }}</td>
+        <td>{{ row.preventive_date }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+    <div class="alert alert-info">No schedule generated.</div>
+  {% endif %}
 </div>
-{% endblock %}
+{% endblock body %}
