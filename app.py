@@ -237,7 +237,7 @@ def download_excel():
 @app.route("/ytm1_schedule/<building>")
 @login_required
 def ytm1_schedule(building):
-    if current_user.unit != "YTM-1":
+    if current_user.unit != "YTM-1" and current_user.role != 'master':
         flash("Unauthorized", "danger")
         return redirect("/")
 
