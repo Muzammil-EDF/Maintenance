@@ -247,6 +247,7 @@ Home
                         <th scope="col">Unit</th>
                         <th scope="col">Building</th>
                         <th scope="col">Floor</th>
+                        <th scope="col">PM Date</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -266,6 +267,7 @@ Home
                         <td>{{ todo.unit }}</td>
                         <td>{{ todo.building }}</td>
                         <td>{{ todo.floor }}</td>
+                        <td>{{ todo.pm_date }}</td>
                         <td>
                             <a href="/update/{{ todo.sno }}" class="btn btn-actions btn-dark btn-sm">Update</a>
                             {% if current_user.role == 'master' %}

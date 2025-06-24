@@ -56,6 +56,7 @@ class Todo(db.Model):
     status = db.Column(db.String(500))
     brand = db.Column(db.String(500))
     model = db.Column(db.String(500))
+    pm_date = db.Column(db.Date)
 
     def __repr__(self):
         return f"{self.sno} - {self.desc}"
@@ -107,6 +108,7 @@ def get_input():
                 status=request.form['status'],
                 brand=request.form['brand'],
                 model=request.form['model']
+                pm_date=request.form['pm_date']
             )
             db.session.add(todo)
             db.session.commit()
@@ -148,6 +150,7 @@ def update(sno):
             todo.status = request.form['status']
             todo.brand = request.form['brand']
             todo.model = request.form['model']
+            todo.pm_date = request.form['pm_date']
 
         db.session.commit()
         flash("Update successful.", "success")
@@ -183,7 +186,8 @@ def search():
         Todo.home.ilike(f"%{query}%"),
         Todo.status.ilike(f"%{query}%"),
         Todo.brand.ilike(f"%{query}%"),
-        Todo.model.ilike(f"%{query}%")
+        Todo.model.ilike(f"%{query}%"),
+        Todo.pm_date.ilike(f"%{query}%")
     )
     if current_user.role == 'master':
         results = Todo.query.filter(filters).all()
@@ -214,7 +218,8 @@ def download_excel():
         "Home": d.home,
         "Status": d.status,
         "Brand": d.brand,
-        "Model": d.model
+        "Model": d.model,
+        "PM_Date": d.pm_date
     } for d in data]
 
     df = pd.DataFrame(rows)
