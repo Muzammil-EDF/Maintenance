@@ -107,7 +107,7 @@ def get_input():
                 home=request.form['home'],
                 status=request.form['status'],
                 brand=request.form['brand'],
-                model=request.form['model']
+                model=request.form['model'],
                 pm_date=request.form['pm_date']
             )
             db.session.add(todo)
