@@ -6,7 +6,7 @@
   <p><strong>Per Day:</strong> {{ per_day }} machines</p>
 
   {% if schedule %}
-  <table class="table table-bordered">
+  <table class="table table-bordered machine-table">
     <thead>
       <tr>
         <!-- <th>Category</th> -->
@@ -37,7 +37,24 @@
     </tbody>
   </table>
   {% else %}
-    <div class="alert alert-info">No schedule generated.</div>
+  <div class="alert alert-info">No schedule generated.</div>
   {% endif %}
 </div>
+<script>
+  $(document).ready(function () {
+    var table = $('.machine-table').DataTable({
+      initComplete: function () {
+        this.api().columns().every(function () {
+          var column = this;
+          $('input', this.header()).on('keyup change clear', function () {
+            if (column.search() !== this.value) {
+              column.search(this.value).draw();
+            }
+          });
+        });
+      }
+    });
+  });
+</script>
+
 {% endblock body %}

@@ -212,6 +212,23 @@
   {% block body %}
 
   {% endblock body %}
+  <script>
+    $(document).ready(function () {
+      var table = $('.machine-table').DataTable({
+        initComplete: function () {
+          this.api().columns().every(function () {
+            var column = this;
+            $('input', this.header()).on('keyup change clear', function () {
+              if (column.search() !== this.value) {
+                column.search(this.value).draw();
+              }
+            });
+          });
+        }
+      });
+    });
+  </script>
+
 </body>
 
 </html>
