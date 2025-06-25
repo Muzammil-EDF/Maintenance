@@ -192,20 +192,31 @@
             </a>
             {% endif %}
           </li>
-          {% if current_user.unit == 'YTM-1' or current_user.role == 'master' %}
+          {% if current_user.unit in ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] or current_user.role == 'master' %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
               Preventive Schedule
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">2A Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">2B Schedule</a></li>
+              {% if current_user.unit == 'YTM-1' or current_user.role == 'master' %}
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">YTM-1 2A Schedule</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">YTM-1 2B Schedule</a>
+              </li>
+              {% endif %}
+
+              {% if current_user.unit == 'YTM-2' or current_user.role == 'master' %}
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Schedule</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Schedule</a>
+              </li>
+              {% endif %}
             </ul>
           </li>
           {% endif %}
 
         </ul>
-<!-- 
+        <!-- 
         <form class="d-flex rounded-pill overflow-hidden shadow-sm me-3" role="search" method="GET" action="/search">
           <input class="form-control border-0 ps-3" type="search" name="query" placeholder="Search..."
             aria-label="Search">

@@ -313,19 +313,91 @@ def ytm1_schedule(building):
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
-# ----------------------PM SCHEDULE DOWNLOADING-------------------------------------
 
-@app.route("/download_schedule/<building>")
+# ----------------------PM SCHEDULING YTM-2-------------------------------------
+@app.route("/ytm2_schedule/<building>")
 @login_required
-def download_schedule(building):
-    if current_user.unit != "YTM-1" and current_user.role != 'master':
+def ytm2_schedule(building):
+    # Authorization check
+    if current_user.unit != "YTM-2" and current_user.role != 'master':
         flash("Unauthorized", "danger")
         return redirect("/")
 
     included_categories = ["Normal", "Special"]
+
+    # Fetch matching records
     records = Todo.query.filter(
         and_(
-            Todo.unit == "YTM-1",
+            Todo.unit == "YTM-2",
+            Todo.building == building,
+            Todo.category.in_(included_categories)
+        )
+    ).all()
+
+    if not records:
+        flash("No machines found for selected building and categories.", "warning")
+        return render_template("preventive_schedule.html", schedule=[], building=building)
+
+    total_machines = len(records)
+    days = 90
+    per_day = ceil(total_machines / days)
+
+    schedule = []
+    current_date = datetime.today()
+    machine_index = 0
+
+    for day in range(days):
+        daily_batch = records[machine_index:machine_index + per_day]
+        if not daily_batch:
+            break
+
+        date_obj = current_date.date()
+        date_str = date_obj.strftime("%Y-%m-%d")
+        for machine in daily_batch:
+            # Only set pm_date if it's not already set
+            if not machine.pm_date:
+                machine.pm_date = date_obj
+
+            schedule.append({
+                "brand": machine.brand,
+                "model": machine.model,
+                "tag": machine.tag,
+                "serial": machine.serial,
+                "desc": machine.desc,
+                "building": machine.building,
+                "floor": machine.floor,
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+            })
+
+
+        machine_index += len(daily_batch)
+        current_date += timedelta(days=1)
+
+    try:
+        db.session.commit()
+        flash("Preventive maintenance schedule generated and saved.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating pm_date: {e}", "danger")
+
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+
+@app.route("/download_schedule/<building>")
+@login_required
+def download_schedule(building):
+    # Allow only authorized units or master
+    allowed_units = ["YTM-1", "YTM-2", "YTM-3", "YTM-7"]
+    if current_user.unit not in allowed_units and current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    # Determine which unit's data to fetch
+    selected_unit = current_user.unit if current_user.role != 'master' else request.args.get("unit", "YTM-1")
+
+    included_categories = ["Normal", "Special"]
+    records = Todo.query.filter(
+        and_(
+            Todo.unit == selected_unit,
             Todo.building == building,
             Todo.category.in_(included_categories)
         )
@@ -333,7 +405,7 @@ def download_schedule(building):
 
     if not records:
         flash("No data available to export.", "warning")
-        return redirect(f"/ytm1_schedule/{building}")
+        return redirect(f"/{selected_unit.lower()}_schedule/{building}")
 
     # Convert to DataFrame
     data = [{
@@ -355,6 +427,5 @@ def download_schedule(building):
         df.to_excel(writer, index=False, sheet_name="PM Schedule")
     output.seek(0)
 
-    filename = f"PM_Schedule_{building}.xlsx"
+    filename = f"PM_Schedule_{selected_unit}_{building}.xlsx"
     return send_file(output, download_name=filename, as_attachment=True)
-
