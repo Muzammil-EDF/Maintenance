@@ -50,7 +50,10 @@
 
 <script>
   $(document).ready(function () {
-    var table = $('.machine-table').DataTable({
+    $('.machine-table').DataTable({
+      paging: false, // ✅ Disable pagination
+      scrollY: '600px', // ✅ Optional: scrollable view
+      scrollCollapse: true,
       initComplete: function () {
         this.api().columns().every(function () {
           var column = this;
