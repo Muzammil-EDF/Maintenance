@@ -213,6 +213,7 @@ Home
                     <input type="text" class="form-control" name="pm_date" id="pm_date">
                 </div>
 
+
                 <!-- Add more fields here as needed -->
             </div>
 
@@ -236,26 +237,26 @@ Home
         </div>
         {% else %}
         <div class="table-responsive-custom">
-
             <table class="table table-professional table-striped table-bordered machine-table">
                 <thead>
                     <tr>
-                        <th scope="col">S No.</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Home</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">Tag No.</th>
-                        <th scope="col">Serial No.</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Building</th>
-                        <th scope="col">Floor</th>
+                        <th>S No.</th>
+                        <th>Date</th>
+                        <th>Home</th>
+                        <th>Status</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Tag No.</th>
+                        <th>Serial No.</th>
+                        <th>Description</th>
+                        <th>Unit</th>
+                        <th>Building</th>
+                        <th>Floor</th>
                         <th scope="col">PM Date</th>
-                        <th scope="col">Actions</th>
+                        <th>Actions</th>
                     </tr>
+
                 </thead>
                 <tbody>
                     {% for todo in alltodo %}
@@ -274,6 +275,7 @@ Home
                         <td>{{ todo.building }}</td>
                         <td>{{ todo.floor }}</td>
                         <td>{{ todo.pm_date }}</td>
+
                         <td>
                             <a href="/update/{{ todo.sno }}" class="btn btn-actions btn-dark btn-sm">Update</a>
                             {% if current_user.role == 'master' %}

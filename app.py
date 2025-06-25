@@ -150,7 +150,13 @@ def update(sno):
             todo.status = request.form['status']
             todo.brand = request.form['brand']
             todo.model = request.form['model']
-            todo.pm_date = request.form['pm_date']
+            pm_date_str = request.form.get("pm_date")
+            if pm_date_str:
+                try:
+                    todo.pm_date = datetime.strptime(pm_date_str, "%Y-%m-%d").date()
+                except ValueError:
+                    flash("Invalid PM date format.", "danger")
+
 
         db.session.commit()
         flash("Update successful.", "success")
