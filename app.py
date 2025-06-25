@@ -238,16 +238,19 @@ def download_excel():
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
 
+# ----------------------PM SCHEDULING YTM-1-------------------------------------
 
 @app.route("/ytm1_schedule/<building>")
 @login_required
 def ytm1_schedule(building):
+    # Authorization check
     if current_user.unit != "YTM-1" and current_user.role != 'master':
         flash("Unauthorized", "danger")
         return redirect("/")
 
     included_categories = ["Normal", "Special"]
 
+    # Fetch matching records
     records = Todo.query.filter(
         and_(
             Todo.unit == "YTM-1",
@@ -262,8 +265,6 @@ def ytm1_schedule(building):
 
     total_machines = len(records)
     days = 90
-
-    # Calculate how many machines per day, using ceil to ensure within 90 days
     per_day = ceil(total_machines / days)
 
     schedule = []
@@ -271,15 +272,18 @@ def ytm1_schedule(building):
     machine_index = 0
 
     for day in range(days):
-        # On the last day, take all remaining machines
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
-            break  # No more machines left
+            break
 
-        date_str = current_date.strftime("%Y-%m-%d")
+        date_obj = current_date.date()
+        date_str = date_obj.strftime("%Y-%m-%d")
         for machine in daily_batch:
+            # Only set pm_date if it's not already set
+            if not machine.pm_date:
+                machine.pm_date = date_obj
+
             schedule.append({
-                # "category": machine.category,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -287,12 +291,64 @@ def ytm1_schedule(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": date_str
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
             })
+
 
         machine_index += len(daily_batch)
         current_date += timedelta(days=1)
 
+    try:
+        db.session.commit()
+        flash("Preventive maintenance schedule generated and saved.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating pm_date: {e}", "danger")
+
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
+# ----------------------PM SCHEDULE DOWNLOADING-------------------------------------
+
+@app.route("/download_schedule/<building>")
+@login_required
+def download_schedule(building):
+    if current_user.unit != "YTM-1" and current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    included_categories = ["Normal", "Special"]
+    records = Todo.query.filter(
+        and_(
+            Todo.unit == "YTM-1",
+            Todo.building == building,
+            Todo.category.in_(included_categories)
+        )
+    ).order_by(Todo.pm_date.asc()).all()
+
+    if not records:
+        flash("No data available to export.", "warning")
+        return redirect(f"/ytm1_schedule/{building}")
+
+    # Convert to DataFrame
+    data = [{
+        "PM Date": record.pm_date.strftime("%Y-%m-%d") if record.pm_date else "N/A",
+        "Description": record.desc,
+        "Brand": record.brand,
+        "Model": record.model,
+        "Tag": record.tag,
+        "Serial": record.serial,
+        "Building": record.building,
+        "Floor": record.floor
+    } for record in records]
+
+    df = pd.DataFrame(data)
+
+    # Create in-memory Excel file
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        df.to_excel(writer, index=False, sheet_name="PM Schedule")
+    output.seek(0)
+
+    filename = f"PM_Schedule_{building}.xlsx"
+    return send_file(output, download_name=filename, as_attachment=True)
 

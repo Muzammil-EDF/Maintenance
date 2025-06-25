@@ -4,6 +4,13 @@
   <h3>Preventive Maintenance Schedule - {{ building }}</h3>
   <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
   <p><strong>Per Day:</strong> {{ per_day }} machines</p>
+  <div class="">
+    <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
+      Download Excel
+    </a>
+  </div>
+
+
 
   {% if schedule %}
   <table class="table table-bordered machine-table">
@@ -40,6 +47,7 @@
   <div class="alert alert-info">No schedule generated.</div>
   {% endif %}
 </div>
+
 <script>
   $(document).ready(function () {
     var table = $('.machine-table').DataTable({
