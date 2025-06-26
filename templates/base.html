@@ -242,19 +242,18 @@
   {% endblock body %}
   <script>
     $(document).ready(function () {
-      $('.machine-table').DataTable({
-        scrollX: true,  // ✅ enable horizontal scroll
-        scrollY: '600px',  // ✅ vertical scroll
+      var table = $('#myTable').DataTable({
+        scrollX: true,
+        scrollY: '600px',
         scrollCollapse: true,
         paging: false,
-        fixedHeader: {
-          header: true,
-          footer: false
-        },
+        autoWidth: false,  // ⚠️ 'True' was incorrect and broke everything
+        fixedHeader: true,
         initComplete: function () {
+          // Move search input filters to second row
           this.api().columns().every(function () {
             var column = this;
-            $('input', this.header()).on('keyup change clear', function () {
+            $('input', column.header()).on('keyup change clear', function () {
               if (column.search() !== this.value) {
                 column.search(this.value).draw();
               }
@@ -264,7 +263,6 @@
       });
     });
   </script>
-
 </body>
 
 </html>
