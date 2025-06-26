@@ -176,32 +176,6 @@ def delete(sno):
     db.session.commit()
     return redirect('/')
 
-@app.route("/search", methods=["GET"])
-@login_required
-def search():
-    query = request.args.get('query')
-    filters = or_(
-        Todo.category.ilike(f"%{query}%"),
-        Todo.desc.ilike(f"%{query}%"),
-        Todo.tag.ilike(f"%{query}%"),
-        Todo.unit.ilike(f"%{query}%"),
-        Todo.building.ilike(f"%{query}%"),
-        Todo.floor.ilike(f"%{query}%"),
-        Todo.serial.ilike(f"%{query}%"),
-        Todo.date.ilike(f"%{query}%"),
-        Todo.home.ilike(f"%{query}%"),
-        Todo.status.ilike(f"%{query}%"),
-        Todo.brand.ilike(f"%{query}%"),
-        Todo.model.ilike(f"%{query}%"),
-        Todo.pm_date.ilike(f"%{query}%")
-    )
-    if current_user.role == 'master':
-        results = Todo.query.filter(filters).all()
-    else:
-        results = Todo.query.filter(filters, Todo.unit == current_user.unit).all()
-    return render_template("search.html", results=results, query=query)
-
-
 @app.route("/download_excel")
 @login_required  # Optional: only allow logged-in users
 def download_excel():
@@ -383,28 +357,111 @@ def ytm2_schedule(building):
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 
+# # ----------------------PM SCHEDULING YTM-3-------------------------------------
+# @app.route("/ytm3_schedule/<building>")
+# @login_required
+# def ytm3_schedule(building):
+#     # Authorization check
+#     if current_user.unit != "YTM-3" and current_user.role != 'master':
+#         flash("Unauthorized", "danger")
+#         return redirect("/")
+
+#     included_categories = ["Normal", "Special"]
+
+#     # Fetch matching records
+#     records = Todo.query.filter(
+#         and_(
+#             Todo.unit == "YTM-3",
+#             Todo.building == building,
+#             Todo.category.in_(included_categories)
+#         )
+#     ).all()
+
+#     if not records:
+#         flash("No machines found for selected building and categories.", "warning")
+#         return render_template("preventive_schedule.html", schedule=[], building=building)
+
+#     total_machines = len(records)
+#     days = 90
+#     per_day = ceil(total_machines / days)
+
+#     schedule = []
+#     current_date = datetime.today()
+#     machine_index = 0
+
+#     for day in range(days):
+#         daily_batch = records[machine_index:machine_index + per_day]
+#         if not daily_batch:
+#             break
+
+#         date_obj = current_date.date()
+#         date_str = date_obj.strftime("%Y-%m-%d")
+#         for machine in daily_batch:
+#             # Only set pm_date if it's not already set
+#             if not machine.pm_date:
+#                 machine.pm_date = date_obj
+
+#             schedule.append({
+#                 "brand": machine.brand,
+#                 "model": machine.model,
+#                 "tag": machine.tag,
+#                 "serial": machine.serial,
+#                 "desc": machine.desc,
+#                 "building": machine.building,
+#                 "floor": machine.floor,
+#                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+#             })
+
+
+#         machine_index += len(daily_batch)
+#         current_date += timedelta(days=1)
+
+#     try:
+#         db.session.commit()
+#         flash("Preventive maintenance schedule generated and saved.", "success")
+#     except Exception as e:
+#         db.session.rollback()
+#         flash(f"Error updating pm_date: {e}", "danger")
+
+#     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+
+# -----------------------------------------------------------------YTM-3--------------------------------------------------------------
+allowed_config3 = {
+    "3A": {
+        "floors": ["FF", "GF", "SF", "TF", "SF-WORKSHOP"],
+        "categories": ["Normal", "Special"]
+    },
+}
 # ----------------------PM SCHEDULING YTM-3-------------------------------------
 @app.route("/ytm3_schedule/<building>")
 @login_required
 def ytm3_schedule(building):
-    # Authorization check
+    # Authorization
     if current_user.unit != "YTM-3" and current_user.role != 'master':
         flash("Unauthorized", "danger")
         return redirect("/")
 
-    included_categories = ["Normal", "Special"]
+    # Validate allowed config for building
+    config = allowed_config3.get(building)
+    if not config:
+        flash("Invalid building or no config found.", "danger")
+        return redirect("/")
 
-    # Fetch matching records
+    included_floors = config["floors"]
+    included_categories = config["categories"]
+
+    # Filter records by unit, building, category and floor
     records = Todo.query.filter(
         and_(
             Todo.unit == "YTM-3",
             Todo.building == building,
-            Todo.category.in_(included_categories)
+            Todo.category.in_(included_categories),
+            Todo.floor.in_(included_floors)
         )
     ).all()
 
     if not records:
-        flash("No machines found for selected building and categories.", "warning")
+        flash("No machines found for selected filters.", "warning")
         return render_template("preventive_schedule.html", schedule=[], building=building)
 
     total_machines = len(records)
@@ -421,9 +478,7 @@ def ytm3_schedule(building):
             break
 
         date_obj = current_date.date()
-        date_str = date_obj.strftime("%Y-%m-%d")
         for machine in daily_batch:
-            # Only set pm_date if it's not already set
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -438,7 +493,6 @@ def ytm3_schedule(building):
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
             })
 
-
         machine_index += len(daily_batch)
         current_date += timedelta(days=1)
 
@@ -451,9 +505,8 @@ def ytm3_schedule(building):
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
-# -------------------------------------------------------------------------------------------------------------------------------
 
-
+# ------------------------------------------------------------YTM-7-------------------------------------------------------------------
 allowed_config = {
     "A": {
         "floors": ["FF", "GF-TRAINING", "SF", "TF"],
@@ -480,7 +533,7 @@ allowed_config = {
         "categories": ["Normal", "Special"]
     },
 }
-# -------------------------------------------------------------------------------------------------------------------------------
+# ----------------------PM SCHEDULING YTM-7-------------------------------------
 @app.route("/ytm7_schedule/<building>")
 @login_required
 def ytm7_schedule(building):
