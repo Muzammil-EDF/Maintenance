@@ -216,6 +216,17 @@
               <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Schedule</a>
               </li>
               {% endif %}
+              
+              {% if current_user.unit == 'YTM-7' or current_user.role == 'master' %}
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-jet') }}">YTM-7 Water-jet Schedule</a>
+              </li>
+              {% endif %}
+
             </ul>
           </li>
           {% endif %}
