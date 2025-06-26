@@ -211,6 +211,13 @@
               <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Schedule</a>
               </li>
               {% endif %}
+
+              {% if current_user.unit == 'YTM-3' or current_user.role == 'master' %}
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='2A') }}">YTM-2 2A Schedule</a>
+              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='2B') }}">YTM-2 2B Schedule</a>
+              </li>
+              {% endif %}
             </ul>
           </li>
           {% endif %}
@@ -236,9 +243,14 @@
   <script>
     $(document).ready(function () {
       $('.machine-table').DataTable({
-        paging: false, // ✅ Disable pagination
-        scrollY: '600px', // ✅ Optional: scrollable view
+        scrollX: true,  // ✅ enable horizontal scroll
+        scrollY: '600px',  // ✅ vertical scroll
         scrollCollapse: true,
+        paging: false,
+        fixedHeader: {
+          header: true,
+          footer: false
+        },
         initComplete: function () {
           this.api().columns().every(function () {
             var column = this;
