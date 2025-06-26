@@ -218,82 +218,13 @@ def download_excel():
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
 
-# ----------------------PM SCHEDULING YTM-1-------------------------------------
+# # ----------------------PM SCHEDULING YTM-1-------------------------------------
 
-@app.route("/ytm1_schedule/<building>")
-@login_required
-def ytm1_schedule(building):
-    # Authorization check
-    if current_user.unit != "YTM-1" and current_user.role != 'master':
-        flash("Unauthorized", "danger")
-        return redirect("/")
-
-    included_categories = ["Normal", "Special"]
-
-    # Fetch matching records
-    records = Todo.query.filter(
-        and_(
-            Todo.unit == "YTM-1",
-            Todo.building == building,
-            Todo.category.in_(included_categories)
-        )
-    ).all()
-
-    if not records:
-        flash("No machines found for selected building and categories.", "warning")
-        return render_template("preventive_schedule.html", schedule=[], building=building)
-
-    total_machines = len(records)
-    days = 90
-    per_day = ceil(total_machines / days)
-
-    schedule = []
-    current_date = datetime.today()
-    machine_index = 0
-
-    for day in range(days):
-        daily_batch = records[machine_index:machine_index + per_day]
-        if not daily_batch:
-            break
-
-        date_obj = current_date.date()
-        date_str = date_obj.strftime("%Y-%m-%d")
-        for machine in daily_batch:
-            # Only set pm_date if it's not already set
-            if not machine.pm_date:
-                machine.pm_date = date_obj
-
-            schedule.append({
-                "brand": machine.brand,
-                "model": machine.model,
-                "tag": machine.tag,
-                "serial": machine.serial,
-                "desc": machine.desc,
-                "building": machine.building,
-                "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
-            })
-
-
-        machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
-    try:
-        db.session.commit()
-        flash("Preventive maintenance schedule generated and saved.", "success")
-    except Exception as e:
-        db.session.rollback()
-        flash(f"Error updating pm_date: {e}", "danger")
-
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
-
-
-# # ----------------------PM SCHEDULING YTM-2-------------------------------------
-# @app.route("/ytm2_schedule/<building>")
+# @app.route("/ytm1_schedule/<building>")
 # @login_required
-# def ytm2_schedule(building):
+# def ytm1_schedule(building):
 #     # Authorization check
-#     if current_user.unit != "YTM-2" and current_user.role != 'master':
+#     if current_user.unit != "YTM-1" and current_user.role != 'master':
 #         flash("Unauthorized", "danger")
 #         return redirect("/")
 
@@ -302,7 +233,7 @@ def ytm1_schedule(building):
 #     # Fetch matching records
 #     records = Todo.query.filter(
 #         and_(
-#             Todo.unit == "YTM-2",
+#             Todo.unit == "YTM-1",
 #             Todo.building == building,
 #             Todo.category.in_(included_categories)
 #         )
@@ -355,6 +286,91 @@ def ytm1_schedule(building):
 #         flash(f"Error updating pm_date: {e}", "danger")
 
 #     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+
+
+# -----------------------------------------------------------------YTM-1--------------------------------------------------------------
+allowed_config1 = {
+    "2A": {
+        "floors": ["FF", "GF", "FF-WORKSHOP", "GF-SAMPLE", "GF-WORKSHOP"],
+        "categories": ["Normal", "Special"]
+    },
+    "2B": {
+        "floors": ["FF", "SF-SAMPLE"],
+        "categories": ["Normal", "Special"]
+    },
+}
+# ----------------------PM SCHEDULING YTM-1-------------------------------------
+@app.route("/ytm1_schedule/<building>")
+@login_required
+def ytm1_schedule(building):
+    # Authorization
+    if current_user.unit != "YTM-1" and current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    # Validate allowed config for building
+    config = allowed_config1.get(building)
+    if not config:
+        flash("Invalid building or no config found.", "danger")
+        return redirect("/")
+
+    included_floors = config["floors"]
+    included_categories = config["categories"]
+
+    # Filter records by unit, building, category and floor
+    records = Todo.query.filter(
+        and_(
+            Todo.unit == "YTM-1",
+            Todo.building == building,
+            Todo.category.in_(included_categories),
+            Todo.floor.in_(included_floors)
+        )
+    ).all()
+
+    if not records:
+        flash("No machines found for selected filters.", "warning")
+        return render_template("preventive_schedule.html", schedule=[], building=building)
+
+    total_machines = len(records)
+    days = 90
+    per_day = ceil(total_machines / days)
+
+    schedule = []
+    current_date = datetime.today()
+    machine_index = 0
+
+    for day in range(days):
+        daily_batch = records[machine_index:machine_index + per_day]
+        if not daily_batch:
+            break
+
+        date_obj = current_date.date()
+        for machine in daily_batch:
+            if not machine.pm_date:
+                machine.pm_date = date_obj
+
+            schedule.append({
+                "brand": machine.brand,
+                "model": machine.model,
+                "tag": machine.tag,
+                "serial": machine.serial,
+                "desc": machine.desc,
+                "building": machine.building,
+                "floor": machine.floor,
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+            })
+
+        machine_index += len(daily_batch)
+        current_date += timedelta(days=1)
+
+    try:
+        db.session.commit()
+        flash("Preventive maintenance schedule generated and saved.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating pm_date: {e}", "danger")
+
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 
 # -----------------------------------------------------------------YTM-2--------------------------------------------------------------
