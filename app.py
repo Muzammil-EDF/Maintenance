@@ -451,28 +451,65 @@ def ytm3_schedule(building):
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
-# ----------------------PM SCHEDULING YTM-7-------------------------------------
+# -------------------------------------------------------------------------------------------------------------------------------
+
+
+allowed_config = {
+    "A": {
+        "floors": ["FF", "GF-TRAINING", "SF", "TF"],
+        "categories": ["Normal", "Special"]
+    },
+    "B": {
+        "floors": ["FF", "GF-WORKSHOP", "SF", "TF"],
+        "categories": ["Normal", "Special"]
+    },
+    "C": {
+        "floors": ["FF", "SF"],
+        "categories": ["Normal", "Special"]
+    },
+    "E": {
+        "floors": ["GF", "SF", "TF"],
+        "categories": ["Normal", "Special", "Quilting"]
+    },
+    "F": {
+        "floors": ["GF", "SF", "TF"],
+        "categories": ["Normal", "Special"]
+    },
+    "Water-Jet": {
+        "floors": ["FF", "GF"],
+        "categories": ["Normal", "Special"]
+    },
+}
+# -------------------------------------------------------------------------------------------------------------------------------
 @app.route("/ytm7_schedule/<building>")
 @login_required
 def ytm7_schedule(building):
-    # Authorization check
+    # Authorization
     if current_user.unit != "YTM-7" and current_user.role != 'master':
         flash("Unauthorized", "danger")
         return redirect("/")
 
-    included_categories = ["Normal", "Special"]
+    # Validate allowed config for building
+    config = allowed_config.get(building)
+    if not config:
+        flash("Invalid building or no config found.", "danger")
+        return redirect("/")
 
-    # Fetch matching records
+    included_floors = config["floors"]
+    included_categories = config["categories"]
+
+    # Filter records by unit, building, category and floor
     records = Todo.query.filter(
         and_(
             Todo.unit == "YTM-7",
             Todo.building == building,
-            Todo.category.in_(included_categories)
+            Todo.category.in_(included_categories),
+            Todo.floor.in_(included_floors)
         )
     ).all()
 
     if not records:
-        flash("No machines found for selected building and categories.", "warning")
+        flash("No machines found for selected filters.", "warning")
         return render_template("preventive_schedule.html", schedule=[], building=building)
 
     total_machines = len(records)
@@ -489,9 +526,7 @@ def ytm7_schedule(building):
             break
 
         date_obj = current_date.date()
-        date_str = date_obj.strftime("%Y-%m-%d")
         for machine in daily_batch:
-            # Only set pm_date if it's not already set
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -506,7 +541,6 @@ def ytm7_schedule(building):
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
             })
 
-
         machine_index += len(daily_batch)
         current_date += timedelta(days=1)
 
@@ -518,6 +552,7 @@ def ytm7_schedule(building):
         flash(f"Error updating pm_date: {e}", "danger")
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+
 
 # ------------------------------------------PM SCHEDULE DOWNLOADING-----------------------------------
 @app.route("/download_schedule/<building>")
