@@ -199,39 +199,29 @@
             </a>
             <ul class="dropdown-menu">
               {% if current_user.unit == 'YTM-1' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">YTM-1 2A Schedule</a>
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2A') }}">YTM-1 2A
-                  Schedule</a>
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">YTM-1 2B Schedule</a>
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2B') }}">YTM-1 2A
-                  Schedule</a>
-              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">YTM-1 2A Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2A') }}">YTM-1 2A Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">YTM-1 2B Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2B') }}">YTM-1 2B Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-2' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Schedule</a>
-              </li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Schedule</a>
-              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2A') }}">YTM-2 2A Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Mechanical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-3' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Schedule</a>
-              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-7' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-Jet') }}">YTM-7 Water-Jet
-                  Schedule</a>
-              </li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-Jet') }}">YTM-7 Water-Jet Mechanical Schedule</a></li>
               {% endif %}
 
             </ul>
