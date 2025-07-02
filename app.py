@@ -230,7 +230,7 @@ allowed_config_el1 = {
     },
 }
 # ----------------------PM SCHEDULING YTM-1-ELECTRICAL------------------------------------
-@app.route("/ytm1_schedule/<building>")
+@app.route("/ytm1_schedule_electrical/<building>")
 @login_required
 def ytm1_schedule(building):
     # Authorization
