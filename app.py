@@ -232,7 +232,7 @@ allowed_config_el1 = {
 # ----------------------PM SCHEDULING YTM-1-ELECTRICAL------------------------------------
 @app.route("/ytm1_schedule_electrical/<building>")
 @login_required
-def ytm1_schedule(building):
+def ytm1_schedule_electrical(building):
     # Authorization
     if current_user.unit != "YTM-1" and current_user.role != 'master':
         flash("Unauthorized", "danger")
