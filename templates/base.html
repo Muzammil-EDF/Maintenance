@@ -81,13 +81,16 @@
       color: #fff;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-
+    
     .container-my-3{
+      border: 2px solid green;
       width: 100%;
+    }
+    .container-my-3 h3{
+      padding-left: 20px;
     }
 
     .table-professional {
-      /* width: 10px; */
       border-collapse: separate;
       border-spacing: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -98,8 +101,6 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       width: 100%;
-      /* min-width: 1200px; */
-      /* Ensures table doesn't squeeze; adjust as needed */
       white-space: nowrap;
       /* Prevents text from wrapping */
       table-layout: auto;
@@ -135,8 +136,9 @@
     }
 
     .table-responsive-custom {
+      border: 2px solid red;
       width: 100%;
-      padding: 0 20px;
+      /* padding: 0 20px; */
       /* adjust for nice side margins */
       overflow-x: auto;
       max-height: 600px;
@@ -148,30 +150,6 @@
 
 
 <body>
-
-  <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Maintenance</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search" method="GET" action="/search">
-                <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-outline-dark btn-sm" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</nav> -->
   <nav class="navbar navbar-expand-lg bg-white shadow-sm border-bottom">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold text-dark" href="#">Maintenance</a>
