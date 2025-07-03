@@ -1,57 +1,59 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="container mt-4">
-  <h3>Preventive Maintenance Schedule - {{ building }}</h3>
-  <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
-  <p><strong>Per Day:</strong> {{ per_day }} machines</p>
-  <div class="">
-    <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
-      Download Excel
-    </a>
+<div class="container-mt-4">
+  <div class="titles">
+    <h3>Preventive Maintenance Schedule - {{ building }}</h3>
+    <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
+    <p><strong>Per Day:</strong> {{ per_day }} machines</p>
+    <div class="download">
+      <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
+        Download Excel
+      </a>
+    </div>
   </div>
 
   {% if schedule %}
-    <table id="myTable" class="display nowrap table table-professional table-striped table-bordered machine-table"
-      style="width:100%;">
-      <thead>
-        <tr>
-          <!-- <th>Category</th> -->
-          <th>Brand</th>
-          <th>Model</th>
-          <th>Tag No</th>
-          <th>Serial/Mfg</th>
-          <th>Description</th>
-          <th>Building</th>
-          <th>Floor</th>
-          <th>Preventive Date</th>
-        </tr>
-        <tr>
-          <th><input type="text" placeholder="Search Brand"></th>
-          <th><input type="text" placeholder="Search Model"></th>
-          <th><input type="text" placeholder="Search Tag"></th>
-          <th><input type="text" placeholder="Search Serial"></th>
-          <th><input type="text" placeholder="Search Description"></th>
-          <th><input type="text" placeholder="Search Building"></th>
-          <th><input type="text" placeholder="Search Floor"></th>
-          <th><input type="text" placeholder="Search PM Date"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in schedule %}
-        <tr>
-          <!-- <td>{{ row.category }}</td> -->
-          <td>{{ row.brand }}</td>
-          <td>{{ row.model }}</td>
-          <td>{{ row.tag }}</td>
-          <td>{{ row.serial }}</td>
-          <td>{{ row.desc }}</td>
-          <td>{{ row.building }}</td>
-          <td>{{ row.floor }}</td>
-          <td>{{ row.preventive_date }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <table id="myTable" class="display nowrap table table-professional table-striped table-bordered machine-table"
+    style="width:100%;">
+    <thead>
+      <tr>
+        <!-- <th>Category</th> -->
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Tag No</th>
+        <th>Serial/Mfg</th>
+        <th>Description</th>
+        <th>Building</th>
+        <th>Floor</th>
+        <th>Preventive Date</th>
+      </tr>
+      <tr>
+        <th><input type="text" placeholder="Search Brand"></th>
+        <th><input type="text" placeholder="Search Model"></th>
+        <th><input type="text" placeholder="Search Tag"></th>
+        <th><input type="text" placeholder="Search Serial"></th>
+        <th><input type="text" placeholder="Search Description"></th>
+        <th><input type="text" placeholder="Search Building"></th>
+        <th><input type="text" placeholder="Search Floor"></th>
+        <th><input type="text" placeholder="Search PM Date"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in schedule %}
+      <tr>
+        <!-- <td>{{ row.category }}</td> -->
+        <td>{{ row.brand }}</td>
+        <td>{{ row.model }}</td>
+        <td>{{ row.tag }}</td>
+        <td>{{ row.serial }}</td>
+        <td>{{ row.desc }}</td>
+        <td>{{ row.building }}</td>
+        <td>{{ row.floor }}</td>
+        <td>{{ row.preventive_date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% else %}
   <div class="alert alert-info">No schedule generated.</div>
   {% endif %}
