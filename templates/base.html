@@ -197,10 +197,12 @@
               <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Mechanical Schedule</a></li>
               <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2A') }}">YTM-2 2A Electrical Schedule</a></li>
               <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2B') }}">YTM-2 2B Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-3' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule_electrical', building='3A') }}">YTM-3 3A Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-7' or current_user.role == 'master' %}
