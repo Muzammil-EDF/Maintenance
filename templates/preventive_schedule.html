@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="container-mt-4">
-  <h3>Preventive Maintenance Schedule - {{ building }}</h3>
-  <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
-  <p><strong>Per Day:</strong> {{ per_day }} machines</p>
-  <div class="download">
-    <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
-      Download Excel
-    </a>
+  <div class="titles">
+    <h3>Preventive Maintenance Schedule - {{ building }}</h3>
+    <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
+    <p><strong>Per Day:</strong> {{ per_day }} machines</p>
+    <div class="download">
+      <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
+        Download Excel
+      </a>
+    </div>
   </div>
 
   {% if schedule %}
