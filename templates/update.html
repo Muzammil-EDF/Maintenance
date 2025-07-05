@@ -7,199 +7,200 @@ Update
 <div class="container my-3">
     <form action="/update/{{todo.sno}}" method="POST">
         <h2>Update your Machine</h2>
+        <div class="row g-3 d-flex justify-content-left align-items-center">
+            <!-- Date -->
+            <div class="mb-3 col-md-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="text" class="form-control" name="date" id="date" value="{{todo.date}}">
+            </div>
+            
+            <!-- Home -->
+            <div class="mb-3 col-md-3">
+                <label for="home" class="form-label">Home</label>
+                <select class="form-control" name="home" id="home" required>
+                    <option value="" disabled {% if not todo.home %}selected{% endif %}>Select a Home</option>
+                    {% set home = ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] %}
+                    {% for home in home|sort %}
+                    <option value="{{ home }}" {% if todo.home==home %}selected{% endif %}>{{ home }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Status -->
+            <div class="mb-3 col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-control" name="status" id="status" required>
+                    <option value="" disabled {% if not todo.status %}selected{% endif %}>Select a Status</option>
+                    {% set status = ['Active', 'Maintenance', 'Dead', 'Ready', 'Packed'] %}
+                    {% for status in status|sort %}
+                    <option value="{{ status }}" {% if todo.status==status %}selected{% endif %}>{{ status }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Category -->
+            <div class="mb-3 col-md-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-control" name="category" id="category" required>
+                    <option value="" disabled {% if not todo.category %}selected{% endif %}>Select a category</option>
+                    {% set categories = [
+                        'Automatic Plants', 'Compressor', 'Cutting', 'Embroidery', 'Heat Transfer',
+                        'Label Printer', 'Normal', 'Packing', 'Pillow Turner', 'Quilting', 'Special',
+                        'Steam Generator', 'Tables', 'Tracks', 'Washing'
+                        ] %}
+                        {% for category in categories|sort %}
+                        <option value="{{ category }}" {% if todo.category==category %}selected{% endif %}>{{ category }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Brand -->
+                <div class="mb-3 col-md-3">
+                    <label for="brand" class="form-label">Brand</label>
+                    <select class="form-control" name="brand" id="brand" required>
+                        <option value="" disabled {% if not todo.brand %}selected{% endif %}>Select a Brand</option>
+                        {% set categories = [
+                            "Juki","Siruba","Brother","Master","Master Apparel","Japsew","Golden
+                            Wheel","Nil","Pegasus","Suprena","Kansai Special","Nextsew","KingTex","ZHWJIANG ZHUJI
+                            LEYE","S7C-45A-II","Seize","ZD","Youxing","C.E","Techno
+                            Gen","Munaf","Aolite","WHM","K.M","INTERLINK","INA","EAST MAN","LOBSTER","LOCAL
+                            MADE","Nantong","Strapex","HOT TECH","NNW","Richpiece","Meta","Seung
+                            Min","Delta","Vinny","Precious","Jack","Bisma Engr","Aerostar","Stork","Jameel Borther","Erum
+                    Engr","Luis Sew","Danis","MRT","TIAN YUAN","Royal Pack","Miniroller","Jam
+                    International","Treasure","Zhen Hai","Sewkey","Tajima","Hengye","TGI","Texpa","Supreme","Roll
+                    Quilt","Savor","Hauser","Spreader","Barudan","Alpha","Inderle","Vari-o-matic","Hashima","Magetron","Changzhou"
+                    ] %}
+                    {% for brand in categories|sort %}
+                    <option value="{{ brand }}" {% if todo.brand==brand %}selected{% endif %}>{{ brand }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Model -->
+            <div class="mb-3 col-md-3">
+                <label for="model" class="form-label">Model</label>
+                <select class="form-control" name="model" id="model" required>
+                    <option value="" disabled {% if not todo.model %}selected{% endif %}>Select a Model</option>
+                    {% set categories = [
+                        "DDL-7000A-7","757K-516M2-35/CT/DKKU1-0","S-6280A-813","SH-2000","SH2000","NILL","S-7100A-403","LZ-2290A-SR-7","J-8700-B-7","D-8752-D-S07","T-8752D-SO7","DA-928A-5","T-8722C-407","RH-982A-02-12","KE-430HX-05","S-7000DD-403","MB-1373","M932-38","LH-3588A-7","LBH-781","CS-1886-DBT","DDL-900B","LH-895N","LZ-2290C","LK-1900S","LBH-1790SS","LK-1960/MLH","SPB828D","B-2000C","W-364A-A","757L-516M3-35/DKLU1-0","757L-514M-3-24/VT/DKLU1-0","747L-514M-3-24/VT/DKLU1-0","COO7KP-W122-356/CH/UTR/DCKH1-2","747K-514M2-24/VT/DKKU1-0","747K-516M2-55/CT/DKKU1-0","SP828D","SP8228D","NS-3020GT-01A","UH9004F","CS-8186D-BT","FBX1106P","DFB-1412PL","CTD9013","M932-896","M952-52H","W522A-01F","CSN-8172","CSN-8162","SP-5200-D4","J-8752","J-8730-7-AK","J-430-D2","HD-680-A","TD-80X152","DL7200-BM1-15","SZ2009220027","SVC-45A
+                        11-8-5","ST-205A","KMr","YXS 128-3F-10","YXS 128-3E-10","YXS-128-3D-10","YXS-128-30-D","YXS
+                        128-3D-10","S-200","BE-438FX","M-732","M932-39","ZYZ-600C III","KS-AUV","ELEFENT
+                        II","INA","DB-1","PFS-400","NTK-098","LOCAL MADE","China brand","Local","SWS 15","CJ-320BD","T
+                        707","XT4505-1-3","MH-FJ-1D","NIL","MH-FG-2000 BC","EC.6.N","MT-HAF-2M","M-932","TPB
+                        30G","HY-2","JK-904E","AS-781D","STORKE","CSA-2516D-04","PC-T818","757-Qe","W664-01GB","D-2223","D-2222","DMI440-B3","D-2221","M-752","HOTOTEK","JBJ-JT-540","J-2290S-SR","CT9018","W1562P-01G","PC
+                        2182-T","MH-FJ-1A","S-6200A-405","E-32-L","M832-38","RX-980300","HFJ-28F-2","EX5214-M53","T-8750C-005","HE-800C-2","LH-3528A-7","T-8722A-405","BE-438HX","JT262HRM-2","JT662HM-2525","HS-55003","HE-800B-2","W664-35BC","ZXJ-380A","LH-3588A-A","HFJ-26F-2","MB-1370","2017-6","CS-8184D-BT","757-Qc","DDL-8700B-7","DDL-5550N-7","L32-38","SP-XT422B","SK
+                        817","MOL-254","LZ-2290A-SS-7","LK-1903A-SS","LBH-783","DLN-9010A-SS","ZYZ-3000C
+                        III","TPM-20","LS-4400-75","HY128-3B","DTS380","P-364/A-A","JK-905E","M732-86","HY-128-3-A-10","C007KD-W812A-356"
+                        ] %}
+                        {% for model in categories|sort %}
+                        <option value="{{ model }}" {% if todo.model==model %}selected{% endif %}>{{ model }}
+                        </option>
+                        {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Description -->
+            <div class="mb-3 col-md-3">
+                <label for="desc" class="form-label">Description</label>
+                <select class="form-control" name="desc" id="desc">
+                    <option value="">Select a machine</option>
+                    {% set options = [
+                        '4 THREAD', '5 Thread Safety', 'Air Compressor', 'Auto Spreader', 'Bartack', 'Blind Stitch',
+                        'Bone Machine', 'Bone Pocket Machine', 'Bottom Hemming', 'BTN Machine', 'BTN Machine (Cross)',
+                        'Carton Sealer', 'Carton Strip', 'Chain Stitch', 'Chain Stitch Smock', 'Compress Packing',
+                        'Cotton Batting', 'Cropping Machine', 'Cutting Machine', 'Divisor', 'DNLS', 'DNLS (1/38)',
+                        'DNLS (1/8)', 'DNLS (3/16)', 'DNLS (3/4)', 'DNLS (1 8/8)', 'DNLS-FB', 'DNLS-FB (1 1/2)',
+                        'DNLS-FB (1 1/4)', 'DNLS-FB (1 1/8)', 'DNLS-FB (1 3/4)', 'DNLS-FB (1 3/8)', 'DNLS-FB (1/2)',
+                        'DNLS-FB (1/38)', 'DNLS-FB (1/4)', 'DNLS-FB (65mm)', 'DNLS-FB (65mm)(PULLER)',
+                        'DNLS-FB (7/8)', 'DNLS-FB (75mm)', 'DNLS-FB (75mm)(PULLER)', 'DNLS-FB (1 8/8)',
+                        'DNLS-FB (1 1/8)(PULLER)', 'DNLS-FB (1 1/2)(PULLER)', 'DNLS-FB (1 3/4)(PULLER)',
+                        'DNLS-SB (1/8)', 'DNLS-SB (1/4)', 'DNLS-SB (1 1/4)', 'DNLS-SB (1/2)', 'DNLS-SB (3/16)',
+                        'DNLS-SB (3/4)', 'DNLS-SB (3/5)', 'Edge Cutter', 'Embroidery', 'Eyelet Hole & Punch',
+                        'Eyelet Kaj', 'Fabric Roll Cutter', 'Fabric Rolling Machine', 'Fegotting', 'Fiber Filling Plant',
+                        'Flat Lock', 'FOA', 'Hauser', 'Heat Sealing', 'Heat Transfer Machine', 'Hydro Extractor',
+                        'INA Hanger', 'Ironing Table', 'Jump Stitch', 'Kaj', 'Kaj Manual', 'Kansai', 'Label Attach Machine',
+                        'Label Printing Machine', 'Long Hemming', 'Loop Attacher', 'Loop Cutter', 'Magetron', 'MDM',
+                        'MH-380', 'MRT-1', 'MRT-2', 'MRT-3', 'MRT-4', 'MRT-5', 'MRT-6', 'MRT-7', 'MRT-8', 'MRT-9',
+                        'MRT-10', 'MRT-11', 'MRT-12', 'MRT-A', 'MRT-B', 'MRT-C', 'MRT-D', 'MRT-E', 'Multi Needle Quilting',
+                        'Packing Device', 'Pillow Doubal head Safety', 'Pillow Sealing', 'Pillow Turning', 'Piping Cutter',
+                        'Pocket Cutter', 'Pocket Design', 'Pocket Facing', 'Pocket Hemming', 'Polyfill Cutting Machine',
+                        'Polyfill Plant', 'Roll Opening Machine', 'Roll Quilt Machine', 'Roll Rewinding',
+                        'Rolling Machine', 'Safety', 'Sample Steam Dryer', 'Sample Washing Machine', 'Sami Pack',
+                        'Sealing Machine', 'Shell Stitch Overlock', 'Snap Button', 'Snap Button Auto', 'SNLS',
+                        'SNLS (PULLER)', 'SNLS Quilting', 'Steam Dryer', 'Steam Generator', 'Straight Knife Cutter',
+                        'Texpa Duvet', 'Texpa Fitted', 'Texpa Flat', 'Texpa Pillow', 'Ultrasonic Quilting Machine',
+                        'Vari-O-Matic', 'Velcro Cutting Machine', 'Washing', 'Wrapping Machine', 'Zig Zag'
+                        ] %}
+                        {% for option in options|sort %}
+                        <option value="{{ option }}" {% if todo.desc==option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <!-- Date -->
-        <div class="mb-3">
-            <label for="date" class="form-label">Date</label>
-            <input type="text" class="form-control" name="date" id="date" value="{{todo.date}}">
+                <!-- Tag -->
+                <div class="mb-3 col-md-3">
+                    <label for="tag" class="form-label">Tag No.</label>
+                    <input type="text" class="form-control" name="tag" id="tag" value="{{todo.tag}}">
+                </div>
+                
+                <!-- Serial -->
+                <div class="mb-3 col-md-3">
+                    <label for="serial" class="form-label">Serial No.</label>
+                    <input type="text" class="form-control" name="serial" id="serial" value="{{todo.serial}}">
+                </div>
+                
+                <!-- Unit -->
+                <div class="mb-3 col-md-3">
+                    <label for="unit" class="form-label">Unit</label>
+                    <select class="form-control" name="unit" id="unit" required>
+                        <option value="" disabled {% if not todo.unit %}selected{% endif %}>Select a unit</option>
+                        {% set units = ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] %}
+                        {% for unit in units|sort %}
+                    <option value="{{ unit }}" {% if todo.unit==unit %}selected{% endif %}>{{ unit }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Building -->
+            <div class="mb-3 col-md-3">
+                <label for="building" class="form-label">Building</label>
+                <select class="form-control" name="building" id="building" required>
+                    <option value="" disabled {% if not todo.building %}selected{% endif %}>Select a building</option>
+                    {% set buildings = ['2A', '2B', '3A', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'Water-Jet'] %}
+                    {% for building in buildings|sort %}
+                    <option value="{{ building }}" {% if todo.building==building %}selected{% endif %}>{{ building }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Floor -->
+            <div class="mb-3 col-md-3">
+                <label for="floor" class="form-label">Floor</label>
+                <select class="form-control" name="floor" id="floor" required>
+                    <option value="" disabled {% if not todo.floor %}selected{% endif %}>Select a floor</option>
+                    {% set floors = [
+                        'FF', 'FF-Workshop', 'GF', 'GF-EXWH', 'GF-Sample', 'GF-Training', 'GF-Workshop',
+                        'SF', 'SF-Sample', 'SF-Workshop', 'TF'
+                        ] %}
+                        {% for floor in floors|sort %}
+                        <option value="{{ floor }}" {% if todo.floor==floor %}selected{% endif %}>{{ floor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- PM Date -->
+                <div class="mb-3 col-md-3">
+                    <label for="pm_date" class="form-label">PM Date</label>
+                    <input type="text" class="form-control" name="pm_date" id="pm_date" value="{{todo.pm_date}}">
+                </div>
         </div>
-
-        <!-- Home -->
-        <div class="mb-3">
-            <label for="home" class="form-label">Home</label>
-            <select class="form-control" name="home" id="home" required>
-                <option value="" disabled {% if not todo.home %}selected{% endif %}>Select a Home</option>
-                {% set home = ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] %}
-                {% for home in home|sort %}
-                <option value="{{ home }}" {% if todo.home==home %}selected{% endif %}>{{ home }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Status -->
-        <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-control" name="status" id="status" required>
-                <option value="" disabled {% if not todo.status %}selected{% endif %}>Select a Status</option>
-                {% set status = ['Active', 'Maintenance', 'Dead', 'Ready', 'Packed'] %}
-                {% for status in status|sort %}
-                <option value="{{ status }}" {% if todo.status==status %}selected{% endif %}>{{ status }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Category -->
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <select class="form-control" name="category" id="category" required>
-                <option value="" disabled {% if not todo.category %}selected{% endif %}>Select a category</option>
-                {% set categories = [
-                'Automatic Plants', 'Compressor', 'Cutting', 'Embroidery', 'Heat Transfer',
-                'Label Printer', 'Normal', 'Packing', 'Pillow Turner', 'Quilting', 'Special',
-                'Steam Generator', 'Tables', 'Tracks', 'Washing'
-                ] %}
-                {% for category in categories|sort %}
-                <option value="{{ category }}" {% if todo.category==category %}selected{% endif %}>{{ category }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Brand -->
-        <div class="mb-3">
-            <label for="brand" class="form-label">Brand</label>
-            <select class="form-control" name="brand" id="brand" required>
-                <option value="" disabled {% if not todo.brand %}selected{% endif %}>Select a Brand</option>
-                {% set categories = [
-                "Juki","Siruba","Brother","Master","Master Apparel","Japsew","Golden
-                Wheel","Nil","Pegasus","Suprena","Kansai Special","Nextsew","KingTex","ZHWJIANG ZHUJI
-                LEYE","S7C-45A-II","Seize","ZD","Youxing","C.E","Techno
-                Gen","Munaf","Aolite","WHM","K.M","INTERLINK","INA","EAST MAN","LOBSTER","LOCAL
-                MADE","Nantong","Strapex","HOT TECH","NNW","Richpiece","Meta","Seung
-                Min","Delta","Vinny","Precious","Jack","Bisma Engr","Aerostar","Stork","Jameel Borther","Erum
-                Engr","Luis Sew","Danis","MRT","TIAN YUAN","Royal Pack","Miniroller","Jam
-                International","Treasure","Zhen Hai","Sewkey","Tajima","Hengye","TGI","Texpa","Supreme","Roll
-                Quilt","Savor","Hauser","Spreader","Barudan","Alpha","Inderle","Vari-o-matic","Hashima","Magetron","Changzhou"
-                ] %}
-                {% for brand in categories|sort %}
-                <option value="{{ brand }}" {% if todo.brand==brand %}selected{% endif %}>{{ brand }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Model -->
-        <div class="mb-3">
-            <label for="model" class="form-label">Model</label>
-            <select class="form-control" name="model" id="model" required>
-                <option value="" disabled {% if not todo.model %}selected{% endif %}>Select a Model</option>
-                {% set categories = [
-                "DDL-7000A-7","757K-516M2-35/CT/DKKU1-0","S-6280A-813","SH-2000","SH2000","NILL","S-7100A-403","LZ-2290A-SR-7","J-8700-B-7","D-8752-D-S07","T-8752D-SO7","DA-928A-5","T-8722C-407","RH-982A-02-12","KE-430HX-05","S-7000DD-403","MB-1373","M932-38","LH-3588A-7","LBH-781","CS-1886-DBT","DDL-900B","LH-895N","LZ-2290C","LK-1900S","LBH-1790SS","LK-1960/MLH","SPB828D","B-2000C","W-364A-A","757L-516M3-35/DKLU1-0","757L-514M-3-24/VT/DKLU1-0","747L-514M-3-24/VT/DKLU1-0","COO7KP-W122-356/CH/UTR/DCKH1-2","747K-514M2-24/VT/DKKU1-0","747K-516M2-55/CT/DKKU1-0","SP828D","SP8228D","NS-3020GT-01A","UH9004F","CS-8186D-BT","FBX1106P","DFB-1412PL","CTD9013","M932-896","M952-52H","W522A-01F","CSN-8172","CSN-8162","SP-5200-D4","J-8752","J-8730-7-AK","J-430-D2","HD-680-A","TD-80X152","DL7200-BM1-15","SZ2009220027","SVC-45A
-                11-8-5","ST-205A","KMr","YXS 128-3F-10","YXS 128-3E-10","YXS-128-3D-10","YXS-128-30-D","YXS
-                128-3D-10","S-200","BE-438FX","M-732","M932-39","ZYZ-600C III","KS-AUV","ELEFENT
-                II","INA","DB-1","PFS-400","NTK-098","LOCAL MADE","China brand","Local","SWS 15","CJ-320BD","T
-                707","XT4505-1-3","MH-FJ-1D","NIL","MH-FG-2000 BC","EC.6.N","MT-HAF-2M","M-932","TPB
-                30G","HY-2","JK-904E","AS-781D","STORKE","CSA-2516D-04","PC-T818","757-Qe","W664-01GB","D-2223","D-2222","DMI440-B3","D-2221","M-752","HOTOTEK","JBJ-JT-540","J-2290S-SR","CT9018","W1562P-01G","PC
-                2182-T","MH-FJ-1A","S-6200A-405","E-32-L","M832-38","RX-980300","HFJ-28F-2","EX5214-M53","T-8750C-005","HE-800C-2","LH-3528A-7","T-8722A-405","BE-438HX","JT262HRM-2","JT662HM-2525","HS-55003","HE-800B-2","W664-35BC","ZXJ-380A","LH-3588A-A","HFJ-26F-2","MB-1370","2017-6","CS-8184D-BT","757-Qc","DDL-8700B-7","DDL-5550N-7","L32-38","SP-XT422B","SK
-                817","MOL-254","LZ-2290A-SS-7","LK-1903A-SS","LBH-783","DLN-9010A-SS","ZYZ-3000C
-                III","TPM-20","LS-4400-75","HY128-3B","DTS380","P-364/A-A","JK-905E","M732-86","HY-128-3-A-10","C007KD-W812A-356"
-                ] %}
-                {% for model in categories|sort %}
-                <option value="{{ model }}" {% if todo.model==model %}selected{% endif %}>{{ model }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Description -->
-        <div class="mb-3">
-            <label for="desc" class="form-label">Description</label>
-            <select class="form-control" name="desc" id="desc">
-                <option value="">Select a machine</option>
-                {% set options = [
-                '4 THREAD', '5 Thread Safety', 'Air Compressor', 'Auto Spreader', 'Bartack', 'Blind Stitch',
-                'Bone Machine', 'Bone Pocket Machine', 'Bottom Hemming', 'BTN Machine', 'BTN Machine (Cross)',
-                'Carton Sealer', 'Carton Strip', 'Chain Stitch', 'Chain Stitch Smock', 'Compress Packing',
-                'Cotton Batting', 'Cropping Machine', 'Cutting Machine', 'Divisor', 'DNLS', 'DNLS (1/38)',
-                'DNLS (1/8)', 'DNLS (3/16)', 'DNLS (3/4)', 'DNLS (1 8/8)', 'DNLS-FB', 'DNLS-FB (1 1/2)',
-                'DNLS-FB (1 1/4)', 'DNLS-FB (1 1/8)', 'DNLS-FB (1 3/4)', 'DNLS-FB (1 3/8)', 'DNLS-FB (1/2)',
-                'DNLS-FB (1/38)', 'DNLS-FB (1/4)', 'DNLS-FB (65mm)', 'DNLS-FB (65mm)(PULLER)',
-                'DNLS-FB (7/8)', 'DNLS-FB (75mm)', 'DNLS-FB (75mm)(PULLER)', 'DNLS-FB (1 8/8)',
-                'DNLS-FB (1 1/8)(PULLER)', 'DNLS-FB (1 1/2)(PULLER)', 'DNLS-FB (1 3/4)(PULLER)',
-                'DNLS-SB (1/8)', 'DNLS-SB (1/4)', 'DNLS-SB (1 1/4)', 'DNLS-SB (1/2)', 'DNLS-SB (3/16)',
-                'DNLS-SB (3/4)', 'DNLS-SB (3/5)', 'Edge Cutter', 'Embroidery', 'Eyelet Hole & Punch',
-                'Eyelet Kaj', 'Fabric Roll Cutter', 'Fabric Rolling Machine', 'Fegotting', 'Fiber Filling Plant',
-                'Flat Lock', 'FOA', 'Hauser', 'Heat Sealing', 'Heat Transfer Machine', 'Hydro Extractor',
-                'INA Hanger', 'Ironing Table', 'Jump Stitch', 'Kaj', 'Kaj Manual', 'Kansai', 'Label Attach Machine',
-                'Label Printing Machine', 'Long Hemming', 'Loop Attacher', 'Loop Cutter', 'Magetron', 'MDM',
-                'MH-380', 'MRT-1', 'MRT-2', 'MRT-3', 'MRT-4', 'MRT-5', 'MRT-6', 'MRT-7', 'MRT-8', 'MRT-9',
-                'MRT-10', 'MRT-11', 'MRT-12', 'MRT-A', 'MRT-B', 'MRT-C', 'MRT-D', 'MRT-E', 'Multi Needle Quilting',
-                'Packing Device', 'Pillow Doubal head Safety', 'Pillow Sealing', 'Pillow Turning', 'Piping Cutter',
-                'Pocket Cutter', 'Pocket Design', 'Pocket Facing', 'Pocket Hemming', 'Polyfill Cutting Machine',
-                'Polyfill Plant', 'Roll Opening Machine', 'Roll Quilt Machine', 'Roll Rewinding',
-                'Rolling Machine', 'Safety', 'Sample Steam Dryer', 'Sample Washing Machine', 'Sami Pack',
-                'Sealing Machine', 'Shell Stitch Overlock', 'Snap Button', 'Snap Button Auto', 'SNLS',
-                'SNLS (PULLER)', 'SNLS Quilting', 'Steam Dryer', 'Steam Generator', 'Straight Knife Cutter',
-                'Texpa Duvet', 'Texpa Fitted', 'Texpa Flat', 'Texpa Pillow', 'Ultrasonic Quilting Machine',
-                'Vari-O-Matic', 'Velcro Cutting Machine', 'Washing', 'Wrapping Machine', 'Zig Zag'
-                ] %}
-                {% for option in options|sort %}
-                <option value="{{ option }}" {% if todo.desc==option %}selected{% endif %}>{{ option }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Tag -->
-        <div class="mb-3">
-            <label for="tag" class="form-label">Tag No.</label>
-            <input type="text" class="form-control" name="tag" id="tag" value="{{todo.tag}}">
-        </div>
-
-        <!-- Serial -->
-        <div class="mb-3">
-            <label for="serial" class="form-label">Serial No.</label>
-            <input type="text" class="form-control" name="serial" id="serial" value="{{todo.serial}}">
-        </div>
-
-        <!-- Unit -->
-        <div class="mb-3">
-            <label for="unit" class="form-label">Unit</label>
-            <select class="form-control" name="unit" id="unit" required>
-                <option value="" disabled {% if not todo.unit %}selected{% endif %}>Select a unit</option>
-                {% set units = ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] %}
-                {% for unit in units|sort %}
-                <option value="{{ unit }}" {% if todo.unit==unit %}selected{% endif %}>{{ unit }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Building -->
-        <div class="mb-3">
-            <label for="building" class="form-label">Building</label>
-            <select class="form-control" name="building" id="building" required>
-                <option value="" disabled {% if not todo.building %}selected{% endif %}>Select a building</option>
-                {% set buildings = ['2A', '2B', '3A', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'Water-Jet'] %}
-                {% for building in buildings|sort %}
-                <option value="{{ building }}" {% if todo.building==building %}selected{% endif %}>{{ building }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- Floor -->
-        <div class="mb-3">
-            <label for="floor" class="form-label">Floor</label>
-            <select class="form-control" name="floor" id="floor" required>
-                <option value="" disabled {% if not todo.floor %}selected{% endif %}>Select a floor</option>
-                {% set floors = [
-                'FF', 'FF-Workshop', 'GF', 'GF-EXWH', 'GF-Sample', 'GF-Training', 'GF-Workshop',
-                'SF', 'SF-Sample', 'SF-Workshop', 'TF'
-                ] %}
-                {% for floor in floors|sort %}
-                <option value="{{ floor }}" {% if todo.floor==floor %}selected{% endif %}>{{ floor }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- PM Date -->
-        <div class="mb-3">
-            <label for="pm_date" class="form-label">PM Date</label>
-            <input type="text" class="form-control" name="pm_date" id="pm_date" value="{{todo.pm_date}}">
-        </div>
-
-
+            
+            
         <button type="submit" class="btn btn-actions btn-outline-dark btn-sm">Update</button>
     </form>
 </div>
