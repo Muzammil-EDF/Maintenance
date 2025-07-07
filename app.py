@@ -280,6 +280,7 @@ def ytm1_schedule_electrical(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "id": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
