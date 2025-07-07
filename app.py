@@ -1071,3 +1071,7 @@ def download_schedule(building):
 
     filename = f"PM_Schedule_{selected_unit}_{building}.xlsx"
     return send_file(output, download_name=filename, as_attachment=True)
+
+
+with app.app_context():
+    db.create_all()
