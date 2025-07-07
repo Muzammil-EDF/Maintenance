@@ -255,7 +255,7 @@ def ytm1_schedule_electrical(building):
             Todo.category.in_(included_categories),
             Todo.floor.in_(included_floors)
         )
-    ).all()
+    ).order_by(Todo.sno).all()
 
     if not records:
         flash("No machines found for selected filters.", "warning")
