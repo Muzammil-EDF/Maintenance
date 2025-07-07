@@ -310,7 +310,7 @@ def ytm1_schedule_electrical(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 
 # -----------------------------------------------------------------YTM-1-MECHANICAL-------------------------------------------------------------
@@ -939,14 +939,25 @@ def ytm7_schedule(building):
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 
-# Route to Handle PM Access Requests
+# Route to Handle PM Access Requests 
 
 @app.route('/request_pm_access', methods=['POST'])
 @login_required
 def request_pm_access():
     todo_id = request.form.get('todo_id')
-    existing = PMAccessRequest.query.filter_by(user_id=current_user.id, todo_id=todo_id, status='pending').first()
-    
+
+    if not todo_id or not todo_id.isdigit():
+        flash("Invalid machine reference. Please try again.", "danger")
+        return redirect(request.referrer)
+
+    todo_id = int(todo_id)
+
+    existing = PMAccessRequest.query.filter_by(
+        user_id=current_user.id,
+        todo_id=todo_id,
+        status='pending'
+    ).first()
+
     if existing:
         flash("You’ve already requested access for this machine.", "warning")
         return redirect(request.referrer)
