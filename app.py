@@ -289,6 +289,7 @@ def ytm1_schedule_electrical(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "id": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -296,8 +297,7 @@ def ytm1_schedule_electrical(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "id": machine.sno
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
             })
 
         machine_index += len(daily_batch)
