@@ -149,6 +149,8 @@
       overflow-x: auto;
       max-height: 600px;
       overflow-y: auto;
+      padding-left: 10px;
+      padding-right: 10px;
       /* scrolls horizontally if needed */
     }
   </style>
@@ -207,11 +209,18 @@
 
               {% if current_user.unit == 'YTM-7' or current_user.role == 'master' %}
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='A') }}">YTM-7 A Electrical Schedule</a>
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='B') }}">YTM-7 B Electrical Schedule</a>
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='C') }}">YTM-7 C Electrical Schedule</a>
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='E') }}">YTM-7 E Electrical Schedule</a>
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Mechanical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='F') }}">YTM-7 F Electrical Schedule</a>
               <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-Jet') }}">YTM-7 Water-Jet Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='Water-Jet') }}">YTM-7 Water-Jet Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='G') }}">YTM-7 Washing Electrical Schedule</a></li>
               {% endif %}
 
             </ul>

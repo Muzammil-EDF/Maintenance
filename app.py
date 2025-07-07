@@ -721,8 +721,115 @@ def ytm3_schedule(building):
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 
+# ------------------------------------------------------------YTM-7-ELECTRICAL------------------------------------------------------------------
+allowed_config_el7 = {
+    "A": {
+        "floors": ["FF", "GF-TRAINING", "SF", "TF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "B": {
+        "floors": ["FF", "GF-WORKSHOP", "SF", "TF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "C": {
+        "floors": ["FF", "SF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "E": {
+        "floors": ["GF", "SF", "TF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "F": {
+        "floors": ["GF", "SF", "TF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "Water-Jet": {
+        "floors": ["FF", "GF"],
+        "categories": ["Automatic Plants", "Cutting", "Tracks", "Packing", "Tables", "Steam Generator", "Label Printer", "Heat Transfer", "Pillow Turner", "Quilting", "Embroidery"]
+    },
+    "G": {
+        "floors": ["FF"],
+        "categories": ["Washing"]
+    },
+}
+# ----------------------PM SCHEDULING YTM-7-ELECTRICAL------------------------------------
+@app.route("/ytm7_schedule_electrical/<building>")
+@login_required
+def ytm7_schedule_electrical(building):
+    # Authorization
+    if current_user.unit != "YTM-7" and current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    # Validate allowed config for building
+    config = allowed_config_el7.get(building)
+    if not config:
+        flash("Invalid building or no config found.", "danger")
+        return redirect("/")
+
+    included_floors = config["floors"]
+    included_categories = config["categories"]
+
+    # Filter records by unit, building, category and floor
+    records = Todo.query.filter(
+        and_(
+            Todo.unit == "YTM-7",
+            Todo.building == building,
+            Todo.category.in_(included_categories),
+            Todo.floor.in_(included_floors)
+        )
+    ).all()
+
+    if not records:
+        flash("No machines found for selected filters.", "warning")
+        return render_template("preventive_schedule.html", schedule=[], building=building)
+
+    total_machines = len(records)
+    days = 90
+    per_day = ceil(total_machines / days)
+
+    schedule = []
+    current_date = datetime.today()
+    machine_index = 0
+
+    for day in range(days):
+        daily_batch = records[machine_index:machine_index + per_day]
+        if not daily_batch:
+            break
+
+        date_obj = current_date.date()
+        for machine in daily_batch:
+            if not machine.pm_date:
+                machine.pm_date = date_obj
+
+            schedule.append({
+                "brand": machine.brand,
+                "model": machine.model,
+                "tag": machine.tag,
+                "serial": machine.serial,
+                "desc": machine.desc,
+                "building": machine.building,
+                "floor": machine.floor,
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+            })
+
+        machine_index += len(daily_batch)
+        current_date += timedelta(days=1)
+
+    try:
+        db.session.commit()
+        flash("Preventive maintenance schedule generated and saved.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating pm_date: {e}", "danger")
+
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+
+
+
+
 # ------------------------------------------------------------YTM-7-------------------------------------------------------------------
-allowed_config = {
+allowed_config7 = {
     "A": {
         "floors": ["FF", "GF-TRAINING", "SF", "TF"],
         "categories": ["Normal", "Special"]
@@ -737,7 +844,7 @@ allowed_config = {
     },
     "E": {
         "floors": ["GF", "SF", "TF"],
-        "categories": ["Normal", "Special", "Quilting"]
+        "categories": ["Normal", "Special"]
     },
     "F": {
         "floors": ["GF", "SF", "TF"],
@@ -758,7 +865,7 @@ def ytm7_schedule(building):
         return redirect("/")
 
     # Validate allowed config for building
-    config = allowed_config.get(building)
+    config = allowed_config7.get(building)
     if not config:
         flash("Invalid building or no config found.", "danger")
         return redirect("/")
