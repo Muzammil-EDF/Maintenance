@@ -61,6 +61,15 @@ class Todo(db.Model):
     def __repr__(self):
         return f"{self.sno} - {self.desc}"
 
+# new model to store PM access requests
+class PMAccessRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    todo_id = db.Column(db.Integer, db.ForeignKey('todo.sno'), nullable=False)
+    status = db.Column(db.String(20), default='pending')  # pending/approved/rejected
+    request_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 # ------------------ Login Manager ------------------
 @login_manager.user_loader
 def load_user(user_id):
@@ -259,7 +268,7 @@ def ytm1_schedule_electrical(building):
 
     if not records:
         flash("No machines found for selected filters.", "warning")
-        return render_template("preventive_schedule.html", schedule=[], building=building)
+        return render_template("preventive_schedule.html", schedule=[], building=building, per_day=per_day, today=datetime.today().date())
 
     total_machines = len(records)
     days = 90
@@ -287,7 +296,8 @@ def ytm1_schedule_electrical(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "id": machine.sno
             })
 
         machine_index += len(daily_batch)
@@ -928,6 +938,90 @@ def ytm7_schedule(building):
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
+
+# Route to Handle PM Access Requests
+
+@app.route('/request_pm_access', methods=['POST'])
+@login_required
+def request_pm_access():
+    todo_id = request.form.get('todo_id')
+    existing = PMAccessRequest.query.filter_by(user_id=current_user.id, todo_id=todo_id, status='pending').first()
+    
+    if existing:
+        flash("You’ve already requested access for this machine.", "warning")
+        return redirect(request.referrer)
+
+    new_request = PMAccessRequest(user_id=current_user.id, todo_id=todo_id)
+    db.session.add(new_request)
+    db.session.commit()
+    flash("Request sent to master user for approval.", "info")
+    return redirect(request.referrer)
+
+
+# Master User Dashboard to View & Approve Requests
+
+@app.route('/pm_requests')
+@login_required
+def pm_requests():
+    if current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect('/')
+
+    requests = PMAccessRequest.query.join(User).join(Todo).all()
+    return render_template('pm_requests.html', requests=requests)
+
+@app.route('/approve_pm_access/<int:req_id>')
+@login_required
+def approve_pm_access(req_id):
+    if current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect('/')
+    
+    req = PMAccessRequest.query.get_or_404(req_id)
+    req.status = 'approved'
+    db.session.commit()
+    flash("Request approved.", "success")
+    return redirect('/pm_requests')
+
+
+# Update Checklist Access Logic
+
+@app.route('/perform_pm/<int:todo_id>')
+@login_required
+def perform_pm(todo_id):
+    todo = Todo.query.get_or_404(todo_id)
+
+    today = datetime.today().date()
+    access_granted = (
+        todo.pm_date == today or
+        PMAccessRequest.query.filter_by(todo_id=todo_id, user_id=current_user.id, status='approved').first()
+    )
+
+    if not access_granted:
+        flash("Access not granted yet. Contact your supervisor.", "danger")
+        return redirect('/')
+
+    return render_template("pm_checklist.html", todo=todo)
+
+@app.route('/submit_pm_checklist/<int:todo_id>', methods=['POST'])
+@login_required
+def submit_pm_checklist(todo_id):
+    todo = Todo.query.get_or_404(todo_id)
+
+    # Save checklist results — store them in a new table or update status
+    remarks = request.form.get('remarks', '')
+    checklist = {
+        'cleaned': 'Yes' if request.form.get('cleaned') else 'No',
+        'lubricated': 'Yes' if request.form.get('lubricated') else 'No',
+        'safety': 'Yes' if request.form.get('safety') else 'No',
+        'remarks': remarks,
+        'performed_by': current_user.username,
+        'performed_on': datetime.now()
+    }
+
+    # For now, just print or flash message (or save to DB if you want)
+    flash(f"PM completed. Summary: {checklist}", "success")
+    return redirect('/')
 
 # ------------------------------------------PM SCHEDULE DOWNLOADING-----------------------------------
 @app.route("/download_schedule/<building>")

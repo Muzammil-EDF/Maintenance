@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block category %}
+Home
+{% endblock category %}
+{% block body %}
+
+<h2>Preventive Maintenance Checklist</h2>
+
+<h4>Machine Info</h4>
+<ul>
+    <li><strong>Brand:</strong> {{ todo.brand }}</li>
+    <li><strong>Model:</strong> {{ todo.model }}</li>
+    <li><strong>Serial:</strong> {{ todo.serial }}</li>
+    <li><strong>Description:</strong> {{ todo.desc }}</li>
+    <li><strong>Tag:</strong> {{ todo.tag }}</li>
+    <li><strong>Building:</strong> {{ todo.building }}</li>
+    <li><strong>Floor:</strong> {{ todo.floor }}</li>
+    <li><strong>Scheduled Date:</strong> {{ todo.pm_date }}</li>
+</ul>
+
+<form method="POST" action="{{ url_for('submit_pm_checklist', todo_id=todo.sno) }}">
+    <h4>Checklist</h4>
+    <label><input type="checkbox" name="cleaned"> Machine cleaned</label><br>
+    <label><input type="checkbox" name="lubricated"> Lubrication done</label><br>
+    <label><input type="checkbox" name="safety"> Safety check done</label><br>
+    <label>Remarks:<br>
+        <textarea name="remarks" rows="4" cols="50"></textarea>
+    </label><br><br>
+
+    <button type="submit">Submit PM Report</button>
+</form>
+
+<a href="{{ url_for('get_input') }}">← Back to Dashboard</a>
+{% endblock body %}

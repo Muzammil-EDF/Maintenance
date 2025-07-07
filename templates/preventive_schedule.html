@@ -42,6 +42,7 @@
       {% for row in schedule %}
       <tr>
         <!-- <td>{{ row.category }}</td> -->
+        <td>{{ row.id }}</td>
         <td>{{ row.brand }}</td>
         <td>{{ row.model }}</td>
         <td>{{ row.tag }}</td>
@@ -50,6 +51,16 @@
         <td>{{ row.building }}</td>
         <td>{{ row.floor }}</td>
         <td>{{ row.preventive_date }}</td>
+        <td>
+          {% if row.preventive_date == today %}
+          <a href="{{ url_for('perform_pm', todo_id=row.id) }}" class="btn btn-success btn-sm">Perform PM</a>
+          {% else %}
+          <form action="{{ url_for('request_pm_access') }}" method="post">
+            <input type="hidden" name="todo_id" value="{{ row.id }}">
+            <button class="btn btn-warning btn-sm" type="submit">Request Access</button>
+          </form>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
