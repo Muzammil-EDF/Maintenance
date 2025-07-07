@@ -27,6 +27,7 @@
         <th>Building</th>
         <th>Floor</th>
         <th>Preventive Date</th>
+        <th>Actions</th>
       </tr>
       <tr>
         <th></th>
@@ -38,13 +39,14 @@
         <th><input type="text" placeholder="Search Building"></th>
         <th><input type="text" placeholder="Search Floor"></th>
         <th><input type="text" placeholder="Search PM Date"></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for row in schedule %}
       <tr>
         <!-- <td>{{ row.category }}</td> -->
-        <td>{{ row.id }}</td>
+        <td>{{ row.sno }}</td>
         <td>{{ row.brand }}</td>
         <td>{{ row.model }}</td>
         <td>{{ row.tag }}</td>
