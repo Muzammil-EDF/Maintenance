@@ -827,9 +827,7 @@ def ytm7_schedule_electrical(building):
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
 
 
-
-
-# ------------------------------------------------------------YTM-7-------------------------------------------------------------------
+# ------------------------------------------------------------YTM-7-MECHANICAL------------------------------------------------------------------
 allowed_config7 = {
     "A": {
         "floors": ["FF", "GF-TRAINING", "SF", "TF"],
@@ -856,7 +854,7 @@ allowed_config7 = {
         "categories": ["Normal", "Special"]
     },
 }
-# ----------------------PM SCHEDULING YTM-7-------------------------------------
+# ----------------------PM SCHEDULING YTM-7-MECHANICAL------------------------------------
 @app.route("/ytm7_schedule/<building>")
 @login_required
 def ytm7_schedule(building):
