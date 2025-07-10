@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container mt-4">
+  <h4>Checklist Details - {{ todo.desc }}</h4>
+  <p><strong>PM Date:</strong> {{ todo.pm_date }}</p>
+  <p><strong>Status:</strong> {{ todo.pm_status }}</p>
+  <p><strong>Unit:</strong> {{ todo.unit }}</p>
+
+  {% if todo.pm_status == "Done" %}
+    <h5 class="mt-4">Checklist Notes:</h5>
+    <div class="border p-3 bg-light">
+      {{ todo.checklist | nl2br }}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No checklist available. PM not yet performed.</div>
+  {% endif %}
+</div>
+{% endblock %}

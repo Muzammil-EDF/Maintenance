@@ -57,7 +57,9 @@ class Todo(db.Model):
     brand = db.Column(db.String(500))
     model = db.Column(db.String(500))
     pm_date = db.Column(db.Date)
-
+    pm_status = db.Column(db.String(20), default="Pending")  # "Pending" or "Done"
+    checklist = db.Column(db.Text)  # JSON or plain text data of checklist
+    
     def __repr__(self):
         return f"{self.sno} - {self.desc}"
 
@@ -229,7 +231,6 @@ allowed_config_el1 = {
         "categories": ["Cutting", "Packing"]
     },
 }
-# ----------------------PM SCHEDULING YTM-1-ELECTRICAL------------------------------------
 @app.route("/ytm1_schedule_electrical/<building>")
 @login_required
 def ytm1_schedule_electrical(building):
@@ -288,7 +289,8 @@ def ytm1_schedule_electrical(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -301,8 +303,7 @@ def ytm1_schedule_electrical(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
-
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 # -----------------------------------------------------------------YTM-1-MECHANICAL-------------------------------------------------------------
 allowed_config1 = {
@@ -315,7 +316,6 @@ allowed_config1 = {
         "categories": ["Normal", "Special"]
     },
 }
-# ----------------------PM SCHEDULING YTM-1-MECHANICAL------------------------------------
 @app.route("/ytm1_schedule/<building>")
 @login_required
 def ytm1_schedule(building):
@@ -366,6 +366,7 @@ def ytm1_schedule(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -373,7 +374,9 @@ def ytm1_schedule(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
+
             })
 
         machine_index += len(daily_batch)
@@ -386,7 +389,7 @@ def ytm1_schedule(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 # -----------------------------------------------------------------YTM-2-ELECTRICAL-------------------------------------------------------------
 allowed_config_el2 = {
@@ -399,7 +402,6 @@ allowed_config_el2 = {
         "categories": ["Cutting", "Packing"]
     },
 }
-# ----------------------PM SCHEDULING YTM-2-ELECTRICAL------------------------------------
 @app.route("/ytm2_schedule_electrical/<building>")
 @login_required
 def ytm2_schedule_electrical(building):
@@ -450,6 +452,7 @@ def ytm2_schedule_electrical(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -457,7 +460,8 @@ def ytm2_schedule_electrical(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -470,7 +474,7 @@ def ytm2_schedule_electrical(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 
 # -----------------------------------------------------------------YTM-2-MECHANICAL-------------------------------------------------------------
@@ -484,7 +488,6 @@ allowed_config2 = {
         "categories": ["Normal", "Special", "Quilting", "Automatic Plants", "Steam Generator"]
     },
 }
-# ----------------------PM SCHEDULING YTM-2-MECHANICAL------------------------------------
 @app.route("/ytm2_schedule/<building>")
 @login_required
 def ytm2_schedule(building):
@@ -535,6 +538,7 @@ def ytm2_schedule(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -542,7 +546,8 @@ def ytm2_schedule(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -555,8 +560,7 @@ def ytm2_schedule(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
-
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 
 # -----------------------------------------------------------------YTM-3-ELECTRICAL-------------------------------------------------------------
@@ -566,7 +570,6 @@ allowed_config_el3 = {
         "categories": ["Cutting", "Packing", "Automatic Plants", "Tracks", "Tables", "Heat Transfer", "Label Printer", "Steam Generator"]
     },
 }
-# ----------------------PM SCHEDULING YTM-3-ELECTRICAL------------------------------------
 @app.route("/ytm3_schedule_electrical/<building>")
 @login_required
 def ytm3_schedule_electrical(building):
@@ -617,6 +620,7 @@ def ytm3_schedule_electrical(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -624,7 +628,8 @@ def ytm3_schedule_electrical(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -637,9 +642,7 @@ def ytm3_schedule_electrical(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
-
-
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 # -----------------------------------------------------------------YTM-3-MECHANICAL-------------------------------------------------------------
 allowed_config3 = {
@@ -648,7 +651,6 @@ allowed_config3 = {
         "categories": ["Normal", "Special"]
     },
 }
-# ----------------------PM SCHEDULING YTM-3-MECHANICAL------------------------------------
 @app.route("/ytm3_schedule/<building>")
 @login_required
 def ytm3_schedule(building):
@@ -699,6 +701,7 @@ def ytm3_schedule(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -706,7 +709,8 @@ def ytm3_schedule(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -719,7 +723,7 @@ def ytm3_schedule(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 
 # ------------------------------------------------------------YTM-7-ELECTRICAL------------------------------------------------------------------
@@ -753,7 +757,6 @@ allowed_config_el7 = {
         "categories": ["Washing"]
     },
 }
-# ----------------------PM SCHEDULING YTM-7-ELECTRICAL------------------------------------
 @app.route("/ytm7_schedule_electrical/<building>")
 @login_required
 def ytm7_schedule_electrical(building):
@@ -805,13 +808,15 @@ def ytm7_schedule_electrical(building):
 
             schedule.append({
                 "brand": machine.brand,
+                "sno": machine.sno,
                 "model": machine.model,
                 "tag": machine.tag,
                 "serial": machine.serial,
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -824,7 +829,7 @@ def ytm7_schedule_electrical(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 
 # ------------------------------------------------------------YTM-7-MECHANICAL------------------------------------------------------------------
@@ -854,7 +859,6 @@ allowed_config7 = {
         "categories": ["Normal", "Special"]
     },
 }
-# ----------------------PM SCHEDULING YTM-7-MECHANICAL------------------------------------
 @app.route("/ytm7_schedule/<building>")
 @login_required
 def ytm7_schedule(building):
@@ -905,6 +909,7 @@ def ytm7_schedule(building):
                 machine.pm_date = date_obj
 
             schedule.append({
+                "sno": machine.sno,
                 "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
@@ -912,7 +917,8 @@ def ytm7_schedule(building):
                 "desc": machine.desc,
                 "building": machine.building,
                 "floor": machine.floor,
-                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A"
+                "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
+                "pm_status": machine.pm_status or "Pending"  # Include PM status
             })
 
         machine_index += len(daily_batch)
@@ -925,7 +931,52 @@ def ytm7_schedule(building):
         db.session.rollback()
         flash(f"Error updating pm_date: {e}", "danger")
 
-    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day)
+    return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
+
+# ---------------------------------------PERFORM---PREVENTIVE---------------------------------------------- 
+
+@app.route("/perform_pm/<int:sno>", methods=["GET", "POST"])
+@login_required
+def perform_pm(sno):
+    todo = Todo.query.get_or_404(sno)
+
+    # Restrict limited users to their unit
+    if current_user.role != 'master' and todo.unit != current_user.unit:
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    # Allow PM only if today is the scheduled date
+    if todo.pm_date != datetime.today().date():
+        flash("PM can only be performed on the scheduled date.", "warning")
+        return redirect("/")
+
+    if request.method == "POST":
+        todo.pm_status = "Done"
+        todo.checklist = request.form.get("checklist", "")
+        db.session.commit()
+        flash("Preventive Maintenance marked as done.", "success")
+        return redirect("/")
+
+    return render_template("perform_pm.html", todo=todo)
+
+# ---------------------------VIEW CHECKLIST---------------------------------
+
+@app.route("/view_checklist/<int:sno>")
+@login_required
+def view_checklist(sno):
+    todo = Todo.query.get_or_404(sno)
+
+    # Only master users or the assigned unit user can view
+    if current_user.role != 'master' and todo.unit != current_user.unit:
+        flash("Unauthorized access.", "danger")
+        return redirect("/")
+
+    return render_template("view_checklist.html", todo=todo)
+
+
+@app.template_filter('nl2br')
+def nl2br(value):
+    return value.replace('\n', '<br>\n')
 
 
 # ------------------------------------------PM SCHEDULE DOWNLOADING-----------------------------------

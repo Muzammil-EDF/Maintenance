@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container mt-4">
+  <h4>Perform Preventive Maintenance - {{ todo.desc }}</h4>
+  <p><strong>PM Date:</strong> {{ todo.pm_date }}</p>
+  <p><strong>Status:</strong> {{ todo.pm_status }}</p>
+
+  {% if todo.pm_status == "Done" %}
+  <div class="alert alert-success">This machine has already been serviced.</div>
+  <p><strong>Checklist Notes:</strong><br>{{ todo.checklist }}</p>
+  {% else %}
+  <form method="POST">
+    <div class="form-group">
+      <label>Checklist / Comments:</label>
+      <textarea class="form-control" name="checklist" rows="6" required></textarea>
+    </div>
+    <button class="btn btn-success mt-2" type="submit">Mark as Done</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}
