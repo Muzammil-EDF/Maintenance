@@ -11,6 +11,7 @@ from sqlalchemy import or_, and_
 import os
 from datetime import datetime, timedelta
 from math import ceil
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
@@ -950,14 +951,35 @@ def perform_pm(sno):
         flash("PM can only be performed on the scheduled date.", "warning")
         return redirect("/")
 
+    # ✅ Move this OUTSIDE the POST block
+    CHECKLIST_ITEMS = [
+        "Plunger", "Oil Pump", "Oil Leakage", "Oil Filter", "Valve",
+        "Bell Cover", "Belt", "Stuffing/Block", "Motor", "Panel",
+        "Bobbin Case", "Boot/Boot Screw", "Tension Spring", "Main Cam", "Push Rod",
+        "Needle Plate", "Pressure Spring", "Tension Rod", "Residual Thread", "Cleaning",
+        "Machine Safety Equipment", "Needle Drag", "Check Drag", "Hydraulic pipe"
+    ]
+
     if request.method == "POST":
+        # Collect structured checklist
+        structured = []
+        for i, desc in enumerate(CHECKLIST_ITEMS, start=1):
+            structured.append({
+                "sno": i,
+                "desc": desc,
+                "check": request.form.get(f"check_{i}", ""),
+                "repaired": "yes" if request.form.get(f"repaired_{i}") else "no",
+                "replaced": "yes" if request.form.get(f"replaced_{i}") else "no",
+                "remarks": request.form.get(f"remarks_{i}", "")
+            })
+
         todo.pm_status = "Done"
-        todo.checklist = request.form.get("checklist", "")
+        todo.checklist = json.dumps(structured)
         db.session.commit()
-        flash("Preventive Maintenance marked as done.", "success")
+        flash("Checklist submitted and PM marked as Done.", "success")
         return redirect("/")
 
-    return render_template("perform_pm.html", todo=todo)
+    return render_template("perform_pm.html", todo=todo, checklist_items=CHECKLIST_ITEMS)
 
 # ---------------------------VIEW CHECKLIST---------------------------------
 
@@ -973,11 +995,19 @@ def view_checklist(sno):
 
     return render_template("view_checklist.html", todo=todo)
 
+# =============TEMPLATE FILTERS=============
 
 @app.template_filter('nl2br')
 def nl2br(value):
     return value.replace('\n', '<br>\n')
 
+
+@app.template_filter("loads")
+def loads_filter(value):
+    try:
+        return json.loads(value)
+    except:
+        return []
 
 # ------------------------------------------PM SCHEDULE DOWNLOADING-----------------------------------
 @app.route("/download_schedule/<building>")

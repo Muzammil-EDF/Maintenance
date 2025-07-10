@@ -1,18 +1,41 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="container mt-4">
-  <h4>Checklist Details - {{ todo.desc }}</h4>
-  <p><strong>PM Date:</strong> {{ todo.pm_date }}</p>
-  <p><strong>Status:</strong> {{ todo.pm_status }}</p>
-  <p><strong>Unit:</strong> {{ todo.unit }}</p>
+    <h4>Checklist Details - {{ todo.desc }} - {{ todo.tag }}</h4>
+    <p><strong>Preventive Maintenance Date:</strong> {{ todo.pm_date.strftime('%d %B %Y') if todo.pm_date else 'N/A' }}</p>
+    <p><strong>Status:</strong> {{ todo.pm_status }}</p>
+    <p><strong>Unit:</strong> {{ todo.unit }}</p>
 
-  {% if todo.pm_status == "Done" %}
-    <h5 class="mt-4">Checklist Notes:</h5>
-    <div class="border p-3 bg-light">
-      {{ todo.checklist | nl2br }}
-    </div>
-  {% else %}
-    <div class="alert alert-info">No checklist available. PM not yet performed.</div>
-  {% endif %}
+    {% if todo.pm_status == "Done" %}
+    <h5 class="mt-4">Submitted Checklist:</h5>
+
+    {% set checklist = todo.checklist | safe | loads %}
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Description</th>
+                <th>Check</th>
+                <th>Repaired</th>
+                <th>Replaced</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in checklist %}
+            <tr>
+                <td>{{ row.sno }}</td>
+                <td>{{ row.desc }}</td>
+                <td>{{ row.check }}</td>
+                <td>{{ row.repaired }}</td>
+                <td>{{ row.replaced }}</td>
+                <td>{{ row.remarks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info mt-4">No checklist available. PM not yet performed.</div>
+    {% endif %}
 </div>
 {% endblock %}
