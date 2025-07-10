@@ -27,6 +27,8 @@
         <th>Building</th>
         <th>Floor</th>
         <th>Preventive Date</th>
+        <th>Perform PM</th>
+        <th>View Checklist</th>
       </tr>
       <tr>
         <th></th>
@@ -38,6 +40,8 @@
         <th><input type="text" placeholder="Search Building"></th>
         <th><input type="text" placeholder="Search Floor"></th>
         <th><input type="text" placeholder="Search PM Date"></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -53,6 +57,22 @@
         <td>{{ row.building }}</td>
         <td>{{ row.floor }}</td>
         <td>{{ row.preventive_date }}</td>
+        <td>
+          {% if row.preventive_date == today.strftime('%Y-%m-%d') and row.pm_status != "Done" %}
+            <a href="{{ url_for('perform_pm', sno=row.sno) }}" class="btn btn-success btn-sm">Perform PM</a>
+          {% elif row.pm_status == "Done" %}
+            <span class="badge bg-success">Done</span>
+          {% else %}
+            <span class="badge bg-secondary">Pending</span>
+          {% endif %}
+        </td>
+        <td>  
+          {% if current_user.role == "master" %}
+          <a href="{{ url_for('view_checklist', sno=row.sno) }}" class="btn btn-info btn-sm mt-1">View Checklist</a>
+          {% endif %}
+        </td>
+
+
       </tr>
       {% endfor %}
     </tbody>
