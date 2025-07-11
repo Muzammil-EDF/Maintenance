@@ -935,23 +935,20 @@ def ytm7_schedule(building):
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
 # ---------------------------------------PERFORM---PREVENTIVE---------------------------------------------- 
-
 @app.route("/perform_pm/<int:sno>", methods=["GET", "POST"])
 @login_required
 def perform_pm(sno):
+    return_url = request.args.get("return_url", "/")  # default fallback
     todo = Todo.query.get_or_404(sno)
 
-    # Restrict limited users to their unit
     if current_user.role != 'master' and todo.unit != current_user.unit:
         flash("Unauthorized", "danger")
-        return redirect("/")
+        return redirect(return_url)
 
-    # Allow PM only if today is the scheduled date
     if todo.pm_date != datetime.today().date():
         flash("PM can only be performed on the scheduled date.", "warning")
-        return redirect("/")
+        return redirect(return_url)
 
-    # ✅ Move this OUTSIDE the POST block
     CHECKLIST_ITEMS = [
         "Plunger", "Oil Pump", "Oil Leakage", "Oil Filter", "Valve",
         "Bell Cover", "Belt", "Stuffing/Block", "Motor", "Panel",
@@ -961,7 +958,6 @@ def perform_pm(sno):
     ]
 
     if request.method == "POST":
-        # Collect structured checklist
         structured = []
         for i, desc in enumerate(CHECKLIST_ITEMS, start=1):
             structured.append({
@@ -977,9 +973,10 @@ def perform_pm(sno):
         todo.checklist = json.dumps(structured)
         db.session.commit()
         flash("Checklist submitted and PM marked as Done.", "success")
-        return redirect("/")
+        return redirect(return_url)
 
-    return render_template("perform_pm.html", todo=todo, checklist_items=CHECKLIST_ITEMS)
+    return render_template("perform_pm.html", todo=todo, checklist_items=CHECKLIST_ITEMS, return_url=return_url)
+
 
 # ---------------------------VIEW CHECKLIST---------------------------------
 
@@ -1008,6 +1005,85 @@ def loads_filter(value):
         return json.loads(value)
     except:
         return []
+
+
+
+# ----------------------------PM SCHEDULE LOGS DOWNLOADING-------------------------------
+@app.route("/download_log")
+@login_required
+def download_log():
+
+    # Allow only authorized units or master
+    allowed_units = ["YTM-1", "YTM-2", "YTM-3", "YTM-7"]
+    if current_user.unit not in allowed_units and current_user.role != 'master':
+        flash("Unauthorized", "danger")
+        return redirect("/")
+
+    # 1. Determine selected unit (master can select any via ?unit=YTM-2)
+    selected_unit = current_user.unit if current_user.role != 'master' else request.args.get("unit", "YTM-1")
+
+    # 2. Get selected building if passed (master can filter with ?building=2A)
+    selected_building = request.args.get("building", None)
+
+    # 3. Base query
+    query = Todo.query.filter(Todo.unit == selected_unit)
+
+    # 4. Filter by building only if provided
+    if selected_building:
+        query = query.filter(
+            and_(
+                Todo.building == selected_building,
+                Todo.pm_status == "Done")
+        )
+
+    # 5. No filter on PM status (you want all: Pending, Done, etc.)
+    records = query.order_by(Todo.pm_date).all()
+
+    log_rows = []
+
+    for r in records:
+        if not r.checklist:
+            continue  # skip if no checklist
+
+        try:
+            checklist = json.loads(r.checklist)
+        except:
+            continue  # skip invalid checklist format
+
+        for row in checklist:
+            log_rows.append({
+                "Machine S.No": r.sno,
+                "Unit": r.unit,
+                "Building": r.building,
+                "Floor": r.floor,
+                "PM Date": r.pm_date.strftime('%Y-%m-%d') if r.pm_date else "",
+                # "Performed By": r.pm_by if hasattr(r, 'pm_by') else "",
+                "Description": r.desc,
+                "Tag No": r.tag,
+                "Serial No": r.serial,
+                "Checklist Item": row["desc"],
+                "Check": row["check"],
+                "Repaired": row["repaired"],
+                "Replaced": row["replaced"],
+                "Remarks": row["remarks"]
+            })
+
+    df = pd.DataFrame(log_rows)
+
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name="PM_Log_Detailed")
+    output.seek(0)
+
+    return send_file(
+        output,
+        download_name="PM_Log_Detailed.xlsx",
+        as_attachment=True,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+
+
 
 # ------------------------------------------PM SCHEDULE DOWNLOADING-----------------------------------
 @app.route("/download_schedule/<building>")

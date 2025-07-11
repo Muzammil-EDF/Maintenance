@@ -59,7 +59,7 @@
         <td>{{ row.preventive_date }}</td>
         <td>
           {% if row.preventive_date == today.strftime('%Y-%m-%d') and row.pm_status != "Done" %}
-            <a href="{{ url_for('perform_pm', sno=row.sno) }}" class="btn btn-success btn-sm">Perform PM</a>
+            <a href="{{ url_for('perform_pm', sno=row.sno, return_url=request.url) }}" class="btn btn-success btn-sm">Perform PM</a>
           {% elif row.pm_status == "Done" %}
             <span class="badge bg-success">Done</span>
           {% else %}
