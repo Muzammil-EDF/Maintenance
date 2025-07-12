@@ -266,17 +266,38 @@ def ytm1_schedule_electrical(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -291,12 +312,10 @@ def ytm1_schedule_electrical(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -351,17 +370,38 @@ def ytm1_schedule(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -376,13 +416,10 @@ def ytm1_schedule(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
-
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -437,17 +474,38 @@ def ytm2_schedule_electrical(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -462,12 +520,10 @@ def ytm2_schedule_electrical(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -523,17 +579,38 @@ def ytm2_schedule(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -548,12 +625,10 @@ def ytm2_schedule(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -562,6 +637,7 @@ def ytm2_schedule(building):
         flash(f"Error updating pm_date: {e}", "danger")
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
+
 
 
 # -----------------------------------------------------------------YTM-3-ELECTRICAL-------------------------------------------------------------
@@ -605,17 +681,38 @@ def ytm3_schedule_electrical(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -630,12 +727,10 @@ def ytm3_schedule_electrical(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -644,6 +739,7 @@ def ytm3_schedule_electrical(building):
         flash(f"Error updating pm_date: {e}", "danger")
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
+
 
 # -----------------------------------------------------------------YTM-3-MECHANICAL-------------------------------------------------------------
 allowed_config3 = {
@@ -686,17 +782,38 @@ def ytm3_schedule(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -711,12 +828,10 @@ def ytm3_schedule(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -725,6 +840,7 @@ def ytm3_schedule(building):
         flash(f"Error updating pm_date: {e}", "danger")
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
+
 
 
 # ------------------------------------------------------------YTM-7-ELECTRICAL------------------------------------------------------------------
@@ -792,24 +908,45 @@ def ytm7_schedule_electrical(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
             schedule.append({
-                "brand": machine.brand,
                 "sno": machine.sno,
+                "brand": machine.brand,
                 "model": machine.model,
                 "tag": machine.tag,
                 "serial": machine.serial,
@@ -817,12 +954,10 @@ def ytm7_schedule_electrical(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -894,17 +1029,38 @@ def ytm7_schedule(building):
     total_machines = len(records)
     days = 90
     per_day = ceil(total_machines / days)
+    
+    # Define holidays and generate valid date list
+    holidays = {
+        datetime.strptime(date, "%Y-%m-%d").date()
+        for date in [
+            "2025-02-05", "2025-03-23", "2025-03-30", "2025-03-31", "2025-04-01",
+            "2025-05-01", "2025-06-06", "2025-06-07", "2025-06-08", "2025-07-04",
+            "2025-07-05", "2025-08-14", "2025-09-04", "2025-11-09", "2025-12-25"
+        ]
+    }
+    start_date = datetime(2025, 7, 13).date()
+    valid_dates = []
+    current_date = start_date
+
+
+    while len(valid_dates) < days:
+        if current_date.weekday() != 6 and current_date not in holidays:
+            valid_dates.append(current_date)
+        current_date += timedelta(days=1)
+
+
+    
 
     schedule = []
-    current_date = datetime.today()
     machine_index = 0
 
-    for day in range(days):
+    for i in range(days):
         daily_batch = records[machine_index:machine_index + per_day]
         if not daily_batch:
             break
 
-        date_obj = current_date.date()
+        date_obj = valid_dates[i]
         for machine in daily_batch:
             if not machine.pm_date:
                 machine.pm_date = date_obj
@@ -919,12 +1075,10 @@ def ytm7_schedule(building):
                 "building": machine.building,
                 "floor": machine.floor,
                 "preventive_date": machine.pm_date.strftime("%Y-%m-%d") if machine.pm_date else "N/A",
-                "pm_status": machine.pm_status or "Pending"  # Include PM status
+                "pm_status": machine.pm_status or "Pending"
             })
 
         machine_index += len(daily_batch)
-        current_date += timedelta(days=1)
-
     try:
         db.session.commit()
         flash("Preventive maintenance schedule generated and saved.", "success")
@@ -933,6 +1087,7 @@ def ytm7_schedule(building):
         flash(f"Error updating pm_date: {e}", "danger")
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
+
 
 # ---------------------------------------PERFORM---PREVENTIVE---------------------------------------------- 
 @app.route("/perform_pm/<int:sno>", methods=["GET", "POST"])

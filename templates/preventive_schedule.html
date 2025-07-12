@@ -6,9 +6,8 @@
     <p><strong>Total Machines:</strong> {{ schedule|length }}</p>
     <p><strong>Per Day:</strong> {{ per_day }} machines</p>
     <div class="download">
-      <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">
-        Download Excel
-      </a>
+      <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">Download PM Schedule</a>
+      <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">Download PM logs</a>
     </div>
   </div>
 
