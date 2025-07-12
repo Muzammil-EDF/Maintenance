@@ -7,7 +7,7 @@
     <p><strong>Per Day:</strong> {{ per_day }} machines</p>
     <div class="download">
       <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">Download PM Schedule</a>
-      {%if current_user.role == "master%}
+      {% if current_user.role == "master" %}
       <a href="{{ url_for('download_schedule', building=building) }}" class="btn btn-dark btn-sm">Download PM logs</a>
       {% endif %}
     </div>
