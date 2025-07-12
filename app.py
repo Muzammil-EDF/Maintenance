@@ -299,6 +299,7 @@ def ytm1_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -403,6 +404,7 @@ def ytm1_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -507,6 +509,7 @@ def ytm2_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -612,6 +615,7 @@ def ytm2_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -714,6 +718,7 @@ def ytm3_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -815,6 +820,7 @@ def ytm3_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -941,6 +947,7 @@ def ytm7_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
@@ -1062,6 +1069,7 @@ def ytm7_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
+            # restrict the dats change of pm by putting inside IF code into IF, and vice versa
             if not machine.pm_date:
                 machine.pm_date = date_obj
 
