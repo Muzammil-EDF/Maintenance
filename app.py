@@ -299,8 +299,8 @@ def ytm1_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -403,8 +403,8 @@ def ytm1_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -507,8 +507,8 @@ def ytm2_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -612,8 +612,8 @@ def ytm2_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -714,8 +714,8 @@ def ytm3_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -815,8 +815,8 @@ def ytm3_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -941,8 +941,8 @@ def ytm7_schedule_electrical(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
@@ -1062,8 +1062,8 @@ def ytm7_schedule(building):
 
         date_obj = valid_dates[i]
         for machine in daily_batch:
-            # if not machine.pm_date:
-            machine.pm_date = date_obj
+            if not machine.pm_date:
+                machine.pm_date = date_obj
 
             schedule.append({
                 "sno": machine.sno,
