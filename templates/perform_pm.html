@@ -13,36 +13,38 @@
         <div class="form-group">
             <label>Checklist / Comments:</label>
             <form method="POST">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Description</th>
-                            <th>Check</th>
-                            <th>Repaired</th>
-                            <th>Replaced</th>
-                            <th>Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in checklist_items %}
-                        <tr>
-                            <td>{{ loop.index }}</td> <!-- loop.index is 1-based -->
-                            <td>{{ item }}</td>
-                            <td>
-                                <select name="check_{{ loop.index }}" class="form-control">
-                                    <option value="✗">✗</option>
-                                    <option value="✓">✓</option>
-                                </select>
-                            </td>
-                            <td><input name="repaired_{{ loop.index }}" type="checkbox" value="yes"></td>
-                            <td><input name="replaced_{{ loop.index }}" type="checkbox" value="yes"></td>
-                            <td><input name="remarks_{{ loop.index }}" type="text" class="form-control"></td>
-                        </tr>
-                        {% endfor %}
+                <div class="table-responsive-custom">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Description</th>
+                                <th>Check</th>
+                                <th>Repaired</th>
+                                <th>Replaced</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in checklist_items %}
+                            <tr>
+                                <td>{{ loop.index }}</td> <!-- loop.index is 1-based -->
+                                <td>{{ item }}</td>
+                                <td>
+                                    <select name="check_{{ loop.index }}" class="form-control">
+                                        <option value="✗">✗</option>
+                                        <option value="✓">✓</option>
+                                    </select>
+                                </td>
+                                <td><input name="repaired_{{ loop.index }}" type="checkbox" value="yes"></td>
+                                <td><input name="replaced_{{ loop.index }}" type="checkbox" value="yes"></td>
+                                <td><input name="remarks_{{ loop.index }}" type="text" class="form-control"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-                    </tbody>
-                </table>
                 <button type="submit" class="btn btn-success">Submit Checklist</button>
             </form>
         </div>
