@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="container mt-4">
-    <h4>Checklist Details - {{ todo.desc }} - {{ todo.tag }}</h4>
+    <h4>Checklist Details : {{ todo.desc }} - {{ todo.tag }}</h4>
     <p><strong>Preventive Maintenance Date:</strong> {{ todo.pm_date.strftime('%d %B %Y') if todo.pm_date else 'N/A' }}
     </p>
-    <p><strong>Status:</strong> {{ todo.pm_status }}</p>
-    <p><strong>Unit:</strong> {{ todo.unit }}</p>
+    <p><strong>Location:</strong> {{ todo.unit }} | {{ todo.building }} - {{ todo.floor }} |</p>
 
     {% if todo.pm_status == "Done" %}
     <h5 class="mt-4">Submitted Checklist:</h5>
 
     {% set checklist = todo.checklist | safe | loads %}
     <div class="table-responsive-custom">
+
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>
@@ -36,10 +36,9 @@
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
     {% else %}
     <div class="alert alert-info mt-4">No checklist available. PM not yet performed.</div>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock body%}

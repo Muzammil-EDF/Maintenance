@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="container mt-4">
-    <h4>Perform Preventive Maintenance - {{ todo.desc }} - {{ todo.tag }}</h4>
+    <h4>Perform Preventive Maintenance : {{ todo.desc }} - {{ todo.tag }}</h4>
     <p><strong>PM Date:</strong> {{ todo.pm_date }}</p>
-    <p><strong>Status:</strong> {{ todo.pm_status }}</p>
+    <p><strong>Location:</strong> {{ todo.unit }} | {{ todo.building }} - {{ todo.floor }} |</p>
 
     {% if todo.pm_status == "Done" %}
     <div class="alert alert-success">This machine has already been serviced.</div>
@@ -11,9 +11,10 @@
     {% else %}
     <form method="POST">
         <div class="form-group">
-            <label>Checklist / Comments:</label>
+            <h5 class="mt-4">Checklist:</h5>
             <form method="POST">
                 <div class="table-responsive-custom">
+
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -41,15 +42,15 @@
                                 <td><input name="remarks_{{ loop.index }}" type="text" class="form-control"></td>
                             </tr>
                             {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
-
                 <button type="submit" class="btn btn-success">Submit Checklist</button>
             </form>
         </div>
-        <!-- <button class="btn btn-success mt-2" type="submit">Mark as Done</button> -->
+        <button class="btn btn-success mt-2" type="submit">Mark as Done</button>
     </form>
     {% endif %}
 </div>
-{% endblock %}
+{% endblock body %}
