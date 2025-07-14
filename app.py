@@ -297,6 +297,67 @@ def data():
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+@app.route('/api/public_data')
+def public_data():
+    draw = int(request.args.get('draw', 1))
+    start = int(request.args.get('start', 0))
+    length = int(request.args.get('length', 10))
+    search_value = request.args.get('search[value]', '').lower()
+
+    query = Todo.query
+
+    if search_value:
+        search = f"%{search_value}%"
+        from sqlalchemy import func
+        query = query.filter(
+            or_(
+                func.lower(Todo.date).like(search),
+                func.lower(Todo.home).like(search),
+                func.lower(Todo.status).like(search),
+                func.lower(Todo.category).like(search),
+                func.lower(Todo.brand).like(search),
+                func.lower(Todo.model).like(search),
+                func.lower(Todo.tag).like(search),
+                func.lower(Todo.serial).like(search),
+                func.lower(Todo.desc).like(search),
+                func.lower(Todo.unit).like(search),
+                func.lower(Todo.building).like(search),
+                func.lower(Todo.floor).like(search),
+                func.cast(Todo.pm_date, db.String).like(search)
+            )
+        )
+
+    records_filtered = query.count()
+    todos = query.offset(start).limit(length).all()
+    total = Todo.query.count()
+
+    data = [{
+        "date": t.date,
+        "home": t.home,
+        "status": t.status,
+        "category": t.category,
+        "brand": t.brand,
+        "model": t.model,
+        "tag": t.tag,
+        "serial": t.serial,
+        "desc": t.desc,
+        "unit": t.unit,
+        "building": t.building,
+        "floor": t.floor,
+        "pm_date": t.pm_date.strftime("%Y-%m-%d") if t.pm_date else "",
+    } for t in todos]
+
+    return {
+        'draw': draw,
+        'recordsTotal': total,
+        'recordsFiltered': records_filtered,
+        'data': data
+    }
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 # -----------------------------------------------------------------YTM-1-ELECTRICAL-------------------------------------------------------------
 allowed_config_el1 = {
     "2A": {

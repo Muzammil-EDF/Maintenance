@@ -43,15 +43,10 @@ Home
 <!-- VIEW ONLY DATABASE DATA -->
 <div class="container-my-3">
     <h3 class="text-center text-lg-start my-3">Master Machine List</h3>
-    {% if alltodo|length == 0 %}
-    <div class="alert alert-dark" role="alert">
-        No records found, Add your records now!
-    </div>
-    {% else %}
+
     <div class="table-responsive-custom">
         <div style="overflow-x:auto;">
-            <table id="myTable"
-                class="table display nowrap table table-professional table-striped table-bordered machine-table"
+            <table id="myTable" class="display nowrap table table-professional table-striped table-bordered table-sm"
                 style="width:100%;">
                 <thead>
                     <tr>
@@ -62,38 +57,52 @@ Home
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Model</th>
-                        <th>Tag</th>
-                        <th>Serial</th>
+                        <th>Tag No.</th>
+                        <th>Serial No.</th>
                         <th>Description</th>
                         <th>Unit</th>
                         <th>Building</th>
                         <th>Floor</th>
                         <th>PM Date</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
-            <!-- Pagination Controls -->
-            <div class="pagination my-3 d-flex justify-content-center">
-                {% if pagination.has_prev %}
-                <a class="btn btn-outline-dark mx-1"
-                    href="{{ url_for('get_input', page=pagination.prev_num) }}">Previous</a>
-                {% endif %}
 
-                <span class="align-self-center mx-2">
-                    Page {{ pagination.page }} of {{ pagination.pages }}
-                </span>
-
-                {% if pagination.has_next %}
-                <a class="btn btn-outline-dark mx-1"
-                    href="{{ url_for('get_input', page=pagination.next_num) }}">Next</a>
-                {% endif %}
-            </div>
         </div>
     </div>
-    {% endif %}
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: '/api/public_data',
+                type: 'GET'
+            },
+            scrollX: true,
+            columns: [
+                { data: null, render: (data, type, row, meta) => meta.row + 1 },
+                { data: 'date' },
+                { data: 'home' },
+                { data: 'status' },
+                { data: 'category' },
+                { data: 'brand' },
+                { data: 'model' },
+                { data: 'tag' },
+                { data: 'serial' },
+                { data: 'desc' },
+                { data: 'unit' },
+                { data: 'building' },
+                { data: 'floor' },
+                { data: 'pm_date' }
+            ]
+        });
+    });
+</script>
 
 
 
