@@ -15,11 +15,16 @@
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
-  <!-- jQuery (required) -->
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- DataTables JS -->
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <!-- Optional: DataTables Responsive + FixedHeader -->
+  <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.dataTables.min.css">
 
 
   <style>
@@ -83,22 +88,25 @@
       padding-left: 10px;
       padding-right: 10px;
     }
-    
-    .container-my-3{
+
+    .container-my-3 {
       width: 100%;
-    }    
-    .container-my-3 h3{
+    }
+
+    .container-my-3 h3 {
       padding-left: 10px;
       padding-right: 10px;
-    }    
-    .container-mt-4{
+    }
+
+    .container-mt-4 {
       width: 100%;
     }
-    .titles{
+
+    .titles {
       padding-left: 10px;
-      padding-right: 10px;      
+      padding-right: 10px;
     }
-    
+
     .table-professional {
       border-collapse: separate;
       border-spacing: 0;
@@ -190,38 +198,61 @@
             </a>
             <ul class="dropdown-menu">
               {% if current_user.unit == 'YTM-1' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">YTM-1 2A Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2A') }}">YTM-1 2A Electrical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">YTM-1 2B Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2B') }}">YTM-1 2B Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2A') }}">YTM-1 2A Mechanical
+                  Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2A') }}">YTM-1 2A
+                  Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule', building='2B') }}">YTM-1 2B Mechanical
+                  Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm1_schedule_electrical', building='2B') }}">YTM-1 2B
+                  Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-2' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2A') }}">YTM-2 2A Electrical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2B') }}">YTM-2 2B Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2A') }}">YTM-2 2A Mechanical
+                  Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2A') }}">YTM-2 2A
+                  Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule', building='2B') }}">YTM-2 2B Mechanical
+                  Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm2_schedule_electrical', building='2B') }}">YTM-2 2B
+                  Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-3' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule_electrical', building='3A') }}">YTM-3 3A Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule', building='3A') }}">YTM-3 3A Mechanical
+                  Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm3_schedule_electrical', building='3A') }}">YTM-3 3A
+                  Electrical Schedule</a></li>
               {% endif %}
 
               {% if current_user.unit == 'YTM-7' or current_user.role == 'master' %}
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Mechanical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='A') }}">YTM-7 A Electrical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Mechanical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='B') }}">YTM-7 B Electrical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Mechanical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='C') }}">YTM-7 C Electrical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Mechanical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='E') }}">YTM-7 E Electrical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Mechanical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='F') }}">YTM-7 F Electrical Schedule</a>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-Jet') }}">YTM-7 Water-Jet Mechanical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='Water-Jet') }}">YTM-7 Water-Jet Electrical Schedule</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='G') }}">YTM-7 Washing Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='A') }}">YTM-7 A Mechanical
+                  Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='A') }}">YTM-7 A
+                  Electrical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='B') }}">YTM-7 B Mechanical
+                  Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='B') }}">YTM-7 B
+                  Electrical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='C') }}">YTM-7 C Mechanical
+                  Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='C') }}">YTM-7 C
+                  Electrical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='E') }}">YTM-7 E Mechanical
+                  Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='E') }}">YTM-7 E
+                  Electrical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='F') }}">YTM-7 F Mechanical
+                  Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='F') }}">YTM-7 F
+                  Electrical Schedule</a>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule', building='Water-Jet') }}">YTM-7 Water-Jet
+                  Mechanical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='Water-Jet') }}">YTM-7
+                  Water-Jet Electrical Schedule</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('ytm7_schedule_electrical', building='G') }}">YTM-7 Washing
+                  Electrical Schedule</a></li>
               {% endif %}
 
             </ul>
@@ -248,24 +279,38 @@
   {% endblock body %}
   <script>
     $(document).ready(function () {
-      var table = $('#myTable').DataTable({
+      $('#myTable').DataTable({
+        serverSide: true,
+        processing: true,
+        ajax: {
+          url: '/api/data',
+          type: 'GET'
+        },
         scrollX: true,
-        scrollY: '420px',
-        scrollCollapse: true,
-        paging: true,
-        autoWidth: false,  // ⚠️ 'True' was incorrect and broke everything
-        fixedHeader: true,
-        initComplete: function () {
-          // Move search input filters to second row
-          this.api().columns().every(function () {
-            var column = this;
-            $('input', column.header()).on('keyup change clear', function () {
-              if (column.search() !== this.value) {
-                column.search(this.value).draw();
-              }
-            });
-          });
-        }
+        columns: [
+          { data: null, render: (data, type, row, meta) => meta.row + 1 },  // S No.
+          { data: 'date' },
+          { data: 'home' },
+          { data: 'status' },
+          { data: 'category' },
+          { data: 'brand' },
+          { data: 'model' },
+          { data: 'tag' },
+          { data: 'serial' },
+          { data: 'desc' },
+          { data: 'unit' },
+          { data: 'building' },
+          { data: 'floor' },
+          { data: 'pm_date' },
+          {
+            data: 'sno',
+            render: function (data, type, row, meta) {
+              let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
+              let deleteBtn = row.can_delete ? `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>` : '';
+              return updateBtn + deleteBtn;
+            }
+          }
+        ]
       });
     });
   </script>
