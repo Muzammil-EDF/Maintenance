@@ -51,7 +51,7 @@ Home
     <div class="table-responsive-custom">
         <div style="overflow-x:auto;">
             <table id="myTable"
-                class="display nowrap table table-professional table-striped table-bordered machine-table"
+                class="table display nowrap table table-professional table-striped table-bordered machine-table"
                 style="width:100%;">
                 <thead>
                     <tr>
@@ -62,60 +62,34 @@ Home
                         <th>Category</th>
                         <th>Brand</th>
                         <th>Model</th>
-                        <th>Tag No.</th>
-                        <th>Serial No.</th>
+                        <th>Tag</th>
+                        <th>Serial</th>
                         <th>Description</th>
                         <th>Unit</th>
                         <th>Building</th>
                         <th>Floor</th>
                         <th>PM Date</th>
-                        <!-- <th>Actions</th> -->
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th><input type="text" placeholder="Search Home"></th>
-                        <th><input type="text" placeholder="Search Status"></th>
-                        <th><input type="text" placeholder="Search Category"></th>
-                        <th><input type="text" placeholder="Search Brand"></th>
-                        <th><input type="text" placeholder="Search Model"></th>
-                        <th><input type="text" placeholder="Search Tag"></th>
-                        <th><input type="text" placeholder="Search Serial"></th>
-                        <th><input type="text" placeholder="Search Description"></th>
-                        <th><input type="text" placeholder="Search Unit"></th>
-                        <th><input type="text" placeholder="Search Building"></th>
-                        <th><input type="text" placeholder="Search Floor"></th>
-                        <th><input type="text" placeholder="Search PM Date"></th>
-                        <!-- <th></th> -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for todo in alltodo %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ todo.date }}</td>
-                        <td>{{ todo.home }}</td>
-                        <td>{{ todo.status }}</td>
-                        <td>{{ todo.category }}</td>
-                        <td>{{ todo.brand }}</td>
-                        <td>{{ todo.model }}</td>
-                        <td>{{ todo.tag }}</td>
-                        <td>{{ todo.serial }}</td>
-                        <td>{{ todo.desc }}</td>
-                        <td>{{ todo.unit }}</td>
-                        <td>{{ todo.building }}</td>
-                        <td>{{ todo.floor }}</td>
-                        <td>{{ todo.pm_date }}</td>
-                        <!-- <td>
-                            <a href="/update/{{ todo.sno }}" class="btn btn-dark btn-sm">Update</a>
-                            {% if current_user.role == 'master' %}
-                            <a href="/delete/{{ todo.sno }}" class="btn btn-dark btn-sm mx-1">Delete</a>
-                            {% endif %}
-                        </td> -->
-                    </tr>
-                    {% endfor %}
-                </tbody>
+                <tbody></tbody>
             </table>
+            <!-- Pagination Controls -->
+            <div class="pagination my-3 d-flex justify-content-center">
+                {% if pagination.has_prev %}
+                <a class="btn btn-outline-dark mx-1"
+                    href="{{ url_for('get_input', page=pagination.prev_num) }}">Previous</a>
+                {% endif %}
+
+                <span class="align-self-center mx-2">
+                    Page {{ pagination.page }} of {{ pagination.pages }}
+                </span>
+
+                {% if pagination.has_next %}
+                <a class="btn btn-outline-dark mx-1"
+                    href="{{ url_for('get_input', page=pagination.next_num) }}">Next</a>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endif %}
