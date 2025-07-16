@@ -3,11 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import or_
 from io import BytesIO
 import pandas as pd
 from datetime import datetime, timedelta
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, func
 import os
 from datetime import datetime, timedelta
 from math import ceil
@@ -240,7 +239,6 @@ def data():
     # Search logic
     if search_value:
         search = f"%{search_value}%"
-        from sqlalchemy import func
         query = query.filter(
             or_(
                 func.lower(Todo.date).like(search),
