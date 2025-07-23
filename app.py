@@ -223,49 +223,54 @@ def download_excel():
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 @app.route('/api/data')
 @login_required
 def data():
     draw = int(request.args.get('draw', 1))
     start = int(request.args.get('start', 0))
     length = int(request.args.get('length', 10))
-    search_value = request.args.get('search[value]', '').lower()
 
-    # Role-based base query
     query = Todo.query
     if current_user.role == 'limited':
         query = query.filter_by(unit=current_user.unit)
 
-    # Search logic
-    if search_value:
-        search = f"%{search_value}%"
-        query = query.filter(
-            or_(
-                func.lower(Todo.date).like(search),
-                func.lower(Todo.home).like(search),
-                func.lower(Todo.status).like(search),
-                func.lower(Todo.category).like(search),
-                func.lower(Todo.brand).like(search),
-                func.lower(Todo.model).like(search),
-                func.lower(Todo.tag).like(search),
-                func.lower(Todo.serial).like(search),
-                func.lower(Todo.desc).like(search),
-                func.lower(Todo.unit).like(search),
-                func.lower(Todo.building).like(search),
-                func.lower(Todo.floor).like(search),
-                func.cast(Todo.pm_date, db.String).like(search)
-            )
-        )
+    from sqlalchemy import func
+    search_filters = []
+
+    def get_col_value(index):
+        return request.args.get(f'columns[{index}][search][value]', '').strip().lower()
+
+    # Map of (column index → SQLAlchemy filter)
+    col_map = {
+        1: lambda val: func.lower(Todo.date).like(f"%{val}%"),
+        2: lambda val: func.lower(Todo.home).like(f"%{val}%"),
+        3: lambda val: func.lower(Todo.status).like(f"%{val}%"),
+        4: lambda val: func.lower(Todo.category).like(f"%{val}%"),
+        5: lambda val: func.lower(Todo.brand).like(f"%{val}%"),
+        6: lambda val: func.lower(Todo.model).like(f"%{val}%"),
+        7: lambda val: func.lower(Todo.tag).like(f"%{val}%"),
+        8: lambda val: func.lower(Todo.serial).like(f"%{val}%"),
+        9: lambda val: func.lower(Todo.desc).like(f"%{val}%"),
+        10: lambda val: func.lower(Todo.unit).like(f"%{val}%"),
+        11: lambda val: func.lower(Todo.building).like(f"%{val}%"),
+        12: lambda val: func.lower(Todo.floor).like(f"%{val}%"),
+        13: lambda val: func.cast(Todo.pm_date, db.String).like(f"%{val}%"),
+    }
+
+    for i, filter_func in col_map.items():
+        val = get_col_value(i)
+        if val:
+            search_filters.append(filter_func(val))
+
+    # Apply all filters
+    if search_filters:
+        from sqlalchemy import and_
+        query = query.filter(and_(*search_filters))
 
     records_filtered = query.count()
-
     todos = query.offset(start).limit(length).all()
 
-    if current_user.role == 'limited':
-        total = Todo.query.filter_by(unit=current_user.unit).count()
-    else:
-        total = Todo.query.count()
+    total = Todo.query.filter_by(unit=current_user.unit).count() if current_user.role == 'limited' else Todo.query.count()
 
     data = [{
         "sno": t.sno,
@@ -292,8 +297,6 @@ def data():
         'data': data
     }
 
-
-
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -308,7 +311,7 @@ def public_data():
 
     if search_value:
         search = f"%{search_value}%"
-        from sqlalchemy import func
+        # from sqlalchemy import func
         query = query.filter(
             or_(
                 func.lower(Todo.date).like(search),
