@@ -279,25 +279,16 @@
   {% endblock body %}
   <script>
     $(document).ready(function () {
-      let table = $('#myTable').DataTable({
+      $('#myTable').DataTable({
         serverSide: true,
         processing: true,
-        scrollX: true,
         ajax: {
           url: '/api/data',
-          type: 'GET',
-          data: function (d) {
-            // Collect values from filter inputs
-            $('#myTable thead tr:eq(1) th').each(function (i) {
-              let input = $(this).find('input');
-              if (input.length) {
-                d['columns[' + i + '][search][value]'] = input.val();
-              }
-            });
-          }
+          type: 'GET'
         },
+        scrollX: true,
         columns: [
-          { data: null, render: (data, type, row, meta) => meta.row + 1 },
+          { data: null, render: (data, type, row, meta) => meta.row + 1 },  // S No.
           { data: 'date' },
           { data: 'home' },
           { data: 'status' },
@@ -320,11 +311,6 @@
             }
           }
         ]
-      });
-
-      // Trigger redraw when any filter input is changed
-      $('#myTable thead input').on('keyup change', function () {
-        table.draw();
       });
     });
   </script>

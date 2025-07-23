@@ -238,7 +238,9 @@ Home
         {% else %}
         <div class="table-responsive-custom">
             <div style="overflow-x:auto;">
-                <table id="myTable" class="display nowrap" style="width:100%">
+                <table id="myTable"
+                    class="table display nowrap table table-professional table-striped table-bordered machine-table"
+                    style="width:100%;">
                     <thead>
                         <tr>
                             <th>S No.</th>
@@ -248,8 +250,8 @@ Home
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Model</th>
-                            <th>Tag No.</th>
-                            <th>Serial No.</th>
+                            <th>Tag</th>
+                            <th>Serial</th>
                             <th>Description</th>
                             <th>Unit</th>
                             <th>Building</th>
@@ -257,24 +259,8 @@ Home
                             <th>PM Date</th>
                             <th>Actions</th>
                         </tr>
-                        <tr>
-                            <th></th> <!-- S No. — no filter -->
-                            <th><input type="text" placeholder="Search Date" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Home" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Status" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Category" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Brand" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Model" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Tag" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Serial" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Description" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Unit" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Building" class="col-search"></th>
-                            <th><input type="text" placeholder="Search Floor" class="col-search"></th>
-                            <th><input type="text" placeholder="Search PM Date" class="col-search"></th>
-                            <th></th> <!-- Actions — no filter -->
-                        </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
