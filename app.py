@@ -1243,9 +1243,9 @@ def perform_pm(sno):
         flash("Unauthorized", "danger")
         return redirect(return_url)
 
-    if todo.pm_date != datetime.today().date():
-        flash("PM can only be performed on the scheduled date.", "warning")
-        return redirect(return_url)
+    # if todo.pm_date != datetime.today().date():
+    #     flash("PM can only be performed on the scheduled date.", "warning")
+    #     return redirect(return_url)
 
     CHECKLIST_ITEMS = [
         "Plunger", "Oil Pump", "Oil Leakage", "Oil Filter", "Valve",
