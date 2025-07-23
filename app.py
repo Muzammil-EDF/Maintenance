@@ -11,6 +11,7 @@ import os
 from datetime import datetime, timedelta
 from math import ceil
 import json
+import openpyxl
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
@@ -1389,12 +1390,18 @@ def download_log():
 def download_schedule(building):
     # Allow only authorized units or master
     allowed_units = ["YTM-1", "YTM-2", "YTM-3", "YTM-7"]
-    if current_user.unit not in allowed_units and current_user.role != 'master':
-        flash("Unauthorized", "danger")
-        return redirect("/")
 
     # Determine which unit's data to fetch
-    selected_unit = current_user.unit if current_user.role != 'master' else request.args.get("unit", "YTM-1")
+    if current_user.role == 'master':
+        selected_unit = request.args.get("unit")
+        if not selected_unit or selected_unit not in allowed_units:
+            flash("Please select a valid unit.", "danger")
+            return redirect("/")
+    else:
+        selected_unit = current_user.unit
+        if selected_unit not in allowed_units:
+            flash("Unauthorized", "danger")
+            return redirect("/")
 
     included_categories = ["Normal", "Special"]
     records = Todo.query.filter(
@@ -1411,14 +1418,14 @@ def download_schedule(building):
 
     # Convert to DataFrame
     data = [{
-        "PM Date": record.pm_date.strftime("%Y-%m-%d") if record.pm_date else "N/A",
-        "Description": record.desc,
         "Brand": record.brand,
         "Model": record.model,
+        "Description": record.desc,
         "Tag": record.tag,
         "Serial": record.serial,
         "Building": record.building,
-        "Floor": record.floor
+        "Floor": record.floor,
+        "PM Date": record.pm_date.strftime("%Y-%m-%d") if record.pm_date else "N/A"
     } for record in records]
 
     df = pd.DataFrame(data)
@@ -1429,5 +1436,5 @@ def download_schedule(building):
         df.to_excel(writer, index=False, sheet_name="PM Schedule")
     output.seek(0)
 
-    filename = f"PM_Schedule_{selected_unit}_{building}.xlsx"
-    return send_file(output, download_name=filename, as_attachment=True)
+    return send_file(output, as_attachment=True, download_name=f"{selected_unit}_{building}_PM_Schedule.xlsx", mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
