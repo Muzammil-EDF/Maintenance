@@ -139,6 +139,7 @@ def update(sno):
             # Only allow updating building and floor
             todo.building = request.form['building']
             todo.floor = request.form['floor']
+            todo.status = request.form['status']
         else:
             # Master can update all fields
             todo.category = request.form['category']
