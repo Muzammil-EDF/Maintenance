@@ -357,6 +357,53 @@ def public_data():
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+# ---------------------------------------PERFORM---PREVENTIVE---------------------------------------------- 
+@app.route("/perform_pm/<int:sno>", methods=["GET", "POST"])
+@login_required
+def perform_pm(sno):
+    return_url = request.args.get("return_url", "/")  # default fallback
+    todo = Todo.query.get_or_404(sno)
+
+    if current_user.role != 'master' and todo.unit != current_user.unit:
+        flash("Unauthorized", "danger")
+        return redirect(return_url)
+
+    # if todo.pm_date != datetime.today().date():
+    #     flash("PM can only be performed on the scheduled date.", "warning")
+    #     return redirect(return_url)
+
+    CHECKLIST_ITEMS = [
+        "Plunger", "Oil Pump", "Oil Leakage", "Oil Filter", "Valve",
+        "Bell Cover", "Belt", "Stuffing/Block", "Motor", "Panel",
+        "Bobbin Case", "Boot/Boot Screw", "Tension Spring", "Main Cam", "Push Rod",
+        "Needle Plate", "Pressure Spring", "Tension Rod", "Residual Thread", "Cleaning",
+        "Machine Safety Equipment", "Needle Drag", "Check Drag", "Hydraulic pipe"
+    ]
+
+    if request.method == "POST":
+        structured = []
+        for i, desc in enumerate(CHECKLIST_ITEMS, start=1):
+            structured.append({
+                "sno": i,
+                "desc": desc,
+                "check": request.form.get(f"check_{i}", ""),
+                "repaired": "yes" if request.form.get(f"repaired_{i}") else "no",
+                "replaced": "yes" if request.form.get(f"replaced_{i}") else "no",
+                "remarks": request.form.get(f"remarks_{i}", "")
+            })
+
+        todo.pm_status = "Done"
+        todo.checklist = json.dumps(structured)
+        db.session.commit()
+        flash("Checklist submitted and PM marked as Done.", "success")
+        return redirect(return_url)
+
+    return render_template("perform_pm.html", todo=todo, checklist_items=CHECKLIST_ITEMS, return_url=return_url)
+
+
+
 # -----------------------------------------------------------------YTM-1-ELECTRICAL-------------------------------------------------------------
 allowed_config_el1 = {
     "2A": {
@@ -1232,49 +1279,6 @@ def ytm7_schedule(building):
 
     return render_template("preventive_schedule.html", schedule=schedule, building=building, per_day=per_day, today=datetime.today().date())
 
-
-# ---------------------------------------PERFORM---PREVENTIVE---------------------------------------------- 
-@app.route("/perform_pm/<int:sno>", methods=["GET", "POST"])
-@login_required
-def perform_pm(sno):
-    return_url = request.args.get("return_url", "/")  # default fallback
-    todo = Todo.query.get_or_404(sno)
-
-    if current_user.role != 'master' and todo.unit != current_user.unit:
-        flash("Unauthorized", "danger")
-        return redirect(return_url)
-
-    # if todo.pm_date != datetime.today().date():
-    #     flash("PM can only be performed on the scheduled date.", "warning")
-    #     return redirect(return_url)
-
-    CHECKLIST_ITEMS = [
-        "Plunger", "Oil Pump", "Oil Leakage", "Oil Filter", "Valve",
-        "Bell Cover", "Belt", "Stuffing/Block", "Motor", "Panel",
-        "Bobbin Case", "Boot/Boot Screw", "Tension Spring", "Main Cam", "Push Rod",
-        "Needle Plate", "Pressure Spring", "Tension Rod", "Residual Thread", "Cleaning",
-        "Machine Safety Equipment", "Needle Drag", "Check Drag", "Hydraulic pipe"
-    ]
-
-    if request.method == "POST":
-        structured = []
-        for i, desc in enumerate(CHECKLIST_ITEMS, start=1):
-            structured.append({
-                "sno": i,
-                "desc": desc,
-                "check": request.form.get(f"check_{i}", ""),
-                "repaired": "yes" if request.form.get(f"repaired_{i}") else "no",
-                "replaced": "yes" if request.form.get(f"replaced_{i}") else "no",
-                "remarks": request.form.get(f"remarks_{i}", "")
-            })
-
-        todo.pm_status = "Done"
-        todo.checklist = json.dumps(structured)
-        db.session.commit()
-        flash("Checklist submitted and PM marked as Done.", "success")
-        return redirect(return_url)
-
-    return render_template("perform_pm.html", todo=todo, checklist_items=CHECKLIST_ITEMS, return_url=return_url)
 
 
 # ---------------------------VIEW CHECKLIST---------------------------------
