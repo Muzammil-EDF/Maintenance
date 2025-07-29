@@ -65,6 +65,24 @@ Home
                         <th>Floor</th>
                         <th>PM Date</th>
                     </tr>
+                    <tr>
+                        <th></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
+                        <th></th>
+                    </tr>
+
                 </thead>
                 <tbody></tbody>
             </table>
@@ -73,7 +91,7 @@ Home
     </div>
 </div>
 
-
+<!-- 
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
@@ -102,8 +120,59 @@ Home
             ]
         });
     });
+</script> -->
+
+<script>
+    $(document).ready(function () {
+        let table = $("#myTable").DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: "/api/public_data",
+                type: "GET",
+            },
+            scrollX: true,
+            columns: [
+                { data: null, render: (data, type, row, meta) => meta.row + 1 }, // S No.
+                { data: "date" },
+                { data: "home" },
+                { data: "status" },
+                { data: "category" },
+                { data: "brand" },
+                { data: "model" },
+                { data: "tag" },
+                { data: "serial" },
+                { data: "desc" },
+                { data: "unit" },
+                { data: "building" },
+                { data: "floor" },
+                { data: "pm_date" },
+                {
+                    data: "tag", // Or any unique field you need for actions
+                    render: function (data, type, row, meta) {
+                        let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
+                        let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
+                        return updateBtn + deleteBtn;
+                    },
+                },
+            ],
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        $(
+                            "input",
+                            column.footer() || column.header().nextElementSibling
+                        ).on("keyup change clear", function () {
+                            if (column.search() !== this.value) {
+                                column.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+        });
+    });
 </script>
-
-
 
 {% endblock body %}
