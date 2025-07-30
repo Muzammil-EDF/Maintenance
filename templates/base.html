@@ -472,6 +472,7 @@
       });
     </script> -->
     <script>
+      const currentUserRole = "{{ current_user.role }}";
       $(document).ready(function () {
         let table = $("#myTable").DataTable({
           serverSide: true,
@@ -500,7 +501,11 @@
               data: "sno", // ✅ Use the primary key
               render: function (data, type, row, meta) {
                 let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
-                let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
+                let deleteBtn = "";
+
+                if (currentUserRole === "master") {
+                  deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
+                }
                 return updateBtn + deleteBtn;
               },
             },
