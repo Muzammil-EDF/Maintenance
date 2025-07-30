@@ -1,94 +1,184 @@
-{% extends 'base.html' %}
-{% block category %}
-Home
-{% endblock category %}
-{% block body %}
+{% extends 'base.html' %} {% block category %} Home {% endblock category %} {%
+block body %}
 
 <!-- Login Form -->
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card login-card">
-                <div class="login-header">
-                    <h3>User Login</h3>
-                </div>
-                <div class="card-body p-4">
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username"
-                                placeholder="Enter username" required pattern="[A-Za-z0-9_]{4,20}"
-                                title="4-20 characters: letters, numbers, or underscores only">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Enter password" required pattern=".{6,}"
-                                title="Password must be at least 6 characters long">
-                        </div>
-
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-actions btn-login">Login</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card login-card">
+        <div class="login-header">
+          <h3>User Login</h3>
         </div>
+        <div class="card-body p-4">
+          <form method="POST">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Enter username"
+                required
+                pattern="[A-Za-z0-9_]{4,20}"
+                title="4-20 characters: letters, numbers, or underscores only"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                required
+                pattern=".{6,}"
+                title="Password must be at least 6 characters long"
+              />
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-actions btn-login">
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
-
 
 <!-- VIEW ONLY DATABASE DATA -->
 <div class="container-my-3">
-    <h3 class="text-center text-lg-start my-3">Master Machine List</h3>
+  <h3 class="text-center text-lg-start my-3">Master Machine List</h3>
 
-    <div class="table-responsive-custom">
-        <div style="overflow-x:auto;">
-            <table id="myTable" class="display nowrap table table-professional table-striped table-bordered table-sm"
-                style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>S No.</th>
-                        <th>Date</th>
-                        <th>Home</th>
-                        <th>Status</th>
-                        <th>Category</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>Tag No.</th>
-                        <th>Serial No.</th>
-                        <th>Description</th>
-                        <th>Unit</th>
-                        <th>Building</th>
-                        <th>Floor</th>
-                        <th>PM Date</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <th><input type="text" class="form-control form-control-sm" placeholder="Search..." /></th>
-                        <!-- <th></th> -->
-                    </tr>
-
-                </thead>
-                <tbody></tbody>
-            </table>
-
-        </div>
+  <div class="table-responsive-custom">
+    <div style="overflow-x: auto">
+      <table
+        id="myTable"
+        class="display nowrap table table-professional table-striped table-bordered table-sm"
+        style="width: 100%"
+      >
+        <thead>
+          <tr>
+            <th>S No.</th>
+            <th>Date</th>
+            <th>Home</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Tag No.</th>
+            <th>Serial No.</th>
+            <th>Description</th>
+            <th>Unit</th>
+            <th>Building</th>
+            <th>Floor</th>
+            <th>PM Date</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <th>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Search..."
+              />
+            </th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
+  </div>
 </div>
 
 <!-- 
@@ -123,56 +213,56 @@ Home
 </script> -->
 
 <script>
-    $(document).ready(function () {
-        let table = $("#myTable").DataTable({
-            serverSide: true,
-            processing: true,
-            ajax: {
-                url: "/api/public_data",
-                type: "GET",
-            },
-            scrollX: true,
-            columns: [
-                { data: null, render: (data, type, row, meta) => meta.row + 1 }, // S No.
-                { data: "date" },
-                { data: "home" },
-                { data: "status" },
-                { data: "category" },
-                { data: "brand" },
-                { data: "model" },
-                { data: "tag" },
-                { data: "serial" },
-                { data: "desc" },
-                { data: "unit" },
-                { data: "building" },
-                { data: "floor" },
-                { data: "pm_date" },
-                // {
-                //     data: "tag", // Or any unique field you need for actions
-                //     render: function (data, type, row, meta) {
-                //         let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
-                //         let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
-                //         return updateBtn + deleteBtn;
-                //     },
-                // },
-            ],
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        let column = this;
-                        $(
-                            "input",
-                            column.footer() || column.header().nextElementSibling
-                        ).on("keyup change clear", function () {
-                            if (column.search() !== this.value) {
-                                column.search(this.value).draw();
-                            }
-                        });
-                    });
-            },
-        });
+  $(document).ready(function () {
+    let table = $("#myTable").DataTable({
+      serverSide: true,
+      processing: true,
+      ajax: {
+        url: "/api/public_data",
+        type: "GET",
+      },
+      scrollX: true,
+      columns: [
+        { data: null, render: (data, type, row, meta) => meta.row + 1 }, // S No.
+        { data: "date" },
+        { data: "home" },
+        { data: "status" },
+        { data: "category" },
+        { data: "brand" },
+        { data: "model" },
+        { data: "tag" },
+        { data: "serial" },
+        { data: "desc" },
+        { data: "unit" },
+        { data: "building" },
+        { data: "floor" },
+        { data: "pm_date" },
+        {
+          data: "sno", // ✅ Use the primary key
+          render: function (data, type, row, meta) {
+            let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
+            let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
+            return updateBtn + deleteBtn;
+          },
+        },
+      ],
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            let column = this;
+            $(
+              "input",
+              column.footer() || column.header().nextElementSibling
+            ).on("keyup change clear", function () {
+              if (column.search() !== this.value) {
+                column.search(this.value).draw();
+              }
+            });
+          });
+      },
     });
+  });
 </script>
 
 {% endblock body %}
