@@ -237,14 +237,14 @@ block body %}
         { data: "building" },
         { data: "floor" },
         { data: "pm_date" },
-        {
-          data: "sno", // ✅ Use the primary key
-          render: function (data, type, row, meta) {
-            let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
-            let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
-            return updateBtn + deleteBtn;
-          },
-        },
+        // {
+        //   data: "sno", // ✅ Use the primary key
+        //   render: function (data, type, row, meta) {
+        //     let updateBtn = `<a href="/update/${data}" class="btn btn-dark btn-sm">Update</a>`;
+        //     let deleteBtn = `<a href="/delete/${data}" class="btn btn-dark btn-sm mx-1">Delete</a>`;
+        //     return updateBtn + deleteBtn;
+        //   },
+        // },
       ],
       initComplete: function () {
         this.api()
