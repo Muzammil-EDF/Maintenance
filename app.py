@@ -298,102 +298,35 @@ def data():
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Thi  is for main search bar working fine 
-@app.route('/api/public_data')
-def public_data():
-    draw = int(request.args.get('draw', 1))
-    start = int(request.args.get('start', 0))
-    length = int(request.args.get('length', 10))
-    search_value = request.args.get('search[value]', '').lower()
-
-    query = Todo.query
-
-    if search_value:
-        search = f"%{search_value}%"
-        from sqlalchemy import func
-        query = query.filter(
-            or_(
-                func.lower(Todo.date).like(search),
-                func.lower(Todo.home).like(search),
-                func.lower(Todo.status).like(search),
-                func.lower(Todo.category).like(search),
-                func.lower(Todo.brand).like(search),
-                func.lower(Todo.model).like(search),
-                func.lower(Todo.tag).like(search),
-                func.lower(Todo.serial).like(search),
-                func.lower(Todo.desc).like(search),
-                func.lower(Todo.unit).like(search),
-                func.lower(Todo.building).like(search),
-                func.lower(Todo.floor).like(search),
-                func.cast(Todo.pm_date, db.String).like(search)
-            )
-        )
-
-    records_filtered = query.count()
-    todos = query.offset(start).limit(length).all()
-    total = Todo.query.count()
-
-    data = [{
-        "date": t.date,
-        "home": t.home,
-        "status": t.status,
-        "category": t.category,
-        "brand": t.brand,
-        "model": t.model,
-        "tag": t.tag,
-        "serial": t.serial,
-        "desc": t.desc,
-        "unit": t.unit,
-        "building": t.building,
-        "floor": t.floor,
-        "pm_date": t.pm_date.strftime("%Y-%m-%d") if t.pm_date else "",
-    } for t in todos]
-
-    return {
-        'draw': draw,
-        'recordsTotal': total,
-        'recordsFiltered': records_filtered,
-        'data': data
-    }
-
-
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# This  is for per columnsearch
-# from flask import request
-# from sqlalchemy import or_, func
-
 # @app.route('/api/public_data')
 # def public_data():
 #     draw = int(request.args.get('draw', 1))
 #     start = int(request.args.get('start', 0))
 #     length = int(request.args.get('length', 10))
+#     search_value = request.args.get('search[value]', '').lower()
 
 #     query = Todo.query
 
-#     # Apply per-column filtering
-#     col_filters = [
-#         ('date', 'columns[0][search][value]'),
-#         ('home', 'columns[1][search][value]'),
-#         ('status', 'columns[2][search][value]'),
-#         ('category', 'columns[3][search][value]'),
-#         ('brand', 'columns[4][search][value]'),
-#         ('model', 'columns[5][search][value]'),
-#         ('tag', 'columns[6][search][value]'),
-#         ('serial', 'columns[7][search][value]'),
-#         ('desc', 'columns[8][search][value]'),
-#         ('unit', 'columns[9][search][value]'),
-#         ('building', 'columns[10][search][value]'),
-#         ('floor', 'columns[11][search][value]'),
-#         ('pm_date', 'columns[12][search][value]')
-#     ]
-
-#     for attr, req_key in col_filters:
-#         search_val = request.args.get(req_key, '').strip().lower()
-#         if search_val:
-#             col = getattr(Todo, attr)
-#             if attr == 'pm_date':
-#                 query = query.filter(func.cast(col, db.String).ilike(f"%{search_val}%"))
-#             else:
-#                 query = query.filter(func.lower(col).like(f"%{search_val}%"))
+#     if search_value:
+#         search = f"%{search_value}%"
+#         from sqlalchemy import func
+#         query = query.filter(
+#             or_(
+#                 func.lower(Todo.date).like(search),
+#                 func.lower(Todo.home).like(search),
+#                 func.lower(Todo.status).like(search),
+#                 func.lower(Todo.category).like(search),
+#                 func.lower(Todo.brand).like(search),
+#                 func.lower(Todo.model).like(search),
+#                 func.lower(Todo.tag).like(search),
+#                 func.lower(Todo.serial).like(search),
+#                 func.lower(Todo.desc).like(search),
+#                 func.lower(Todo.unit).like(search),
+#                 func.lower(Todo.building).like(search),
+#                 func.lower(Todo.floor).like(search),
+#                 func.cast(Todo.pm_date, db.String).like(search)
+#             )
+#         )
 
 #     records_filtered = query.count()
 #     todos = query.offset(start).limit(length).all()
@@ -421,6 +354,74 @@ def public_data():
 #         'recordsFiltered': records_filtered,
 #         'data': data
 #     }
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# This  is for per columnsearch
+from flask import request
+from sqlalchemy import or_, func
+
+@app.route('/api/public_data')
+def public_data():
+    draw = int(request.args.get('draw', 1))
+    start = int(request.args.get('start', 0))
+    length = int(request.args.get('length', 10))
+
+    query = Todo.query
+
+    # Apply per-column filtering
+    col_filters = [
+        ('date', 'columns[0][search][value]'),
+        ('home', 'columns[1][search][value]'),
+        ('status', 'columns[2][search][value]'),
+        ('category', 'columns[3][search][value]'),
+        ('brand', 'columns[4][search][value]'),
+        ('model', 'columns[5][search][value]'),
+        ('tag', 'columns[6][search][value]'),
+        ('serial', 'columns[7][search][value]'),
+        ('desc', 'columns[8][search][value]'),
+        ('unit', 'columns[9][search][value]'),
+        ('building', 'columns[10][search][value]'),
+        ('floor', 'columns[11][search][value]'),
+        ('pm_date', 'columns[12][search][value]')
+    ]
+
+    for attr, req_key in col_filters:
+        search_val = request.args.get(req_key, '').strip().lower()
+        if search_val:
+            col = getattr(Todo, attr)
+            if attr == 'pm_date':
+                query = query.filter(func.cast(col, db.String).ilike(f"%{search_val}%"))
+            else:
+                query = query.filter(func.lower(col).like(f"%{search_val}%"))
+
+    records_filtered = query.count()
+    todos = query.offset(start).limit(length).all()
+    total = Todo.query.count()
+
+    data = [{
+        "sno": t.sno,  # ✅ Add this line
+        "date": t.date,
+        "home": t.home,
+        "status": t.status,
+        "category": t.category,
+        "brand": t.brand,
+        "model": t.model,
+        "tag": t.tag,
+        "serial": t.serial,
+        "desc": t.desc,
+        "unit": t.unit,
+        "building": t.building,
+        "floor": t.floor,
+        "pm_date": t.pm_date.strftime("%Y-%m-%d") if t.pm_date else "",
+    } for t in todos]
+
+    return {
+        'draw': draw,
+        'recordsTotal': total,
+        'recordsFiltered': records_filtered,
+        'data': data
+    }
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
