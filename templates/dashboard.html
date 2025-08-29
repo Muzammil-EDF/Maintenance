@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-3">Dashboard</h2>
+
+    <!-- Main Table -->
+    <!-- <div class="card p-3 mb-4 shadow-sm">
+        <h5>Data Table</h5>
+        <table id="dashboardTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+        </table>
+    </div> -->
+    <div class="row">
+        <!-- ---------------- Category vs Description Count ---------------- -->
+        <div class="card p-3 mb-4 shadow-sm col-md-4">
+            <h5>Category vs Description Count</h5>
+            <table id="summaryTable" class="display" style="width:50%">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Description Count</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- ---------------- Description Summary ---------------- -->
+        <div class="card p-3 mb-4 shadow-sm col-md-4">
+            <h5>Description Summary</h5>
+            <table id="descTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
+        <!-- ---------------- Status Summary ---------------- -->
+        <div class="card p-3 mb-4 shadow-sm col-md-4">
+            <h5>Status Summary</h5>
+            <table id="statusTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Charts -->
+    <!-- <div class="row">
+        <div class="col-md-6">
+            <div class="card p-3 shadow-sm">
+                <h5>Status Distribution</h5>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-3 shadow-sm">
+                <h5>Category Count</h5>
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div> -->
+</div>
+
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const rows = {{ rows| safe }};
+
+    // ✅ Initialize main DataTable
+    $('#dashboardTable').DataTable({
+        data: rows,
+        columns: [
+            { data: 'category' },
+            { data: 'desc' }
+        ]
+    });
+
+    // ✅ Build summary (Category vs Description count)
+    // ✅ Build summary (Category vs Unique Description count)
+    let summary = {};
+
+    rows.forEach(r => {
+        if (r.category && r.desc) {
+            if (!summary[r.category]) {
+                summary[r.category] = new Set();
+            }
+            summary[r.category].add(r.desc);  // unique values only
+        }
+    });
+
+    let summaryData = Object.keys(summary).map(cat => ({
+        category: cat,
+        desc_count: summary[cat].size
+    }));
+
+    // ---------------- Category vs Description Count ----------------
+    $('#summaryTable').DataTable({
+        data: summaryData,
+        columns: [
+            { data: 'category' },
+            { data: 'desc_count' }
+        ]
+    });
+
+    // ---------------- Description Summary ----------------
+    let descCounts = rows.reduce((acc, r) => {
+        if (r.desc) {
+            acc[r.desc] = (acc[r.desc] || 0) + 1;
+        }
+        return acc;
+    }, {});
+
+    let descData = Object.keys(descCounts).map(d => ({
+        description: d,
+        count: descCounts[d]
+    }));
+
+    $('#descTable').DataTable({
+        data: descData,
+        columns: [
+            { data: 'description' },
+            { data: 'count' }
+        ]
+    });
+
+
+    // ---------------- Status Summary ----------------
+    let statusCounts = rows.reduce((acc, r) => {
+        acc[r.status] = (acc[r.status] || 0) + 1;
+        return acc;
+    }, {});
+
+    let statusData = Object.keys(statusCounts).map(stat => ({
+        status: stat,
+        count: statusCounts[stat]
+    }));
+
+    $('#statusTable').DataTable({
+        data: statusData,
+        columns: [
+            { data: 'status' },
+            { data: 'count' }
+        ]
+    });
+
+
+
+    // // ✅ Status Chart
+    // const statusCounts = rows.reduce((acc, r) => {
+    //     acc[r.status] = (acc[r.status] || 0) + 1;
+    //     return acc;
+    // }, {});
+
+    // new Chart(document.getElementById('statusChart'), {
+    //     type: 'pie',
+    //     data: {
+    //         labels: Object.keys(statusCounts),
+    //         datasets: [{
+    //             data: Object.values(statusCounts),
+    //             backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4CAF50']
+    //         }]
+    //     }
+    // });
+
+    // ✅ Category Chart
+    // const categoryCounts = rows.reduce((acc, r) => {
+    //     acc[r.category] = (acc[r.category] || 0) + 1;
+    //     return acc;
+    // }, {});
+
+    // new Chart(document.getElementById('categoryChart'), {
+    //     type: 'bar',
+    //     data: {
+    //         labels: Object.keys(categoryCounts),
+    //         datasets: [{
+    //             label: "Count",
+    //             data: Object.values(categoryCounts),
+    //             backgroundColor: '#36A2EB'
+    //         }]
+    //     }
+    // });
+</script>
+{% endblock %}

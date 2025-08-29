@@ -12,6 +12,9 @@ from datetime import datetime, timedelta
 from math import ceil
 import json
 import openpyxl
+from flask import request
+from sqlalchemy import or_, func
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
@@ -358,8 +361,6 @@ def data():
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # This  is for per columnsearch
-from flask import request
-from sqlalchemy import or_, func
 
 @app.route('/api/public_data')
 def public_data():
@@ -424,6 +425,35 @@ def public_data():
     }
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    # Role-based data access
+    if current_user.role == 'master':
+        todos = Todo.query.all()
+    else:
+        todos = Todo.query.filter_by(unit=current_user.unit).all()
+
+    # Convert DB records to a list of dicts
+    rows = [
+        {
+            "date": t.date,
+            "status": t.status,
+            "category": t.category,
+            "brand": t.brand,
+            "model": t.model,
+            "desc": t.desc,
+            "unit": t.unit,
+            "building": t.building,
+            "floor": t.floor,
+            "pm_date": t.pm_date.strftime("%Y-%m-%d") if t.pm_date else None
+        }
+        for t in todos
+    ]
+
+    return render_template("dashboard.html", rows=json.dumps(rows))
+
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
