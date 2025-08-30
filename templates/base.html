@@ -158,6 +158,64 @@
       box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
       /* scrolls horizontally if needed */
     }
+
+    /* ======================================================================================= */
+    /* General container uses full width */
+    .container-fluid {
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Flex row for tables/charts */
+    .dashboard-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      /* space between cards */
+      margin-bottom: 20px;
+    }
+
+    /* Card styling */
+    .dashboard-card {
+      flex: 1 1 30%;
+      /* take at least 30% width, shrink/grow as needed */
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      min-width: 280px;
+      /* prevents too small cards */
+    }
+
+    /* Make tables and charts take full space */
+    .full-width {
+      width: 100% !important;
+    }
+
+    /* Responsive: stack on small screens */
+    @media (max-width: 768px) {
+      .dashboard-card {
+        flex: 1 1 100%;
+      }
+    }
+
+    /* highlight selected summary row */
+    .selected-filter {
+      background-color: #e3f2fd !important;
+      /* light blue */
+    }
+
+    #statusTable tbody tr,
+    #brandTable tbody tr,
+    #unitTable tbody tr,
+    #buildingTable tbody tr,
+    #summaryTable tbody tr,
+    #descTable tbody tr {
+      cursor: pointer;
+    }
+
+    /* ======================================================================================= */
   </style>
 </head>
 
