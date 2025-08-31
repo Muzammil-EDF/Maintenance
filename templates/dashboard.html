@@ -1,10 +1,9 @@
-{% extends "base.html" %}
-{% block body %}
+{% extends "base.html" %} {% block body %}
 <div class="container-dash mt-4">
-    <h2 class="mb-3 px-3">Dashboard</h2>
+  <h2 class="mb-3 px-3">Dashboard</h2>
 
-    <!-- Main Table -->
-    <!-- <div class="card p-3 mb-4 shadow-sm">
+  <!-- Main Table -->
+  <!-- <div class="card p-3 mb-4 shadow-sm">
         <h5>Data Table</h5>
         <table id="dashboardTable" class="display" style="width:100%">
             <thead>
@@ -16,121 +15,92 @@
         </table>
     </div> -->
 
-    <!-- ================= Tables Section ================= -->
+  <!-- ================= Tables Section ================= -->
 
-    <div class="container-fluid">
+  <div class="container-fluid">
+    <div class="dashboard-row">
+      <!-- Category vs Description Count -->
+      <div class="dashboard-card">
+        <h5>Machine Category</h5>
+        <table id="summaryTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Description Count</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-        <div class="dashboard-row">
+      <!-- Description Summary -->
+      <div class="dashboard-card">
+        <h5>Machine Type</h5>
+        <table id="descTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
 
-            <!-- Category vs Description Count -->
-            <div class="dashboard-card">
-                <h5>Machine Category</h5>
-                <table id="summaryTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Description Count</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+      <!-- Brand Summary -->
+      <div class="dashboard-card">
+        <h5>Brands</h5>
+        <table id="brandTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Brand</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
 
-            <!-- Description Summary -->
-            <div class="dashboard-card">
-                <h5>Machine Type</h5>
-                <table id="descTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+      <!-- Unit Summary -->
+      <div class="dashboard-card">
+        <h5>Unit</h5>
+        <table id="unitTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
 
+      <!-- Status Summary -->
+      <div class="dashboard-card">
+        <h5>Status Summary</h5>
+        <table id="statusTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <!-- Status Summary -->
+      <div class="dashboard-card">
+        <!-- <h5>Building Summary</h5> -->
+        <table id="buildingTable" class="display full-width">
+          <thead>
+            <tr>
+              <th>Building</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
 
-            <!-- Brand Summary -->
-            <div class="dashboard-card">
-                <h5>Brands</h5>
-                <table id="brandTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-
-            <!-- Unit Summary -->
-            <div class="dashboard-card">
-                <h5>Unit</h5>
-                <table id="unitTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Unit</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-            <!-- Status Summary -->
-            <div class="dashboard-card">
-                <h5>Status Summary</h5>
-                <table id="statusTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <!-- Status Summary -->
-            <div class="dashboard-card">
-                <!-- <h5>Building Summary</h5> -->
-                <table id="buildingTable" class="display full-width">
-                    <thead>
-                        <tr>
-                            <th>Building</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-        </div>
-
-        <!-- Master Table -->
-        <div class="table-container">
-            <h3>Filtered Data</h3>
-            <table id="masterTable" class="display compact" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Category</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>Description</th>
-                        <th>Unit</th>
-                        <th>Building</th>
-                        <th>Floor</th>
-                        <th>PM Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- DataTables will fill this automatically -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- ==================================================================================== -->
-        <!-- Charts -->
-        <!-- <div class="row">
+    <!-- ==================================================================================== -->
+    <!-- Charts -->
+    <!-- <div class="row">
         <div class="col-md-6">
             <div class="card p-3 shadow-sm">
                 <h5>Status Distribution</h5>
@@ -145,338 +115,139 @@
             </div>
         </div>
     </div> -->
-    </div>
+  </div>
 
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <script>
-        // make rows global
-        let rows = JSON.parse('{{ rows|safe }}');
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const rows = {{ rows | safe }};
 
-        // filters object (global)
-        let activeFilters = {
-            status: null,
-            brand: null,
-            unit: null,
-            building: null
+    const activeFilters = {
+        status: null,
+        brand: null,
+        unit: null,
+        building: null,
+        category: null,
+        desc: null
+    };
+
+    let summaryDTs = {};
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // ---------- Init summary tables (empty first) ----------
+        const dtOpts = {
+            paging: false,
+            searching: false,
+            info: false,
+            scrollY: "250px",
+            scrollCollapse: true
         };
 
-        let masterTable;
-
-        document.addEventListener("DOMContentLoaded", function () {
-
-            // ---------------- Category vs Description ----------------
-            let categoryCounts = rows.reduce((acc, r) => {
-                acc[r.category] = (acc[r.category] || 0) + 1;
-                return acc;
-            }, {});
-            let summaryData = Object.keys(categoryCounts).map(cat => ({
-                category: cat,
-                count: categoryCounts[cat]
-            }));
-
-            // ---------------- Description Summary ----------------
-            let descCounts = rows.reduce((acc, r) => {
-                acc[r.desc] = (acc[r.desc] || 0) + 1;
-                return acc;
-            }, {});
-            let descData = Object.keys(descCounts).map(d => ({
-                desc: d,
-                count: descCounts[d]
-            }));
-
-            // ---------------- Brand Summary ----------------
-            let brandCounts = rows.reduce((acc, r) => {
-                if (r.brand) acc[r.brand] = (acc[r.brand] || 0) + 1;
-                return acc;
-            }, {});
-            let brandData = Object.keys(brandCounts).map(b => ({
-                brand: b,
-                count: brandCounts[b]
-            }));
-
-            // ---------------- Unit Summary ----------------
-            let unitCounts = rows.reduce((acc, r) => {
-                if (r.unit) acc[r.unit] = (acc[r.unit] || 0) + 1;
-                return acc;
-            }, {});
-            let unitData = Object.keys(unitCounts).map(u => ({
-                unit: u,
-                count: unitCounts[u]
-            }));
-
-            // ---------------- Status Summary ----------------
-            let statusCounts = rows.reduce((acc, r) => {
-                acc[r.status] = (acc[r.status] || 0) + 1;
-                return acc;
-            }, {});
-            let statusData = Object.keys(statusCounts).map(s => ({
-                status: s,
-                count: statusCounts[s]
-            }));
-
-            // ---------------- Building Summary ----------------
-            let buildingCounts = rows.reduce((acc, r) => {
-                if (r.building) acc[r.building] = (acc[r.building] || 0) + 1;
-                return acc;
-            }, {});
-            let buildingData = Object.keys(buildingCounts).map(b => ({
-                building: b,
-                count: buildingCounts[b]
-            }));
-
-            // ---------------- Summary Tables ----------------
-            $('#summaryTable').DataTable({
-                data: summaryData,
-                columns: [{ data: 'category' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            $('#descTable').DataTable({
-                data: descData,
-                columns: [{ data: 'desc' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            $('#brandTable').DataTable({
-                data: brandData,
-                columns: [{ data: 'brand' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            $('#unitTable').DataTable({
-                data: unitData,
-                columns: [{ data: 'unit' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            $('#statusTable').DataTable({
-                data: statusData,
-                columns: [{ data: 'status' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            $('#buildingTable').DataTable({
-                data: buildingData,
-                columns: [{ data: 'building' }, { data: 'count' }],
-                paging: false, searching: false, info: false,
-                scrollY: "250px", scrollCollapse: true
-            });
-
-            // ---------------- Master Table ----------------
-            masterTable = $('#masterTable').DataTable({
-                data: rows,   // now works ✅
-                columns: [
-                    { data: 'date' },
-                    { data: 'status' },
-                    { data: 'category' },
-                    { data: 'brand' },
-                    { data: 'model' },
-                    { data: 'desc' },
-                    { data: 'unit' },
-                    { data: 'building' },
-                    { data: 'floor' },
-                    { data: 'pm_date' }
-                ],
-                scrollY: '300px',
-                scrollCollapse: true,
-                paging: false
-            });
-
-            // ---------------- Row Click Filters ----------------
-            $('#statusTable tbody').on('click', 'tr', function () {
-                let data = $('#statusTable').DataTable().row(this).data();
-                activeFilters.status = data ? data.status : null;
-                applyFilters();
-            });
-
-            $('#brandTable tbody').on('click', 'tr', function () {
-                let data = $('#brandTable').DataTable().row(this).data();
-                activeFilters.brand = data ? data.brand : null;
-                applyFilters();
-            });
-
-            $('#unitTable tbody').on('click', 'tr', function () {
-                let data = $('#unitTable').DataTable().row(this).data();
-                activeFilters.unit = data ? data.unit : null;
-                applyFilters();
-            });
-
-            $('#buildingTable tbody').on('click', 'tr', function () {
-                let data = $('#buildingTable').DataTable().row(this).data();
-                activeFilters.building = data ? data.building : null;
-                applyFilters();
-            });
-        });
-
-        // ---------------- Apply Filters Function ----------------
-        function applyFilters() {
-            let filtered = rows.filter(r => {
-                let statusOk = !activeFilters.status || r.status === activeFilters.status;
-                let brandOk = !activeFilters.brand || r.brand === activeFilters.brand;
-                let unitOk = !activeFilters.unit || r.unit === activeFilters.unit;
-                let buildingOk = !activeFilters.building || r.building === activeFilters.building;
-                return statusOk && brandOk && unitOk && buildingOk;
-            });
-
-            masterTable.clear().rows.add(filtered).draw();
-        }
-    </script> -->
-    <script>
-        // Make data & state global
-        const rows = {{ rows | safe }};
-
-        const activeFilters = {
-            status: null,
-            brand: null,
-            unit: null,
-            building: null,
-            category: null,
-            desc: null
+        summaryDTs = {
+            "#summaryTable": $("#summaryTable").DataTable({
+                columns: [{ data: "category" }, { data: "count" }],
+                ...dtOpts
+            }),
+            "#descTable": $("#descTable").DataTable({
+                columns: [{ data: "desc" }, { data: "count" }],
+                ...dtOpts
+            }),
+            "#brandTable": $("#brandTable").DataTable({
+                columns: [{ data: "brand" }, { data: "count" }],
+                ...dtOpts
+            }),
+            "#unitTable": $("#unitTable").DataTable({
+                columns: [{ data: "unit" }, { data: "count" }],
+                ...dtOpts
+            }),
+            "#statusTable": $("#statusTable").DataTable({
+                columns: [{ data: "status" }, { data: "count" }],
+                ...dtOpts
+            }),
+            "#buildingTable": $("#buildingTable").DataTable({
+                columns: [{ data: "building" }, { data: "count" }],
+                ...dtOpts
+            })
         };
 
-        let masterTable;
+        // Bind click handlers
+        bindFilter("#statusTable", "status");
+        bindFilter("#brandTable", "brand");
+        bindFilter("#unitTable", "unit");
+        bindFilter("#buildingTable", "building");
+        bindFilter("#summaryTable", "category");
+        bindFilter("#descTable", "desc");
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // ---------- Build summaries ----------
-            const toCounts = (arr, key) =>
-                arr.reduce((acc, r) => {
-                    const v = r[key];
-                    if (v) acc[v] = (acc[v] || 0) + 1;
-                    return acc;
-                }, {});
+        // First load
+        applyFilters();
+    });
 
-            const mapCounts = (obj, key) =>
-                Object.keys(obj).map(k => ({ [key]: k, count: obj[k] }));
+    function bindFilter(tableSelector, field) {
+        const table = $(tableSelector).DataTable();
 
-            // Category (Machine Category)
-            const categoryData = mapCounts(toCounts(rows, "category"), "category");
+        $(`${tableSelector} tbody`).on("click", "tr", function () {
+            const rowData = table.row(this).data();
+            if (!rowData) return;
 
-            // Description (Machine Type)
-            const descData = mapCounts(toCounts(rows, "desc"), "desc");
+            const clickedValue = rowData[field];
+            const wasSelected = $(this).hasClass("selected-filter");
 
-            // Brand
-            const brandData = mapCounts(toCounts(rows, "brand"), "brand");
+            activeFilters[field] = wasSelected ? null : clickedValue;
 
-            // Unit
-            const unitData = mapCounts(toCounts(rows, "unit"), "unit");
+            $(`${tableSelector} tbody tr`).removeClass("selected-filter");
+            if (!wasSelected) $(this).addClass("selected-filter");
 
-            // Status
-            const statusData = mapCounts(toCounts(rows, "status"), "status");
+            applyFilters();
+        });
+    }
 
-            // Building
-            const buildingData = mapCounts(toCounts(rows, "building"), "building");
-
-            // ---------- Init summary tables (no pagination, scroll) ----------
-            const dtOpts = {
-                paging: false,
-                searching: false,
-                info: false,
-                scrollY: "250px",
-                scrollCollapse: true
-            };
-
-            const summaryDTs = {
-                "#summaryTable": $("#summaryTable").DataTable({
-                    data: categoryData,
-                    columns: [{ data: "category" }, { data: "count" }],
-                    ...dtOpts
-                }),
-                "#descTable": $("#descTable").DataTable({
-                    data: descData,
-                    columns: [{ data: "desc" }, { data: "count" }],
-                    ...dtOpts
-                }),
-                "#brandTable": $("#brandTable").DataTable({
-                    data: brandData,
-                    columns: [{ data: "brand" }, { data: "count" }],
-                    ...dtOpts
-                }),
-                "#unitTable": $("#unitTable").DataTable({
-                    data: unitData,
-                    columns: [{ data: "unit" }, { data: "count" }],
-                    ...dtOpts
-                }),
-                "#statusTable": $("#statusTable").DataTable({
-                    data: statusData,
-                    columns: [{ data: "status" }, { data: "count" }],
-                    ...dtOpts
-                }),
-                "#buildingTable": $("#buildingTable").DataTable({
-                    data: buildingData,
-                    columns: [{ data: "building" }, { data: "count" }],
-                    ...dtOpts
-                })
-            };
-
-            // ---------- Master table ----------
-            masterTable = $("#masterTable").DataTable({
-                data: rows,
-                columns: [
-                    { data: "date" },
-                    { data: "status" },
-                    { data: "category" },
-                    { data: "brand" },
-                    { data: "model" },
-                    { data: "desc" },
-                    { data: "unit" },
-                    { data: "building" },
-                    { data: "floor" },
-                    { data: "pm_date" }
-                ],
-                scrollY: "300px",
-                scrollCollapse: true,
-                paging: false
-            });
-
-            // ---------- Row click handlers + highlighting ----------
-            bindFilter("#statusTable", "status");
-            bindFilter("#brandTable", "brand");
-            bindFilter("#unitTable", "unit");
-            bindFilter("#buildingTable", "building");
-            bindFilter("#summaryTable", "category"); // Machine Category
-            bindFilter("#descTable", "desc");        // Machine Type
+    function applyFilters() {
+        // Step 1: Filter rows
+        const filtered = rows.filter(r => {
+            return (!activeFilters.status || r.status === activeFilters.status) &&
+                (!activeFilters.brand || r.brand === activeFilters.brand) &&
+                (!activeFilters.unit || r.unit === activeFilters.unit) &&
+                (!activeFilters.building || r.building === activeFilters.building) &&
+                (!activeFilters.category || r.category === activeFilters.category) &&
+                (!activeFilters.desc || r.desc === activeFilters.desc);
         });
 
-        function bindFilter(tableSelector, field) {
-            const table = $(tableSelector).DataTable();
+        // Step 2: Update each summary table with counts
+        const toCounts = (arr, key) =>
+            arr.reduce((acc, r) => {
+                const v = r[key];
+                if (v) acc[v] = (acc[v] || 0) + 1;
+                return acc;
+            }, {});
+        const mapCounts = (obj, key) =>
+            Object.keys(obj).map(k => ({ [key]: k, count: obj[k] }));
 
-            // Click to toggle selection for this table
-            $(`${tableSelector} tbody`).on("click", "tr", function () {
-                const rowData = table.row(this).data();
-                if (!rowData) return;
+        summaryDTs["#summaryTable"].clear().rows.add(mapCounts(toCounts(filtered, "category"), "category")).draw();
+        summaryDTs["#descTable"].clear().rows.add(mapCounts(toCounts(filtered, "desc"), "desc")).draw();
+        summaryDTs["#brandTable"].clear().rows.add(mapCounts(toCounts(filtered, "brand"), "brand")).draw();
+        summaryDTs["#unitTable"].clear().rows.add(mapCounts(toCounts(filtered, "unit"), "unit")).draw();
+        summaryDTs["#statusTable"].clear().rows.add(mapCounts(toCounts(filtered, "status"), "status")).draw();
+        summaryDTs["#buildingTable"].clear().rows.add(mapCounts(toCounts(filtered, "building"), "building")).draw();
 
-                const clickedValue = rowData[field];
-
-                // If already selected, clear filter; else set new value
-                const wasSelected = $(this).hasClass("selected-filter");
-                activeFilters[field] = wasSelected ? null : clickedValue;
-
-                // Clear highlight in this table, then apply to the (new) selected row
-                $(`${tableSelector} tbody tr`).removeClass("selected-filter");
-                if (!wasSelected) $(this).addClass("selected-filter");
-
-                applyFilters();
-            });
+        // Step 3: Reapply highlights to keep filter selection visible
+        for (const [selector, field] of [
+            ["#statusTable", "status"],
+            ["#brandTable", "brand"],
+            ["#unitTable", "unit"],
+            ["#buildingTable", "building"],
+            ["#summaryTable", "category"],
+            ["#descTable", "desc"]
+        ]) {
+            if (activeFilters[field]) {
+                $(selector).DataTable().rows().every(function () {
+                    if (this.data()[field] === activeFilters[field]) {
+                        $(this.node()).addClass("selected-filter");
+                    }
+                });
+            }
         }
+    }
+  </script>
 
-        function applyFilters() {
-            const filtered = rows.filter(r => {
-                return (!activeFilters.status || r.status === activeFilters.status) &&
-                    (!activeFilters.brand || r.brand === activeFilters.brand) &&
-                    (!activeFilters.unit || r.unit === activeFilters.unit) &&
-                    (!activeFilters.building || r.building === activeFilters.building) &&
-                    (!activeFilters.category || r.category === activeFilters.category) &&
-                    (!activeFilters.desc || r.desc === activeFilters.desc);
-            });
-
-            masterTable.clear().rows.add(filtered).draw();
-        }
-    </script>
-
-    {% endblock %}
+  {% endblock %}
+</div>
