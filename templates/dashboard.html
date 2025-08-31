@@ -71,7 +71,10 @@
           </thead>
         </table>
       </div>
-
+      <div class="dashboard-card">
+        <h5>Unit Summary (Bar Chart)</h5>
+        <canvas id="unitBarChart" class="full-width" height="200"></canvas>
+      </div>
       <!-- Status Summary -->
       <div class="dashboard-card">
         <h5>Status Summary</h5>
@@ -85,36 +88,18 @@
         </table>
       </div>
       <!-- Status Summary -->
-      <div class="dashboard-card">
-        <!-- <h5>Building Summary</h5> -->
-        <table id="buildingTable" class="display full-width">
-          <thead>
-            <tr>
-              <th>Building</th>
-              <th>Count</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
     </div>
-
-    <!-- ==================================================================================== -->
-    <!-- Charts -->
-    <!-- <div class="row">
-        <div class="col-md-6">
-            <div class="card p-3 shadow-sm">
-                <h5>Status Distribution</h5>
-                <canvas id="statusChart"></canvas>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card p-3 shadow-sm">
-                <h5>Category Count</h5>
-                <canvas id="categoryChart"></canvas>
-            </div>
-        </div>
-    </div> -->
+    <div class="dashboard-card col-md-4">
+      <!-- <h5>Building Summary</h5> -->
+      <table id="buildingTable" class="display full-width">
+        <thead>
+          <tr>
+            <th>Building</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </div>
 
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -132,6 +117,7 @@
     };
 
     let summaryDTs = {};
+    let unitChart;
 
     document.addEventListener("DOMContentLoaded", function () {
         // ---------- Init summary tables (empty first) ----------
@@ -178,6 +164,33 @@
         bindFilter("#summaryTable", "category");
         bindFilter("#descTable", "desc");
 
+        // Init Chart.js bar chart
+        const ctx = document.getElementById("unitBarChart").getContext("2d");
+        unitChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: [], // filled dynamically
+                datasets: [{
+                    label: "Machine Count",
+                    data: [],
+                    backgroundColor: "rgba(205, 220, 57, 0.7)",
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 200 }
+                    }
+                }
+            }
+        });
+
         // First load
         applyFilters();
     });
@@ -212,7 +225,7 @@
                 (!activeFilters.desc || r.desc === activeFilters.desc);
         });
 
-        // Step 2: Update each summary table with counts
+        // Step 2: Update summary tables
         const toCounts = (arr, key) =>
             arr.reduce((acc, r) => {
                 const v = r[key];
@@ -229,7 +242,13 @@
         summaryDTs["#statusTable"].clear().rows.add(mapCounts(toCounts(filtered, "status"), "status")).draw();
         summaryDTs["#buildingTable"].clear().rows.add(mapCounts(toCounts(filtered, "building"), "building")).draw();
 
-        // Step 3: Reapply highlights to keep filter selection visible
+        // Step 3: Update bar chart for Unit
+        const unitCounts = toCounts(filtered, "unit");
+        unitChart.data.labels = Object.keys(unitCounts);
+        unitChart.data.datasets[0].data = Object.values(unitCounts);
+        unitChart.update();
+
+        // Step 4: Reapply highlights
         for (const [selector, field] of [
             ["#statusTable", "status"],
             ["#brandTable", "brand"],
@@ -248,6 +267,5 @@
         }
     }
   </script>
-
   {% endblock %}
 </div>
