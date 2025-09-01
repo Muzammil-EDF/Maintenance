@@ -245,7 +245,8 @@
             {% endif %}
           </li>
           <li class="nav-item">
-            {% if current_user.role == 'master' %}
+            {% if current_user.unit == 'YTM-7' or
+            current_user.role == 'master' %}
             <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
             {% endif %}
           </li>
