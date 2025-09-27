@@ -301,6 +301,7 @@
 
     .dropdown-menu {
       max-height: 250px;   /* adjust as needed */
+      margin-left: -150px;
       overflow-y: auto;    /* auto adds scroll only when needed */
     }
 
@@ -332,25 +333,7 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-dark fw-semibold" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark fw-semibold" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            {% if current_user.role == 'master' %}
-            <a href="{{ url_for('download_excel') }}" class="nav-link text-dark fw-semibold">
-              Download Excel
-            </a>
-            {% endif %}
-          <li class="nav-item">
-            {% if current_user.role == 'master' %}
-            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-            {% endif %}
-          </li>
 
-          </li>
           {% if current_user.unit in ['YTM-1', 'YTM-2', 'YTM-3', 'YTM-7'] or current_user.role == 'master' %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -418,6 +401,18 @@
             </ul>
           </li>
           {% endif %}
+          <li class="nav-item">
+            {% if current_user.role == 'master' %}
+            <a href="{{ url_for('download_excel') }}" class="nav-link text-dark fw-semibold">
+              Download MML
+            </a>
+            {% endif %}
+          </li>
+          <li class="nav-item">
+            {% if current_user.role == 'master' %}
+            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% endif %}
+          </li>
 
         </ul>
         <!-- 
