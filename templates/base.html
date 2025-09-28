@@ -32,31 +32,26 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-color: #84d21f;
-      /* border: 2px solid green; */
-
+      
     }
-
     body {
-      --s: 240px;
-      /* control the size*/
-      --c1: #ffffff;
-      --c2: #b3cfed;
-      --c3: #a5e3d4;
-
-      --_l: #0000 calc(25%/3), var(--c1) 0 25%, #0000 0;
-      --_g: conic-gradient(from 120deg at 50% 87.5%, var(--c1) 120deg, #0000 0);
-      background:
-        var(--_g), var(--_g) 0 calc(var(--s)/2),
-        conic-gradient(from 180deg at 75%, var(--c2) 60deg, #0000 0),
-        conic-gradient(from 60deg at 75% 75%, var(--c1) 0 60deg, #0000 0),
-        linear-gradient(150deg, var(--_l)) 0 calc(var(--s)/2),
-        conic-gradient(at 25% 25%, #0000 50%, var(--c2) 0 240deg, var(--c1) 0 300deg, var(--c2) 0),
-        linear-gradient(-150deg, var(--_l)) var(--c3);
-      background-size: calc(0.866*var(--s)) var(--s);
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at 30% 40%, #93E1D8 0%, transparent 60%),
+                  radial-gradient(circle at 70% 70%, #9FE6DD 0%, transparent 60%),
+                  linear-gradient(135deg,
+                    #DDFFF7 0%,
+                    #D1FAF2 15%,
+                    #C4F5ED 35%,
+                    #93E1D8 100%,
+                    #9FE6DD 85%,
+                    #B8F0E8 55%,
+                    #ACEBE2 70%
+                  );
+      background-blend-mode: screen;
     }
-
-    .login-card {
+    
+    .login-card{
       background: rgba(255, 255, 255, 0.21);
       border-radius: 16px;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -64,7 +59,8 @@
       -webkit-backdrop-filter: blur(7.4px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-
+    
+    
     .navbar {
       font-family: 'Playfair Display', serif;
       background-color: #f8f4f0;
@@ -79,27 +75,21 @@
       margin-left: 8px;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       margin-right: 8px;
-      transition: box-shadow 0.5s ease;
-      /* smooth transition */
+      transition: box-shadow 0.5s ease; /* smooth transition */
     }
-
-    .navbar:hover {
+    .navbar:hover{
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     }
-
     .login-card {
       margin-top: 20px;
       border: none;
       border-radius: 1rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
-      /* smooth transition */
+      transition: box-shadow 0.3s ease; /* smooth transition */
     }
-
-    .login-card:hover {
+    .login-card:hover{
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-
     .login-header {
       /* background-color: rgb(158, 176, 38); */
       color: #3f3f3f;
@@ -108,23 +98,14 @@
       padding: 1rem;
       text-align: center;
     }
-
+    
     .btn-login:hover {
       /* background-color: #C1D62E; */
       /* color: #fff; */
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-
-
-    .btn-perform {
-      /* background: linear-gradient(135deg, #4facfe, #00f2fe); gradient */
-      color: #000;
-      border-radius: 50px;   /* pill shape */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
     
-
+    
     .btn-actions {
       color: rgb(31, 29, 29);
       border: none;
@@ -134,14 +115,20 @@
       backdrop-filter: blur(7.4px);
       -webkit-backdrop-filter: blur(7.4px);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: box-shadow 0.5s ease;
-      /* smooth transition */
-      transition: color 0.3s ease;
-      /* smooth transition */
-
+      transition: box-shadow 0.5s ease; /* smooth transition */
+      transition: color 0.3s ease; /* smooth transition */
+      
     }
-
-    .btn-actions:hover {
+    
+    .btn-perform {
+      /* background: linear-gradient(135deg, #4facfe, #00f2fe); gradient */
+      color: #000;
+      border-radius: 50px;   /* pill shape */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .btn-actions:hover{
       background: rgba(255, 255, 255, 0.21);
       border-radius: 16px;
       backdrop-filter: blur(7.4px);
@@ -149,85 +136,66 @@
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: #333;
     }
-
+    
     .btn:hover {
       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
       padding-left: 10px;
       padding-right: 10px;
     }
-
+    
     .container-my-3 {
       width: 100%;
     }
-
+    
     .container-my-3 h3 {
       padding-left: 10px;
       padding-right: 10px;
     }
-
+    
     .container-mt-4 {
       width: 100%;
     }
-
+    
     .titles {
       padding-left: 10px;
       padding-right: 10px;
     }
-
+    
+    /* Transparent table */
     .table-professional {
-      border-collapse: separate;
-      border-spacing: 0;
+      width: 100%;
       font-family: 'Segoe UI', sans-serif;
       font-size: 15px;
-      /* background-color: #fff; */
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      width: 100%;
-      white-space: nowrap;
-      /* Prevents text from wrapping */
-      table-layout: auto;
       border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      background: transparent;
+      border: 2px solid rgba(27, 25, 25, 0.3);
     }
 
-    .table-professional th,
-    .table-professional td {
+    /* Apply transparency to DataTables-generated body cells */
+    .table-professional tbody td {
       padding: 12px 16px;
-      border-bottom: 1px solid #f0f0f0;
       text-align: left;
       vertical-align: middle;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* subtle divider */
+      color: #28282b; /* text color so it’s visible on glass bg */
+      background: transparent !important; /* force background transparent */
     }
 
+    /* Header */
     .table-professional thead th {
-      background-color: #f6f9fc;
       font-weight: 600;
-      font-size: xx-large;
-      color: #386f6c;
-      border-bottom: 2px solid #386f6c;
-      padding: 8px 12px;
       font-size: 14px;
-      vertical-align: left;
+      color: #28282b;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      background: transparent !important;
     }
 
-    .table-professional thead td {
-      font-weight: 500;
-      font-size: small;
-    }
-
-    .table-professional td {
-      color: #333;
-    }
-
-    .table-responsive-custom {
-      width: 100%;
-      overflow-x: auto;
-      max-height: 600px;
-      overflow-y: auto;
-      padding-left: 10px;
-      padding-right: 10px;
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-      /* scrolls horizontally if needed */
+    /* Optional: hover effect for rows */
+    .table-professional tbody tr:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
     }
 
     /* ======================================================================================= */
@@ -237,7 +205,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
-
+    
     /* Flex row for tables/charts */
     .dashboard-row {
       display: flex;
@@ -246,40 +214,46 @@
       /* space between cards */
       margin-bottom: 20px;
     }
-
+    
     /* Card styling */
     .dashboard-card {
       flex: 1 1 30%;
       /* take at least 30% width, shrink/grow as needed */
-      background: #fff;
+      /* background: #fff; */
       border-radius: 12px;
       padding: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
       min-width: 280px;
+      background: rgba(255, 255, 255, 0.21);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(7.4px);
+      -webkit-backdrop-filter: blur(7.4px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      
       /* prevents too small cards */
     }
-
+    
     /* Make tables and charts take full space */
     .full-width {
       width: 100% !important;
     }
-
+    
     /* Responsive: stack on small screens */
     @media (max-width: 768px) {
       .dashboard-card {
         flex: 1 1 100%;
       }
     }
-
+    
     /* highlight selected summary row */
     .selected-filter {
-      background-color: #e3f2fd !important;
+      background-color: rgb(166, 192, 221) !important;
       /* light blue */
     }
-
+    
     .form-control{
       position: relative;
-      /* z-index: -1; */
       background: rgba(255, 255, 255, 0.21);
       border-radius: 16px;
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -301,8 +275,14 @@
 
     .dropdown-menu {
       max-height: 250px;   /* adjust as needed */
+      overflow-y: auto;
       margin-left: -150px;
-      overflow-y: auto;    /* auto adds scroll only when needed */
+      background: rgba(255, 255, 255, 0.21);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(7.4px);
+      -webkit-backdrop-filter: blur(7.4px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     #statusTable tbody tr,
@@ -314,8 +294,15 @@
       cursor: pointer;
     }
 
-    /* ======================================================================================= */
 
+    .navbar,
+    .navbar-nav,
+    .nav-item {
+      overflow: visible !important;
+    }
+
+
+    /* ======================================================================================= */
     /* ======================================================================================= */
   </style>
 </head>
