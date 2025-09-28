@@ -14,13 +14,13 @@ Home
                 <!-- Date -->
                 <div class="col-md-3">
                     <label for="date" class="form-label">Date</label>
-                    <input type="text" class="form-control" name="date" id="date">
+                    <input type="text" class="form-control glass" name="date" id="date">
                 </div>
 
                 <!-- Home -->
                 <div class="col-md-3">
                     <label for="home" class="form-label">Home</label>
-                    <select class="form-control" name="home" id="home" required>
+                    <select class="form-control glass" name="home" id="home" required>
                         <option value="" disabled selected>Select a Home</option>
                         {% for home in [
                         "YTM-1", "YTM-2", "YTM-3", "YTM-7"
@@ -33,7 +33,7 @@ Home
                 <!-- Status -->
                 <div class="col-md-3">
                     <label for="status" class="form-label">Status</label>
-                    <select class="form-control" name="status" id="status" required>
+                    <select class="form-control glass" name="status" id="status" required>
                         <option value="" disabled selected>Select a status</option>
                         {% for status in [
                         "Active", "Maintenance", "Ready", "Dead", "Packed"
@@ -46,7 +46,7 @@ Home
                 <!-- Category -->
                 <div class="col-md-3">
                     <label for="category" class="form-label">Category</label>
-                    <select class="form-control" name="category" id="category" required>
+                    <select class="form-control glass" name="category" id="category" required>
                         <option value="" disabled selected>Select a category</option>
                         {% for category in [
                         "Normal", "Special", "Automatic Plants", "Cutting", "Tracks", "Packing",
@@ -61,7 +61,7 @@ Home
                 <!-- Brand -->
                 <div class="col-md-3">
                     <label for="brand" class="form-label">Brand</label>
-                    <select class="form-control" name="brand" id="brand" required>
+                    <select class="form-control glass" name="brand" id="brand" required>
                         <option value="" disabled selected>Select a Brand</option>
                         {% for brand in [
                         "Juki","Siruba","Brother","Master","Master Apparel","Japsew","Golden
@@ -82,7 +82,7 @@ Home
                 <!-- Model -->
                 <div class="col-md-3">
                     <label for="model" class="form-label">Model</label>
-                    <select class="form-control" name="model" id="model" required>
+                    <select class="form-control glass" name="model" id="model" required>
                         <option value="" disabled selected>Select a Model</option>
                         {% for model in [
                         "DDL-7000A-7","757K-516M2-35/CT/DKKU1-0","S-6280A-813","SH-2000","SH2000","NILL","S-7100A-403","LZ-2290A-SR-7","J-8700-B-7","D-8752-D-S07",
@@ -111,7 +111,7 @@ Home
                 <!-- Description -->
                 <div class="col-md-3">
                     <label for="desc" class="form-label">Description</label>
-                    <select class="form-control" name="desc" id="desc" required>
+                    <select class="form-control glass" name="desc" id="desc" required>
                         <option value="" disabled selected>Select a description</option>
                         {% for item in [
                         "4 THREAD", "5 Thread Safety", "Air Compressor", "Auto Spreader", "Bartack", "Blind
@@ -158,19 +158,19 @@ Home
                 <!-- Tag -->
                 <div class="col-md-3">
                     <label for="tag" class="form-label">Tag No.</label>
-                    <input type="text" class="form-control" name="tag" id="tag">
+                    <input type="text" class="form-control glass" name="tag" id="tag">
                 </div>
 
                 <!-- Serial -->
                 <div class="col-md-3">
                     <label for="serial" class="form-label">Serial No.</label>
-                    <input type="text" class="form-control" name="serial" id="serial">
+                    <input type="text" class="form-control glass" name="serial" id="serial">
                 </div>
 
                 <!-- Unit -->
                 <div class="col-md-3">
                     <label for="unit" class="form-label">Unit</label>
-                    <select class="form-control" name="unit" id="unit" required>
+                    <select class="form-control glass" name="unit" id="unit" required>
                         <option value="" disabled selected>Select a Unit</option>
                         {% for unit in [
                         "YTM-1", "YTM-2", "YTM-3", "YTM-7"
@@ -183,7 +183,7 @@ Home
                 <!-- Building -->
                 <div class="col-md-3">
                     <label for="building" class="form-label">Building</label>
-                    <select class="form-control" name="building" id="building" required>
+                    <select class="form-control glass" name="building" id="building" required>
                         <option value="" disabled selected>Select a Building</option>
                         {% for building in [
                         "A", "B", "C", "D", "E", "F", "Water-Jet", "2A", "2B", "3A"
@@ -196,7 +196,7 @@ Home
                 <!-- Floor -->
                 <div class="col-md-3">
                     <label for="floor" class="form-label">Floor</label>
-                    <select class="form-control" name="floor" id="floor" required>
+                    <select class="form-control glass" name="floor" id="floor" required>
                         <option value="" disabled selected>Select a Floor</option>
                         {% for floor in [
                         "GF", "FF", "SF", "TF", "FF-Workshop", "GF-EXWH", "GF-Sample",
@@ -210,7 +210,7 @@ Home
                 <!-- PM Date -->
                 <div class="col-md-3">
                     <label for="pm_date" class="form-label">PM Date</label>
-                    <input type="text" class="form-control" name="pm_date" id="pm_date">
+                    <input type="text" class="form-control glass" name="pm_date" id="pm_date">
                 </div>
 
 
@@ -218,7 +218,7 @@ Home
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-actions btn-dark">Submit</button>
+                <button type="submit" class="btn btn-actions btn-dark glass">Submit</button>
             </div>
         </form>
         {% else %}
